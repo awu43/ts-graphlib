@@ -1,4 +1,4 @@
-var expect = require("../chai").expect;
+var expect = require("chai").expect;
 var _ = require("lodash");
 var Graph = require("../..").Graph;
 var topsort = require("../..").alg.topsort;

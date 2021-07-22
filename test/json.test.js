@@ -1,4 +1,4 @@
-var expect = require("./chai").expect;
+var expect = require("chai").expect;
 var Graph = require("..").Graph;
 var read = require("..").json.read;
 var write = require("..").json.write;
