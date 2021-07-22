@@ -14,4 +14,13 @@ module.exports = {
   rules: {
     "func-names": 0,
   },
+  overrides: [
+    {
+      files: ["**/*.test.js"],
+      rules: {
+        "no-unused-expressions": 0,
+        "global-require": 0,
+      },
+    },
+  ],
 };
