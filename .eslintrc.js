@@ -13,6 +13,10 @@ module.exports = {
   },
   rules: {
     "func-names": 0,
+    "no-underscore-dangle": 0,
+    "no-else-return": 0,
+    "consistent-return": 0,
+    "no-param-reassign": [2, { props: false }],
   },
   overrides: [
     {
