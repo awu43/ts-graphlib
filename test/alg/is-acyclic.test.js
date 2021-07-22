@@ -1,27 +1,29 @@
-var expect = require("chai").expect;
-var Graph = require("../..").Graph;
-var isAcyclic = require("../..").alg.isAcyclic;
+const { expect } = require("chai");
+const { Graph } = require("../..");
+const { isAcyclic } = require("../..").alg;
 
-describe("alg.isAcyclic", function() {
-  it("returns true if the graph has no cycles", function() {
-    var g = new Graph();
+describe("alg.isAcyclic", function () {
+  it("returns true if the graph has no cycles", function () {
+    const g = new Graph();
     g.setPath(["a", "b", "c"]);
     expect(isAcyclic(g)).to.be.true;
   });
 
-  it("returns false if the graph has at least one cycle", function() {
-    var g = new Graph();
+  it("returns false if the graph has at least one cycle", function () {
+    const g = new Graph();
     g.setPath(["a", "b", "c", "a"]);
     expect(isAcyclic(g)).to.be.false;
   });
 
-  it("returns false if the graph has a cycle of 1 node", function() {
-    var g = new Graph();
+  it("returns false if the graph has a cycle of 1 node", function () {
+    const g = new Graph();
     g.setPath(["a", "a"]);
     expect(isAcyclic(g)).to.be.false;
   });
 
-  it("rethrows non-CycleException errors", function() {
-    expect(function() { isAcyclic(undefined); }).to.throw();
+  it("rethrows non-CycleException errors", function () {
+    expect(function () {
+      isAcyclic(undefined);
+    }).to.throw();
   });
 });
