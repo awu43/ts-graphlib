@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 /**
  * Copyright (c) 2014, Chris Pettitt
  * All rights reserved.
@@ -28,10 +29,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-var lib = require("./lib");
+const lib = require("./src");
 
 module.exports = {
   Graph: lib.Graph,
-  json: require("./lib/json"),
-  alg: require("./lib/alg"),
+  json: require("./src/json"),
+  alg: require("./src/alg"),
 };
