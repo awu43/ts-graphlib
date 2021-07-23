@@ -15,6 +15,7 @@
     "algorithms"
   ],
   "scripts": {
+    "bench": "node src/bench.js",
     "test": "mocha --recursive"
   },
   "dependencies": {

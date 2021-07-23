@@ -19,6 +19,7 @@ module.exports = {
     // "no-param-reassign": [2, { props: false }],
     "no-param-reassign": 0,
     // TODO: Fix this later
+    "no-plusplus": [2, { allowForLoopAfterthoughts: true }],
   },
   overrides: [
     {
