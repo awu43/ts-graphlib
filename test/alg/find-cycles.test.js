@@ -1,7 +1,8 @@
 const _ = require("lodash");
 const { expect } = require("chai");
-const { Graph } = require("../..");
-const { findCycles } = require("../..").alg;
+
+const { Graph } = require("../../src");
+const { findCycles } = require("../../src").alg;
 
 // A helper that sorts components and their contents
 function sort(cmpts) {

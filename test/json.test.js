@@ -1,6 +1,7 @@
 const { expect } = require("chai");
-const { Graph } = require("..");
-const { read, write } = require("..").json;
+
+const { Graph } = require("../src");
+const { read, write } = require("../src").json;
 
 function rw(g) {
   return read(write(g));

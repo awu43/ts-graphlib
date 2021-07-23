@@ -5,7 +5,7 @@
 const Benchmark = require("benchmark");
 const seedrandom = require("seedrandom");
 const { sprintf } = require("sprintf");
-const { Graph, alg } = require(".");
+const { Graph, alg } = require("./src");
 
 const seed = process.env.SEED;
 seedrandom(seed, { global: true });

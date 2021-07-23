@@ -1,7 +1,8 @@
 const { expect } = require("chai");
 const _ = require("lodash");
-const { Graph } = require("../..");
-const { components } = require("../..").alg;
+
+const { Graph } = require("../../src");
+const { components } = require("../../src").alg;
 
 describe("alg.components", function () {
   it("returns an empty list for an empty graph", function () {

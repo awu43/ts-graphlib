@@ -1,7 +1,8 @@
 const _ = require("lodash");
 const { expect } = require("chai");
-const { Graph } = require("../..");
-const { postorder } = require("../..").alg;
+
+const { Graph } = require("../../src");
+const { postorder } = require("../../src").alg;
 
 describe("alg.postorder", function () {
   it("returns the root for a singleton graph", function () {

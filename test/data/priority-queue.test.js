@@ -1,5 +1,6 @@
 const _ = require("lodash");
 const { expect } = require("chai");
+
 const PriorityQueue = require("../../src/data/priority-queue");
 
 describe("data.PriorityQueue", function () {

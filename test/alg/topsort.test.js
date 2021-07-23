@@ -1,7 +1,8 @@
 const { expect } = require("chai");
 const _ = require("lodash");
-const { Graph } = require("../..");
-const { topsort } = require("../..").alg;
+
+const { Graph } = require("../../src");
+const { topsort } = require("../../src").alg;
 
 describe("alg.topsort", function () {
   it("returns an empty array for an empty graph", function () {

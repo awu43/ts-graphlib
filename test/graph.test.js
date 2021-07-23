@@ -1,6 +1,7 @@
 const _ = require("lodash");
 const { expect } = require("chai");
-const { Graph } = require("..");
+
+const { Graph } = require("../src");
 
 describe("Graph", function () {
   let g;

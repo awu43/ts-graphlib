@@ -1,6 +1,6 @@
 const { expect } = require("chai");
-const { Graph } = require("../..");
-const { isAcyclic } = require("../..").alg;
+const { Graph } = require("../../src");
+const { isAcyclic } = require("../../src").alg;
 
 describe("alg.isAcyclic", function () {
   it("returns true if the graph has no cycles", function () {

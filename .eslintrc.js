@@ -19,7 +19,7 @@ module.exports = {
     "no-param-reassign": [2, { props: false }],
     "no-plusplus": [2, { allowForLoopAfterthoughts: true }],
     "no-restricted-syntax": [
-      "error",
+      2,
       "ForInStatement",
       "LabeledStatement",
       "WithStatement",

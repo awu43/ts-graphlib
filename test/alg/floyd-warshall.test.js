@@ -1,6 +1,8 @@
 const { expect } = require("chai");
-const { Graph } = require("../..");
-const { floydWarshall } = require("../..").alg;
+
+const { Graph } = require("../../src");
+const { floydWarshall } = require("../../src").alg;
+
 const allShortestPathsTest = require("./all-shortest-paths.test");
 
 function weightFn(g) {

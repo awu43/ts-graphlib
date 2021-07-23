@@ -1,7 +1,8 @@
 const _ = require("lodash");
 const { expect } = require("chai");
-const { Graph } = require("../..");
-const { prim } = require("../..").alg;
+
+const { Graph } = require("../../src");
+const { prim } = require("../../src").alg;
 
 function weightFn(g) {
   return function (edge) {

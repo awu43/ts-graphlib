@@ -1,5 +1,6 @@
 const { expect } = require("chai");
-const { Graph } = require("../..");
+
+const { Graph } = require("../../src");
 
 function weightFn(g) {
   return function (e) {
