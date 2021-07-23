@@ -19,7 +19,6 @@
   "dependencies": {},
   "devDependencies": {
     "benchmark": "2.1.4",
-    "browserify": "16.5.1",
     "chai": "4.2.0",
     "eslint": "^7.31.0",
     "eslint-config-airbnb-base": "^14.2.1",
