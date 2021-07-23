@@ -1,7 +1,8 @@
-const { expect } = require("chai");
+import { expect } from "chai";
 
-const { Graph } = require("../../src");
-const { dijkstra } = require("../../src").alg;
+import Graph, { alg } from "../../src";
+
+const { dijkstra } = alg;
 
 function weightFn(g) {
   return function (e) {

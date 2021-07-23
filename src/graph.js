@@ -1,4 +1,4 @@
-const utils = require("./utils");
+import * as utils from "./utils";
 
 const DEFAULT_EDGE_NAME = "\x00";
 const GRAPH_NODE = "\x00";
@@ -57,7 +57,7 @@ function edgeObjToId(isDirected, edgeObj) {
 //    edges up and, object properties, which have string keys, are the closest
 //    we're going to get to a performant hashtable in JavaScript.
 
-function Graph(opts) {
+export default function Graph(opts) {
   this._isDirected = utils.has(opts, "directed") ? opts.directed : true;
   this._isMultigraph = utils.has(opts, "multigraph") ? opts.multigraph : false;
   this._isCompound = utils.has(opts, "compound") ? opts.compound : false;
@@ -543,5 +543,3 @@ Graph.prototype.nodeEdges = function (v, w) {
     return inEdges.concat(this.outEdges(v, w));
   }
 };
-
-module.exports = Graph;

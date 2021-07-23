@@ -1,4 +1,4 @@
-const utils = require("../utils");
+import * as utils from "../utils";
 
 /**
  * A min-priority queue data structure. This algorithm is derived from Cormen,
@@ -7,7 +7,7 @@ const utils = require("../utils");
  * the queue. Adding and removing elements takes O(log n) time. A key can
  * have its priority decreased in O(log n) time.
  */
-function PriorityQueue() {
+export default function PriorityQueue() {
   this._arr = [];
   this._keyIndices = {};
 }
@@ -150,5 +150,3 @@ PriorityQueue.prototype._swap = function (i, j) {
   keyIndices[arr[i].key] = i;
   keyIndices[arr[j].key] = j;
 };
-
-module.exports = PriorityQueue;

@@ -1,9 +1,9 @@
-const { expect } = require("chai");
+import { expect } from "chai";
 
-const { Graph } = require("../../src");
-const { floydWarshall } = require("../../src").alg;
+import Graph, { alg } from "../../src";
+import allShortestPathsTest from "./all-shortest-paths.test";
 
-const allShortestPathsTest = require("./all-shortest-paths.test");
+const { floydWarshall } = alg;
 
 function weightFn(g) {
   return function (edge) {
@@ -12,7 +12,7 @@ function weightFn(g) {
 }
 
 describe("alg.floydWarshall", function () {
-  allShortestPathsTest.tests(floydWarshall);
+  allShortestPathsTest(floydWarshall);
 
   it("handles negative weights", function () {
     const g = new Graph();

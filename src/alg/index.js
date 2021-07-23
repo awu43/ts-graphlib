@@ -1,14 +1,11 @@
-/* eslint-disable global-require */
-module.exports = {
-  components: require("./components"),
-  dijkstra: require("./dijkstra"),
-  dijkstraAll: require("./dijkstra-all"),
-  findCycles: require("./find-cycles"),
-  floydWarshall: require("./floyd-warshall"),
-  isAcyclic: require("./is-acyclic"),
-  postorder: require("./postorder"),
-  preorder: require("./preorder"),
-  prim: require("./prim"),
-  tarjan: require("./tarjan"),
-  topsort: require("./topsort"),
-};
+export { default as components } from "./components";
+export { default as dijkstra } from "./dijkstra";
+export { default as dijkstraAll } from "./dijkstra-all";
+export { default as findCycles } from "./find-cycles";
+export { default as floydWarshall } from "./floyd-warshall";
+export { default as isAcyclic } from "./is-acyclic";
+export { default as postorder } from "./postorder";
+export { default as preorder } from "./preorder";
+export { default as prim } from "./prim";
+export { default as tarjan } from "./tarjan";
+export { default as topsort } from "./topsort";

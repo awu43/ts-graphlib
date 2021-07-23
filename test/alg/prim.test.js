@@ -1,8 +1,9 @@
-const _ = require("lodash");
-const { expect } = require("chai");
+import { expect } from "chai";
+import * as _ from "lodash";
 
-const { Graph } = require("../../src");
-const { prim } = require("../../src").alg;
+import Graph, { alg } from "../../src";
+
+const { prim } = alg;
 
 function weightFn(g) {
   return function (edge) {

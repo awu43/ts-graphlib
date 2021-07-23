@@ -1,9 +1,9 @@
-const { expect } = require("chai");
+import { expect } from "chai";
 
-const { Graph } = require("../../src");
-const { dijkstraAll } = require("../../src").alg;
+import Graph, { alg } from "../../src";
+import allShortestPathsTest from "./all-shortest-paths.test";
 
-const allShortestPathsTest = require("./all-shortest-paths.test");
+const { dijkstraAll } = alg;
 
 function weight(g) {
   return function (e) {
@@ -12,7 +12,7 @@ function weight(g) {
 }
 
 describe("alg.dijkstraAll", function () {
-  allShortestPathsTest.tests(dijkstraAll);
+  allShortestPathsTest(dijkstraAll);
 
   it("throws an Error if it encounters a negative edge weight", function () {
     const g = new Graph();

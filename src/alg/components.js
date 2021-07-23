@@ -1,6 +1,6 @@
-const utils = require("../utils");
+import * as utils from "../utils";
 
-module.exports = function components(g) {
+export default function components(g) {
   const visited = {};
   const cmpts = [];
   let cmpt;
@@ -22,4 +22,4 @@ module.exports = function components(g) {
   });
 
   return cmpts;
-};
+}

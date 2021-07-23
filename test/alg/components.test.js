@@ -1,8 +1,9 @@
-const { expect } = require("chai");
-const _ = require("lodash");
+import { expect } from "chai";
+import * as _ from "lodash";
 
-const { Graph } = require("../../src");
-const { components } = require("../../src").alg;
+import Graph, { alg } from "../../src";
+
+const { components } = alg;
 
 describe("alg.components", function () {
   it("returns an empty list for an empty graph", function () {

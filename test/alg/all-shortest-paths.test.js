@@ -1,6 +1,6 @@
-const { expect } = require("chai");
+import { expect } from "chai";
 
-const { Graph } = require("../../src");
+import Graph from "../../src";
 
 function weightFn(g) {
   return function (e) {
@@ -8,7 +8,7 @@ function weightFn(g) {
   };
 }
 
-exports.tests = function (sp) {
+export default function tests(sp) {
   describe("allShortestPaths", function () {
     it("returns 0 for the node itself", function () {
       const g = new Graph();
@@ -126,4 +126,4 @@ exports.tests = function (sp) {
       });
     });
   });
-};
+}

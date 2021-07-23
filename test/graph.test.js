@@ -1,7 +1,7 @@
-const _ = require("lodash");
-const { expect } = require("chai");
+import { expect } from "chai";
+import * as _ from "lodash";
 
-const { Graph } = require("../src");
+import Graph from "../src";
 
 describe("Graph", function () {
   let g;
