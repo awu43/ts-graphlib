@@ -39,7 +39,7 @@ function runFloydWarshall(g, weightFn, edgeFn) {
   return results;
 }
 
-module.exports = function floydWarshall(g, weightFn, edgeFn) {
+export default function floydWarshall(g, weightFn, edgeFn) {
   return runFloydWarshall(
     g,
     weightFn || DEFAULT_WEIGHT_FUNC,
@@ -48,4 +48,4 @@ module.exports = function floydWarshall(g, weightFn, edgeFn) {
         return g.outEdges(v);
       }
   );
-};
+}

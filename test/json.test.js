@@ -1,7 +1,8 @@
-const { expect } = require("chai");
+import { expect } from "chai";
 
-const { Graph } = require("../src");
-const { read, write } = require("../src").json;
+import Graph, { json } from "../src";
+
+const { read, write } = json;
 
 function rw(g) {
   return read(write(g));

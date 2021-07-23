@@ -1,4 +1,4 @@
-const utils = require("../utils");
+import * as utils from "../utils";
 
 function doDfs(g, v, postorder, visited, navigation, acc) {
   if (!utils.has(visited, v)) {
@@ -24,7 +24,7 @@ function doDfs(g, v, postorder, visited, navigation, acc) {
  *
  * Order must be one of "pre" or "post".
  */
-module.exports = function dfs(g, vs_, order) {
+export default function dfs(g, vs_, order) {
   const vs = !Array.isArray(vs_) ? [vs_] : vs_;
 
   const navigation = (g.isDirected() ? g.successors : g.neighbors).bind(g);
@@ -39,4 +39,4 @@ module.exports = function dfs(g, vs_, order) {
     doDfs(g, v, order === "post", visited, navigation, acc);
   });
   return acc;
-};
+}

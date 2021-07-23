@@ -27,12 +27,10 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-const Graph = require("./graph");
-const json = require("./json");
-const alg = require("./alg");
 
-module.exports = {
-  Graph,
-  json,
-  alg,
-};
+import Graph from "./graph";
+import * as json from "./json";
+import * as alg from "./alg";
+
+export default Graph;
+export { json, alg };

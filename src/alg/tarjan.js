@@ -1,6 +1,6 @@
-const utils = require("../utils");
+import * as utils from "../utils";
 
-module.exports = function tarjan(g) {
+export default function tarjan(g) {
   let index = 0;
   const stack = [];
   const visited = {}; // node id -> { onStack, lowlink, index }
@@ -44,4 +44,4 @@ module.exports = function tarjan(g) {
   });
 
   return results;
-};
+}

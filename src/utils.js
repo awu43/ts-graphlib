@@ -1,4 +1,4 @@
-exports.has = function (obj, key) {
+export function has(obj, key) {
   try {
     return hasOwnProperty.call(obj, key);
   } catch (error) {
@@ -9,9 +9,9 @@ exports.has = function (obj, key) {
       throw error;
     }
   }
-};
+}
 
-exports.isEmpty = function (obj) {
+export function isEmpty(obj) {
   if (Array.isArray(obj)) {
     return !obj.length;
   } else if (obj instanceof Map || obj instanceof Set) {
@@ -21,9 +21,9 @@ exports.isEmpty = function (obj) {
   } else {
     throw new Error("Attempted isEmpty() on non-container object");
   }
-};
+}
 
-exports.union = function (...arrays) {
+export function union(...arrays) {
   const values = new Set();
   const newArray = [];
   for (const arr of arrays) {
@@ -35,9 +35,9 @@ exports.union = function (...arrays) {
     }
   }
   return newArray;
-};
+}
 
-exports.transform = function (obj, callbackfn, accumulator) {
+export function transform(obj, callbackfn, accumulator) {
   const keys = Object.keys(obj);
   for (let i = 0, j = keys.length; i < j; i++) {
     const key = keys[i];
@@ -47,4 +47,4 @@ exports.transform = function (obj, callbackfn, accumulator) {
     }
   }
   return accumulator;
-};
+}

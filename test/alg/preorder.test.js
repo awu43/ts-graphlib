@@ -1,8 +1,9 @@
-const _ = require("lodash");
-const { expect } = require("chai");
+import { expect } from "chai";
+import * as _ from "lodash";
 
-const { Graph } = require("../../src");
-const { preorder } = require("../../src").alg;
+import Graph, { alg } from "../../src";
+
+const { preorder } = alg;
 
 describe("alg.preorder", function () {
   it("returns the root for a singleton graph", function () {

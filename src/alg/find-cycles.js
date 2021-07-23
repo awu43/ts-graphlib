@@ -1,9 +1,9 @@
-const tarjan = require("./tarjan");
+import tarjan from "./tarjan";
 
-module.exports = function findCycles(g) {
+export default function findCycles(g) {
   return tarjan(g).filter(function (cmpt) {
     return (
       cmpt.length > 1 || (cmpt.length === 1 && g.hasEdge(cmpt[0], cmpt[0]))
     );
   });
-};
+}

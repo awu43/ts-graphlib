@@ -1,7 +1,7 @@
-const utils = require("../utils");
-const dijkstra = require("./dijkstra");
+import * as utils from "../utils";
+import dijkstra from "./dijkstra";
 
-module.exports = function dijkstraAll(g, weightFunc, edgeFunc) {
+export default function dijkstraAll(g, weightFunc, edgeFunc) {
   return utils.transform(
     g.nodes(),
     function (acc, v) {
@@ -9,4 +9,4 @@ module.exports = function dijkstraAll(g, weightFunc, edgeFunc) {
     },
     {}
   );
-};
+}

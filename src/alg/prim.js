@@ -1,8 +1,8 @@
-const utils = require("../utils");
-const Graph = require("../graph");
-const PriorityQueue = require("../data/priority-queue");
+import * as utils from "../utils";
+import Graph from "../graph";
+import PriorityQueue from "../data/priority-queue";
 
-module.exports = function prim(g, weightFunc) {
+export default function prim(g, weightFunc) {
   const result = new Graph();
   const parents = {};
   const pq = new PriorityQueue();
@@ -47,4 +47,4 @@ module.exports = function prim(g, weightFunc) {
   }
 
   return result;
-};
+}

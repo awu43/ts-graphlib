@@ -2,10 +2,10 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-console */
 
-const Benchmark = require("benchmark");
-const seedrandom = require("seedrandom");
-const { sprintf } = require("sprintf");
-const { Graph, alg } = require("./src");
+import Benchmark from "benchmark";
+import seedrandom from "seedrandom";
+import { sprintf } from "sprintf";
+import Graph, { alg } from "./src";
 
 const seed = process.env.SEED;
 seedrandom(seed, { global: true });

@@ -1,4 +1,4 @@
-const PriorityQueue = require("../data/priority-queue");
+import PriorityQueue from "../data/priority-queue";
 
 const DEFAULT_WEIGHT_FUNC = () => 1;
 
@@ -46,7 +46,7 @@ function runDijkstra(g, source, weightFn, edgeFn) {
   return results;
 }
 
-module.exports = function dijkstra(g, source, weightFn, edgeFn) {
+export default function dijkstra(g, source, weightFn, edgeFn) {
   return runDijkstra(
     g,
     String(source),
@@ -56,4 +56,4 @@ module.exports = function dijkstra(g, source, weightFn, edgeFn) {
         return g.outEdges(v);
       }
   );
-};
+}

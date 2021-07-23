@@ -1,6 +1,6 @@
-const Graph = require("./graph");
+import Graph from "./graph";
 
-function read(json) {
+export function read(json) {
   const g = new Graph(json.options).setGraph(json.value);
   json.nodes.forEach(function (entry) {
     g.setNode(entry.v, entry.value);
@@ -43,7 +43,7 @@ function writeEdges(g) {
   });
 }
 
-function write(g) {
+export function write(g) {
   const json = {
     options: {
       directed: g.isDirected(),
@@ -58,8 +58,3 @@ function write(g) {
   }
   return json;
 }
-
-module.exports = {
-  read,
-  write,
-};

@@ -1,7 +1,7 @@
-const _ = require("lodash");
-const { expect } = require("chai");
+import { expect } from "chai";
+import * as _ from "lodash";
 
-const PriorityQueue = require("../../src/data/priority-queue");
+import PriorityQueue from "../../src/data/priority-queue";
 
 describe("data.PriorityQueue", function () {
   let pq;

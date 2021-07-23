@@ -1,10 +1,10 @@
-const utils = require("../utils");
+import * as utils from "../utils";
 
 function CycleException() {}
 CycleException.prototype = new Error();
 // must be an instance of Error to pass testing
 
-function topsort(g) {
+export default function topsort(g) {
   const visited = {};
   const stack = {};
   const results = [];
@@ -32,5 +32,3 @@ function topsort(g) {
   return results;
 }
 topsort.CycleException = CycleException;
-
-module.exports = topsort;
