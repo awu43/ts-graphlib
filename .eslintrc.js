@@ -16,9 +16,7 @@ module.exports = {
     "no-underscore-dangle": 0,
     "no-else-return": 0,
     "consistent-return": 0,
-    // "no-param-reassign": [2, { props: false }],
-    "no-param-reassign": 0,
-    // TODO: Fix this later
+    "no-param-reassign": [2, { props: false }],
     "no-plusplus": [2, { allowForLoopAfterthoughts: true }],
   },
   overrides: [
