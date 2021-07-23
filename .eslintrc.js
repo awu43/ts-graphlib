@@ -18,6 +18,12 @@ module.exports = {
     "consistent-return": 0,
     "no-param-reassign": [2, { props: false }],
     "no-plusplus": [2, { allowForLoopAfterthoughts: true }],
+    "no-restricted-syntax": [
+      "error",
+      "ForInStatement",
+      "LabeledStatement",
+      "WithStatement",
+    ],
   },
   overrides: [
     {
