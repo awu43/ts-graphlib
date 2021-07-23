@@ -5,15 +5,13 @@
 const Benchmark = require("benchmark");
 const seedrandom = require("seedrandom");
 const { sprintf } = require("sprintf");
+const { Graph, alg } = require(".");
 
 const seed = process.env.SEED;
 seedrandom(seed, { global: true });
 if (seed) {
   console.log("SEED: %s (%d)", seed, Math.random());
 }
-
-const { Graph } = require("..");
-const { alg } = require("..");
 
 const NODE_SIZES = [100];
 const EDGE_DENSITY = 0.2;
