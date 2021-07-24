@@ -37,11 +37,12 @@ function edgeArgsToId(
   );
 }
 
-interface Edge {
+export interface Edge {
   v: string;
   w: string;
   /** The name that uniquely identifies a multi-edge. */
   name?: string | undefined;
+  value?: string;
 }
 
 function edgeArgsToObj(
