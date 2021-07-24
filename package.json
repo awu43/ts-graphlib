@@ -13,8 +13,9 @@
     "algorithms"
   ],
   "scripts": {
-    "bench": "node -r esm bench.js",
-    "test": "mocha -r esm --recursive"
+    "lint": "eslint \"{src,test}/**/*.js\"",
+    "test": "mocha -r esm --recursive",
+    "bench": "node -r esm bench.js"
   },
   "dependencies": {},
   "devDependencies": {
