@@ -30,7 +30,7 @@
     "mocha": "8.2.0",
     "prettier": "^2.3.2",
     "seedrandom": "3.0.5",
-    "sprintf": "0.1.5"
+    "sprintf-js": "^1.1.2"
   },
   "repository": {
     "type": "git",

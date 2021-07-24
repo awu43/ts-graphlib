@@ -4,7 +4,7 @@
 
 import Benchmark from "benchmark";
 import seedrandom from "seedrandom";
-import { sprintf } from "sprintf";
+import { sprintf } from "sprintf-js";
 import Graph, { alg } from "./src";
 
 const seed = process.env.SEED;
