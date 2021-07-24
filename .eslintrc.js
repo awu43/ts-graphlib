@@ -24,14 +24,18 @@ module.exports = {
       "LabeledStatement",
       "WithStatement",
     ],
+
+    "import/no-unresolved": 0,
+    "import/extensions": 0,
   },
   overrides: [
     {
       files: ["src/**/*.ts"],
       extends: [
-        "plugin:@typescript-eslint/recommended",
         "airbnb-base",
         "plugin:prettier/recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
       ],
       parser: "@typescript-eslint/parser",
       plugins: ["@typescript-eslint", "prettier"],
@@ -49,8 +53,6 @@ module.exports = {
           "WithStatement",
         ],
 
-        "no-unused-vars": 0,
-        "no-redeclare": 0,
         "import/no-unresolved": 0,
         "import/extensions": 0,
         "lines-between-class-members": [
@@ -58,12 +60,15 @@ module.exports = {
           "always",
           { exceptAfterSingleLine: true },
         ],
-        "no-dupe-class-members": 0,
       },
     },
     {
       files: ["test/**/*.test.js"],
+      extends: ["airbnb-base", "plugin:prettier/recommended"],
       rules: {
+        "import/no-unresolved": 0,
+        "import/extensions": 0,
+
         "no-unused-expressions": 0,
         "global-require": 0,
       },

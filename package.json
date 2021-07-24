@@ -13,7 +13,7 @@
     "algorithms"
   ],
   "scripts": {
-    "lint": "eslint \"{src,test}/**/*.js\"",
+    "lint": "eslint \"{src,test}/**/*.{js,ts}\"",
     "test": "ts-mocha -r esm --recursive",
     "build": "tsc",
     "bench": "tsc && node -r esm bench.js"
