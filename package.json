@@ -18,8 +18,8 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "benchmark": "2.1.4",
-    "chai": "4.2.0",
+    "benchmark": "^2.1.4",
+    "chai": "^4.3.4",
     "eslint": "^7.31.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.3.0",
@@ -27,9 +27,9 @@
     "eslint-plugin-prettier": "^3.4.0",
     "esm": "^3.2.25",
     "lodash": "^4.17.21",
-    "mocha": "8.2.0",
+    "mocha": "^8.4.0",
     "prettier": "^2.3.2",
-    "seedrandom": "3.0.5",
+    "seedrandom": "^3.0.5",
     "sprintf-js": "^1.1.2"
   },
   "repository": {
