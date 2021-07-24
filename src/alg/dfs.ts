@@ -1,13 +1,22 @@
 import * as utils from "../utils";
 
-function doDfs(g, v, postorder, visited, navigation, acc) {
+import type Graph from "../graph";
+
+function doDfs(
+  g: Graph,
+  v: string,
+  postorder: boolean,
+  visited: Record<string, boolean>,
+  navigation: (v_: string) => string[] | void,
+  acc: string[]
+) {
   if (!utils.has(visited, v)) {
     visited[v] = true;
 
     if (!postorder) {
       acc.push(v);
     }
-    navigation(v).forEach(function (w) {
+    navigation(v)?.forEach(w => {
       doDfs(g, w, postorder, visited, navigation, acc);
     });
     if (postorder) {
@@ -24,14 +33,18 @@ function doDfs(g, v, postorder, visited, navigation, acc) {
  *
  * Order must be one of "pre" or "post".
  */
-export default function dfs(g, vs_, order) {
-  const vs = !Array.isArray(vs_) ? [vs_] : vs_;
+export default function dfs(
+  g: Graph,
+  vs_: string[] | string,
+  order: string
+): string[] {
+  const vs = Array.isArray(vs_) ? vs_ : [vs_];
 
   const navigation = (g.isDirected() ? g.successors : g.neighbors).bind(g);
 
-  const acc = [];
-  const visited = {};
-  vs.forEach(function (v) {
+  const acc: string[] = [];
+  const visited: Record<string, boolean> = {};
+  vs.forEach(v => {
     if (!g.hasNode(v)) {
       throw new Error(`Graph does not have node: ${v}`);
     }
