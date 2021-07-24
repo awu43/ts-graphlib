@@ -27,7 +27,18 @@ module.exports = {
   },
   overrides: [
     {
-      files: ["**/*.test.js"],
+      files: ["src/**/*.ts"],
+      extends: [
+        "plugin:@typescript-eslint/recommended",
+        "airbnb-base",
+        "plugin:prettier/recommended",
+      ],
+      parser: "@typescript-eslint/parser",
+      plugins: ["@typescript-eslint", "prettier"],
+      rules: {},
+    },
+    {
+      files: ["test/**/*.test.js"],
       rules: {
         "no-unused-expressions": 0,
         "global-require": 0,
