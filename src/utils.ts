@@ -1,6 +1,7 @@
-export function has(obj, key) {
+export function has(obj: Record<string, unknown>, key: string): boolean {
   try {
-    return hasOwnProperty.call(obj, key);
+    // eslint-disable-next-line no-prototype-builtins
+    return obj.hasOwnProperty(key);
   } catch (error) {
     if (error instanceof TypeError) {
       // obj is null or undefined
@@ -11,19 +12,19 @@ export function has(obj, key) {
   }
 }
 
-export function isEmpty(obj) {
+export function isEmpty(obj: unknown): boolean {
   if (Array.isArray(obj)) {
     return !obj.length;
   } else if (obj instanceof Map || obj instanceof Set) {
     return !obj.size;
   } else if (typeof obj === "object") {
-    return !Object.keys(obj).length;
+    return !Object.keys(obj as Record<string, unknown>).length;
   } else {
     throw new Error("Attempted isEmpty() on non-container object");
   }
 }
 
-export function union(...arrays) {
+export function union<T = unknown>(...arrays: T[][]): T[] {
   const values = new Set();
   const newArray = [];
   for (const arr of arrays) {
@@ -37,7 +38,15 @@ export function union(...arrays) {
   return newArray;
 }
 
-export function transform(obj, callbackfn, accumulator) {
+export function transform(
+  obj: Record<string, unknown>,
+  callbackfn: (
+    acc: Record<string, unknown>,
+    value: unknown,
+    key: string
+  ) => boolean | void,
+  accumulator: Record<string, unknown>
+): Record<string, unknown> {
   const keys = Object.keys(obj);
   for (let i = 0, j = keys.length; i < j; i++) {
     const key = keys[i];

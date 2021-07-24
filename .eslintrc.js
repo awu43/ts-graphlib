@@ -35,7 +35,24 @@ module.exports = {
       ],
       parser: "@typescript-eslint/parser",
       plugins: ["@typescript-eslint", "prettier"],
-      rules: {},
+      rules: {
+        "func-names": 0,
+        "no-underscore-dangle": 0,
+        "no-else-return": 0,
+        "consistent-return": 0,
+        "no-param-reassign": [2, { props: false }],
+        "no-plusplus": [2, { allowForLoopAfterthoughts: true }],
+        "no-restricted-syntax": [
+          2,
+          "ForInStatement",
+          "LabeledStatement",
+          "WithStatement",
+        ],
+
+        "@typescript-eslint/explicit-function-return-type": 2,
+        "no-unused-vars": 0,
+        "no-redeclare": 0,
+      },
     },
     {
       files: ["test/**/*.test.js"],
