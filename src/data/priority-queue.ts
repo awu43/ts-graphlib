@@ -1,5 +1,10 @@
 import * as utils from "../utils";
 
+interface QueueKey {
+  key: string;
+  priority: number;
+}
+
 /**
  * A min-priority queue data structure. This algorithm is derived from Cormen,
  * et al., "Introduction to Algorithms". The basic idea of a min-priority
@@ -8,6 +13,9 @@ import * as utils from "../utils";
  * have its priority decreased in O(log n) time.
  */
 export default class PriorityQueue {
+  private _arr: QueueKey[];
+  private _keyIndices: Record<string, number>;
+
   constructor() {
     this._arr = [];
     this._keyIndices = {};
@@ -16,23 +24,21 @@ export default class PriorityQueue {
   /**
    * Returns the number of elements in the queue. Takes `O(1)` time.
    */
-  size() {
+  size(): number {
     return this._arr.length;
   }
 
   /**
    * Returns the keys that are in the queue. Takes `O(n)` time.
    */
-  keys() {
-    return this._arr.map(function (x) {
-      return x.key;
-    });
+  keys(): string[] {
+    return this._arr.map(x => x.key);
   }
 
   /**
    * Returns `true` if **key** is in the queue and `false` if not.
    */
-  has(key) {
+  has(key: string): boolean {
     return utils.has(this._keyIndices, key);
   }
 
@@ -42,7 +48,7 @@ export default class PriorityQueue {
    *
    * @param {Object} key
    */
-  priority(key) {
+  priority(key: string): number | void {
     const index = this._keyIndices[key];
     if (index !== undefined) {
       return this._arr[index].priority;
@@ -53,8 +59,8 @@ export default class PriorityQueue {
    * Returns the key for the minimum element in this queue. If the queue is
    * empty this function throws an Error. Takes `O(1)` time.
    */
-  min() {
-    if (this.size() === 0) {
+  min(): string {
+    if (!this.size()) {
       throw new Error("Queue underflow");
     }
     return this._arr[0].key;
@@ -68,7 +74,7 @@ export default class PriorityQueue {
    * @param {Object} key the key to add
    * @param {Number} priority the initial priority for the key
    */
-  add(key_, priority) {
+  add(key_: unknown, priority: number): boolean {
     const keyIndices = this._keyIndices;
     const key = String(key_);
     if (!utils.has(keyIndices, key)) {
@@ -85,9 +91,12 @@ export default class PriorityQueue {
   /**
    * Removes and returns the smallest key in the queue. Takes `O(log n)` time.
    */
-  removeMin() {
+  removeMin(): string {
+    if (!this._arr.length) {
+      throw new Error("Cannot removeMin() on empty queue");
+    }
     this._swap(0, this._arr.length - 1);
-    const min = this._arr.pop();
+    const min = this._arr.pop() as QueueKey;
     delete this._keyIndices[min.key];
     this._heapify(0);
     return min.key;
@@ -100,18 +109,18 @@ export default class PriorityQueue {
    * @param {Object} key the key for which to raise priority
    * @param {Number} priority the new priority for the key
    */
-  decrease(key, priority) {
+  decrease(key: string, priority: number): void {
     const index = this._keyIndices[key];
     if (priority > this._arr[index].priority) {
       throw new Error(
-        `New priority is greater than current priority. Key: ${key} Old: ${this._arr[index].priority} New: ${priority}`
+        `New priority is greater than current priority. QueueKey: ${key} Old: ${this._arr[index].priority} New: ${priority}`
       );
     }
     this._arr[index].priority = priority;
     this._decrease(index);
   }
 
-  _heapify(i) {
+  private _heapify(i: number): void {
     const arr = this._arr;
     const l = 2 * i;
     const r = l + 1;
@@ -128,7 +137,7 @@ export default class PriorityQueue {
     }
   }
 
-  _decrease(index_) {
+  private _decrease(index_: number): void {
     let index = index_;
     const arr = this._arr;
     const { priority } = arr[index];
@@ -144,7 +153,7 @@ export default class PriorityQueue {
     }
   }
 
-  _swap(i, j) {
+  private _swap(i: number, j: number) {
     const arr = this._arr;
     const keyIndices = this._keyIndices;
     [arr[i], arr[j]] = [arr[j], arr[i]];
