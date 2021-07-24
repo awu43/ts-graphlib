@@ -6,13 +6,13 @@ import type { Edge } from "../graph";
 
 const DEFAULT_WEIGHT_FUNC = () => 1;
 
-type WeightFn = (e: Edge) => number;
-type EdgeFn = (v: string) => Edge[];
+export type WeightFn = (e: Edge) => number;
+export type EdgeFn = (v: string) => Edge[];
 interface Path {
   distance: number;
   predecessor: string;
 }
-interface PathMap {
+export interface PathMap {
   [node: string]: Path;
 }
 

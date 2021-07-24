@@ -37,23 +37,3 @@ export function union<T = unknown>(...arrays: (T[] | unknown)[]): T[] {
   }
   return newArray;
 }
-
-export function transform(
-  obj: Record<string, unknown>,
-  callbackfn: (
-    acc: Record<string, unknown>,
-    value: unknown,
-    key: string
-  ) => boolean | void,
-  accumulator: Record<string, unknown>
-): Record<string, unknown> {
-  const keys = Object.keys(obj);
-  for (let i = 0, j = keys.length; i < j; i++) {
-    const key = keys[i];
-    const end = callbackfn(accumulator, obj[key], key);
-    if (end === false) {
-      break;
-    }
-  }
-  return accumulator;
-}
