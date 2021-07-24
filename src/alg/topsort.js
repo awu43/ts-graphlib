@@ -1,8 +1,6 @@
 import * as utils from "../utils";
 
-function CycleException() {}
-CycleException.prototype = new Error();
-// must be an instance of Error to pass testing
+class CycleException extends Error {}
 
 export default function topsort(g) {
   const visited = {};
