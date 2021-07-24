@@ -96,7 +96,7 @@ export default class Graph {
   private _parent!: Record<string, string>;
   private _children!: Record<string, Record<string, boolean>>;
 
-  constructor(opts: GraphOptions) {
+  constructor(opts?: GraphOptions) {
     this._isDirected = opts?.directed ?? true;
     this._isMultigraph = opts?.multigraph ?? false;
     this._isCompound = opts?.compound ?? false;
