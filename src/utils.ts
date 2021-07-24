@@ -24,11 +24,11 @@ export function isEmpty(obj: unknown): boolean {
   }
 }
 
-export function union<T = unknown>(...arrays: T[][]): T[] {
+export function union<T = unknown>(...arrays: (T[] | unknown)[]): T[] {
   const values = new Set();
   const newArray = [];
-  for (const arr of arrays) {
-    for (const e of arr) {
+  for (const arr of arrays.filter(a => Array.isArray(a))) {
+    for (const e of arr as T[]) {
       if (!values.has(e)) {
         newArray.push(e);
         values.add(e);

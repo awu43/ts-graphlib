@@ -49,9 +49,16 @@ module.exports = {
           "WithStatement",
         ],
 
-        "@typescript-eslint/explicit-function-return-type": 2,
         "no-unused-vars": 0,
         "no-redeclare": 0,
+        "import/no-unresolved": 0,
+        "import/extensions": 0,
+        "lines-between-class-members": [
+          2,
+          "always",
+          { exceptAfterSingleLine: true },
+        ],
+        "no-dupe-class-members": 0,
       },
     },
     {
