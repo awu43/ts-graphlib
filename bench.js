@@ -5,7 +5,7 @@
 import Benchmark from "benchmark";
 import seedrandom from "seedrandom";
 import { sprintf } from "sprintf-js";
-import Graph, { alg } from "./src";
+import Graph, { alg } from "./dist";
 
 const seed = process.env.SEED;
 seedrandom(seed, { global: true });
