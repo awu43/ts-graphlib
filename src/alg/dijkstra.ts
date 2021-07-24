@@ -10,7 +10,7 @@ export type WeightFn = (e: Edge) => number;
 export type EdgeFn = (v: string) => Edge[];
 interface Path {
   distance: number;
-  predecessor: string;
+  predecessor?: string;
 }
 export interface PathMap {
   [node: string]: Path;
@@ -48,7 +48,7 @@ function runDijkstra(
 
   g.nodes().forEach(v_ => {
     const distance = v_ === source ? 0 : Number.POSITIVE_INFINITY;
-    results[v_] = { distance } as Path;
+    results[v_] = { distance };
     pq.add(v_, distance);
   });
 

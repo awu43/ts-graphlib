@@ -3,7 +3,7 @@ import type Graph from "../graph";
 import dijkstra from "./dijkstra";
 import type { WeightFn, EdgeFn, PathMap } from "./dijkstra";
 
-interface AllPathsMap {
+export interface AllPathsMap {
   [source: string]: PathMap;
 }
 

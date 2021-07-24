@@ -1,7 +1,18 @@
+/* eslint-disable import/no-duplicates */
+import type Graph from "../graph";
+import type { Edge } from "../graph";
+
+import type { WeightFn, EdgeFn } from "./dijkstra";
+import type { AllPathsMap } from "./dijkstra-all";
+
 const DEFAULT_WEIGHT_FUNC = () => 1;
 
-function runFloydWarshall(g, weightFn, edgeFn) {
-  const results = {};
+function runFloydWarshall(
+  g: Graph,
+  weightFn: WeightFn,
+  edgeFn: EdgeFn
+): AllPathsMap {
+  const results: AllPathsMap = {};
   const nodes = g.nodes();
 
   nodes.forEach(function (v) {
@@ -39,13 +50,14 @@ function runFloydWarshall(g, weightFn, edgeFn) {
   return results;
 }
 
-export default function floydWarshall(g, weightFn, edgeFn) {
+export default function floydWarshall(
+  g: Graph,
+  weightFn: WeightFn,
+  edgeFn: EdgeFn
+): AllPathsMap {
   return runFloydWarshall(
     g,
     weightFn || DEFAULT_WEIGHT_FUNC,
-    edgeFn ||
-      function (v) {
-        return g.outEdges(v);
-      }
+    edgeFn || ((v: string) => g.outEdges(v) as Edge[])
   );
 }
