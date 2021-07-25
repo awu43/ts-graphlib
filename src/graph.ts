@@ -126,7 +126,7 @@ export default class Graph {
   private _in = new DefinedMap<unknown, Record<string, Edge>>();
 
   // u -> v -> Number
-  private _preds: Record<string, Record<string, number>> = {};
+  private _preds = new DefinedMap<unknown, Record<string, number>>();
 
   // v -> edgeObj
   private _out: Record<string, Record<string, Edge>> = {};
@@ -286,7 +286,7 @@ export default class Graph {
       this._children.definedGet(GRAPH_NODE).add(v);
     }
     this._in.set(v, {});
-    this._preds[v as string] = {};
+    this._preds.set(v, {});
     this._out[v as string] = {};
     this._sucs[v as string] = {};
     this._nodeCount += 1;
@@ -357,7 +357,7 @@ export default class Graph {
       }
       Object.keys(this._in.definedGet(v)).forEach(removeEdge);
       this._in.delete(v);
-      delete this._preds[v as string];
+      this._preds.delete(v);
       Object.keys(this._out[v as string]).forEach(removeEdge);
       delete this._out[v as string];
       delete this._sucs[v as string];
@@ -457,7 +457,7 @@ export default class Graph {
    * @returns node identifiers list or undefined if v is not in the graph.
    */
   predecessors(v: unknown): string[] | void {
-    const predsV = this._preds[v as string];
+    const predsV = this._preds.get(v);
     if (predsV) {
       return Object.keys(predsV);
     }
@@ -685,7 +685,7 @@ export default class Graph {
 
     Object.freeze(edgeObj);
     this._edgeObjs[e] = edgeObj;
-    incrementOrInitEntry(this._preds[w as string], v as string);
+    incrementOrInitEntry(this._preds.definedGet(w), v as string);
     incrementOrInitEntry(this._sucs[v as string], w as string);
     this._in.definedGet(w)[e] = edgeObj;
     this._out[v as string][e] = edgeObj;
@@ -797,7 +797,7 @@ export default class Graph {
       const { v: v_, w: w_ } = edge;
       delete this._edgeLabels[e];
       delete this._edgeObjs[e];
-      decrementOrRemoveEntry(this._preds[w_ as string], v_ as string);
+      decrementOrRemoveEntry(this._preds.definedGet(w_), v_ as string);
       decrementOrRemoveEntry(this._sucs[v_ as string], w_ as string);
       delete this._in.definedGet(w_)[e];
       delete this._out[v_ as string][e];
