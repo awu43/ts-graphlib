@@ -139,7 +139,7 @@ export default class Graph {
   private _edgeObjs = new DefinedMap<string, Edge>();
 
   // e -> label
-  private _edgeLabels: Record<string, unknown> = {};
+  private _edgeLabels = new DefinedMap<string, unknown>();
 
   /* Number of nodes in the graph. Should only be changed by the implementation. */
   private _nodeCount = 0;
@@ -664,9 +664,9 @@ export default class Graph {
     }
 
     const e = edgeArgsToId(this._isDirected, v, w, name);
-    if (e in this._edgeLabels) {
+    if (this._edgeLabels.has(e)) {
       if (valueSpecified) {
-        this._edgeLabels[e] = value;
+        this._edgeLabels.set(e, value);
       }
       return this;
     }
@@ -680,9 +680,10 @@ export default class Graph {
     this.setNode(v);
     this.setNode(w);
 
-    this._edgeLabels[e] = valueSpecified
-      ? value
-      : this._defaultEdgeLabelFn(v, w, name);
+    this._edgeLabels.set(
+      e,
+      valueSpecified ? value : this._defaultEdgeLabelFn(v, w, name)
+    );
 
     const edgeObj = edgeArgsToObj(this._isDirected, v, w, name);
     // Ensure we add undirected edges in a consistent way.
@@ -743,7 +744,7 @@ export default class Graph {
       arguments.length === 1
         ? edgeObjToId(this._isDirected, edgeOrV as Edge)
         : edgeArgsToId(this._isDirected, edgeOrV, w, name);
-    return this._edgeLabels[e];
+    return this._edgeLabels.get(e);
   }
 
   /**
@@ -769,7 +770,7 @@ export default class Graph {
       arguments.length === 1
         ? edgeObjToId(this._isDirected, edgeOrV as Edge)
         : edgeArgsToId(this._isDirected, edgeOrV, w, name);
-    return e in this._edgeLabels;
+    return this._edgeLabels.has(e);
   }
 
   /**
@@ -800,7 +801,7 @@ export default class Graph {
     const edge = this._edgeObjs.get(e);
     if (edge) {
       const { v: v_, w: w_ } = edge;
-      delete this._edgeLabels[e];
+      this._edgeLabels.delete(e);
       this._edgeObjs.delete(e);
       decrementOrRemoveEntry(this._preds.definedGet(w_), v_);
       decrementOrRemoveEntry(this._sucs.definedGet(v_), w_);
