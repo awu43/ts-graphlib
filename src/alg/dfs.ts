@@ -4,12 +4,12 @@ function doDfs(
   g: Graph,
   v: string,
   postorder: boolean,
-  visited: Record<string, boolean>,
+  visited: Set<string>,
   navigation: (v_: string) => string[] | void,
   acc: string[]
 ) {
-  if (!(v in visited)) {
-    visited[v] = true;
+  if (!visited.has(v)) {
+    visited.add(v);
 
     if (!postorder) {
       acc.push(v);
@@ -41,7 +41,7 @@ export default function dfs(
   const navigation = (g.isDirected() ? g.successors : g.neighbors).bind(g);
 
   const acc: string[] = [];
-  const visited: Record<string, boolean> = {};
+  const visited = new Set<string>();
   vs.forEach(v => {
     if (!g.hasNode(v)) {
       throw new Error(`Graph does not have node: ${v}`);

@@ -9,17 +9,17 @@ import type Graph from "../graph";
  * @returns array of nodes list representing components
  */
 export default function components(g: Graph): string[][] {
-  const visited: Record<string, boolean> = {};
+  const visited = new Set<string>();
   const cmpts: string[][] = [];
 
   g.nodes().forEach(v => {
     const cmpt: string[] = [];
 
     function dfs(v_: string) {
-      if (v_ in visited) {
+      if (visited.has(v_)) {
         return;
       }
-      visited[v_] = true;
+      visited.add(v_);
       cmpt.push(v_);
       g.successors(v_)?.forEach(dfs);
       g.predecessors(v_)?.forEach(dfs);

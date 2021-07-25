@@ -11,27 +11,27 @@ export class CycleException extends Error {}
  * @returns an array of nodes such that for each edge u -> v, u appears before v in the array.
  */
 export default function topsort(g: Graph): string[] {
-  const visited: Record<string, boolean> = {};
-  const stack: Record<string, boolean> = {};
+  const visited = new Set<string>();
+  const stack = new Set<string>();
   const results: string[] = [];
 
   function visit(node: string) {
-    if (node in stack) {
+    if (stack.has(node)) {
       throw new CycleException();
     }
 
-    if (!(node in visited)) {
-      stack[node] = true;
-      visited[node] = true;
+    if (!visited.has(node)) {
+      stack.add(node);
+      visited.add(node);
       g.predecessors(node)?.forEach(visit);
-      delete stack[node];
+      stack.delete(node);
       results.push(node);
     }
   }
 
   g.sinks().forEach(visit);
 
-  if (Object.keys(visited).length !== g.nodeCount()) {
+  if (visited.size !== g.nodeCount()) {
     throw new CycleException();
   }
 

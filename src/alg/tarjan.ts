@@ -1,11 +1,10 @@
 import type Graph from "../graph";
+import DefinedMap from "../defined-map";
 
-type Visited = {
-  [node: string]: {
-    onStack: boolean;
-    lowlink: number;
-    index: number;
-  };
+type Node = {
+  onStack: boolean;
+  lowlink: number;
+  index: number;
 };
 
 /**
@@ -24,25 +23,25 @@ type Visited = {
 export default function tarjan(g: Graph): string[][] {
   let index = 0;
   const stack: string[] = [];
-  const visited: Visited = {}; // node id -> { onStack, lowlink, index }
+  const visited = new DefinedMap<string, Node>();
   const results: string[][] = [];
 
   function dfs(v: string) {
-    visited[v] = {
+    const entry = {
       onStack: true,
       lowlink: index,
       index,
     };
-    const entry = visited[v];
+    visited.set(v, entry);
     index += 1;
     stack.push(v);
 
     g.successors(v)?.forEach(w => {
-      if (!(w in visited)) {
+      if (!visited.has(w)) {
         dfs(w);
-        entry.lowlink = Math.min(entry.lowlink, visited[w].lowlink);
-      } else if (visited[w].onStack) {
-        entry.lowlink = Math.min(entry.lowlink, visited[w].index);
+        entry.lowlink = Math.min(entry.lowlink, visited.definedGet(w).lowlink);
+      } else if (visited.definedGet(w).onStack) {
+        entry.lowlink = Math.min(entry.lowlink, visited.definedGet(w).index);
       }
     });
 
@@ -51,7 +50,7 @@ export default function tarjan(g: Graph): string[][] {
       let w;
       do {
         w = stack.pop() as string;
-        visited[w].onStack = false;
+        visited.definedGet(w).onStack = false;
         cmpt.push(w);
       } while (v !== w);
       results.push(cmpt);
@@ -59,7 +58,7 @@ export default function tarjan(g: Graph): string[][] {
   }
 
   g.nodes().forEach(v => {
-    if (!(v in visited)) {
+    if (!visited.has(v)) {
       dfs(v);
     }
   });

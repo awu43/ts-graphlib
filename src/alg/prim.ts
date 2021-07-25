@@ -1,5 +1,6 @@
 import Graph from "../graph";
 import type { Edge } from "../graph";
+import DefinedMap from "../defined-map";
 import PriorityQueue from "../data/priority-queue";
 
 import type { WeightFn } from "./dijkstra";
@@ -17,7 +18,7 @@ import type { WeightFn } from "./dijkstra";
  */
 export default function prim(g: Graph, weightFunc: WeightFn): Graph {
   const result = new Graph();
-  const parents: Record<string, string> = {};
+  const parents = new DefinedMap<string, string>();
   const pq = new PriorityQueue();
   let v: string;
 
@@ -27,7 +28,7 @@ export default function prim(g: Graph, weightFunc: WeightFn): Graph {
     if (pri !== undefined) {
       const edgeWeight = weightFunc(edge);
       if (edgeWeight < pri) {
-        parents[w] = v;
+        parents.set(w, v);
         pq.decrease(w, edgeWeight);
       }
     }
@@ -48,8 +49,8 @@ export default function prim(g: Graph, weightFunc: WeightFn): Graph {
   let init = false;
   while (pq.size() > 0) {
     v = pq.removeMin();
-    if (v in parents) {
-      result.setEdge(v, parents[v]);
+    if (parents.has(v)) {
+      result.setEdge(v, parents.definedGet(v));
     } else if (init) {
       throw new Error(`Input graph is not connected: ${g}`);
     } else {
