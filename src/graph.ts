@@ -136,7 +136,7 @@ export default class Graph {
   private _sucs = new DefinedMap<unknown, Map<unknown, number>>();
 
   // e -> edgeObj
-  private _edgeObjs: Record<string, Edge> = {};
+  private _edgeObjs = new DefinedMap<string, Edge>();
 
   // e -> label
   private _edgeLabels: Record<string, unknown> = {};
@@ -345,7 +345,7 @@ export default class Graph {
   removeNode(v: unknown): Graph {
     if (this._nodes.has(v)) {
       const removeEdge = (e: string) => {
-        this.removeEdge(this._edgeObjs[e]);
+        this.removeEdge(this._edgeObjs.definedGet(e));
       };
       this._nodes.delete(v);
       if (this._isCompound) {
@@ -539,11 +539,11 @@ export default class Graph {
       }
     }
 
-    Object.values(this._edgeObjs).forEach(e => {
+    for (const e of this._edgeObjs.values()) {
       if (copy.hasNode(e.v) && copy.hasNode(e.w)) {
         copy.setEdge(e, this.edge(e));
       }
-    });
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
@@ -605,7 +605,7 @@ export default class Graph {
    * @return graph edges list.
    */
   edges(): Edge[] {
-    return Object.values(this._edgeObjs);
+    return [...this._edgeObjs.values()];
   }
 
   /**
@@ -689,7 +689,7 @@ export default class Graph {
     ({ v, w } = edgeObj);
 
     Object.freeze(edgeObj);
-    this._edgeObjs[e] = edgeObj;
+    this._edgeObjs.set(e, edgeObj);
     incrementOrInitEntry(this._preds.definedGet(w), v);
     incrementOrInitEntry(this._sucs.definedGet(v), w);
     this._in.definedGet(w).set(e, edgeObj);
@@ -797,11 +797,11 @@ export default class Graph {
       arguments.length === 1
         ? edgeObjToId(this._isDirected, edgeOrV as Edge)
         : edgeArgsToId(this._isDirected, edgeOrV, w, name);
-    const edge = this._edgeObjs[e];
+    const edge = this._edgeObjs.get(e);
     if (edge) {
       const { v: v_, w: w_ } = edge;
       delete this._edgeLabels[e];
-      delete this._edgeObjs[e];
+      this._edgeObjs.delete(e);
       decrementOrRemoveEntry(this._preds.definedGet(w_), v_);
       decrementOrRemoveEntry(this._sucs.definedGet(v_), w_);
       this._in.definedGet(w_).delete(e);
