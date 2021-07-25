@@ -23,17 +23,3 @@ export function isEmpty(obj: unknown): boolean {
     throw new Error("Attempted isEmpty() on non-container object");
   }
 }
-
-export function union<T = unknown>(...arrays: (T[] | unknown)[]): T[] {
-  const values = new Set();
-  const newArray = [];
-  for (const arr of arrays.filter(a => Array.isArray(a))) {
-    for (const e of arr as T[]) {
-      if (!values.has(e)) {
-        newArray.push(e);
-        values.add(e);
-      }
-    }
-  }
-  return newArray;
-}

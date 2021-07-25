@@ -488,9 +488,16 @@ export default class Graph {
    * @returns node identifiers list or undefined if v is not in the graph.
    */
   neighbors(v: string): string[] | void {
-    const preds = this.predecessors(v);
-    if (preds) {
-      return utils.union(preds, this.successors(v));
+    const neighbors = this.predecessors(v);
+    if (neighbors) {
+      const uniqueNeighbors = new Set(neighbors);
+      for (const s of this.successors(v) ?? []) {
+        if (!uniqueNeighbors.has(s)) {
+          neighbors.push(s);
+          uniqueNeighbors.add(s);
+        }
+      }
+      return neighbors;
     }
   }
 
