@@ -1,3 +1,5 @@
+import DefinedMap from "../defined-map";
+
 interface QueueKey {
   key: string;
   priority: number;
@@ -12,11 +14,11 @@ interface QueueKey {
  */
 export default class PriorityQueue {
   private _arr: QueueKey[];
-  private _keyIndices: Record<string, number>;
+  private _keyIndices: DefinedMap<string, number>;
 
   constructor() {
     this._arr = [];
-    this._keyIndices = {};
+    this._keyIndices = new DefinedMap<string, number>();
   }
 
   /**
@@ -37,7 +39,7 @@ export default class PriorityQueue {
    * Returns `true` if **key** is in the queue and `false` if not.
    */
   has(key: string): boolean {
-    return key in this._keyIndices;
+    return this._keyIndices.has(key);
   }
 
   /**
@@ -47,7 +49,7 @@ export default class PriorityQueue {
    * @param {Object} key
    */
   priority(key: string): number | void {
-    const index = this._keyIndices[key];
+    const index = this._keyIndices.get(key);
     if (index !== undefined) {
       return this._arr[index].priority;
     }
@@ -73,13 +75,11 @@ export default class PriorityQueue {
    * @param {Number} priority the initial priority for the key
    */
   add(key_: unknown, priority: number): boolean {
-    const keyIndices = this._keyIndices;
     const key = String(key_);
-    if (!(key in keyIndices)) {
-      const arr = this._arr;
-      const index = arr.length;
-      keyIndices[key] = index;
-      arr.push({ key, priority });
+    if (!this._keyIndices.has(key)) {
+      const index = this._arr.length;
+      this._keyIndices.set(key, index);
+      this._arr.push({ key, priority });
       this._decrease(index);
       return true;
     }
@@ -95,7 +95,7 @@ export default class PriorityQueue {
     }
     this._swap(0, this._arr.length - 1);
     const min = this._arr.pop() as QueueKey;
-    delete this._keyIndices[min.key];
+    this._keyIndices.delete(min.key);
     this._heapify(0);
     return min.key;
   }
@@ -108,7 +108,7 @@ export default class PriorityQueue {
    * @param {Number} priority the new priority for the key
    */
   decrease(key: string, priority: number): void {
-    const index = this._keyIndices[key];
+    const index = this._keyIndices.definedGet(key);
     if (priority > this._arr[index].priority) {
       throw new Error(
         `New priority is greater than current priority. QueueKey: ${key} Old: ${this._arr[index].priority} New: ${priority}`
@@ -137,13 +137,12 @@ export default class PriorityQueue {
 
   private _decrease(index_: number): void {
     let index = index_;
-    const arr = this._arr;
-    const { priority } = arr[index];
+    const { priority } = this._arr[index];
     let parent;
     while (index !== 0) {
       // eslint-disable-next-line no-bitwise
       parent = index >> 1;
-      if (arr[parent].priority < priority) {
+      if (this._arr[parent].priority < priority) {
         break;
       }
       this._swap(index, parent);
@@ -153,9 +152,8 @@ export default class PriorityQueue {
 
   private _swap(i: number, j: number) {
     const arr = this._arr;
-    const keyIndices = this._keyIndices;
     [arr[i], arr[j]] = [arr[j], arr[i]];
-    keyIndices[arr[i].key] = i;
-    keyIndices[arr[j].key] = j;
+    this._keyIndices.set(arr[i].key, i);
+    this._keyIndices.set(arr[j].key, j);
   }
 }
