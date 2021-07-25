@@ -3,9 +3,7 @@ import type Graph from "../graph";
 import dijkstra from "./dijkstra";
 import type { WeightFn, EdgeFn, PathMap } from "./dijkstra";
 
-export interface AllPathsMap {
-  [source: string]: PathMap;
-}
+export type AllPathsMap = Record<string, PathMap>;
 
 /**
  * This function finds the shortest path from each node to every other reachable node in
@@ -30,7 +28,7 @@ export default function dijkstraAll(
   const nodes = g.nodes();
   for (let i = 0; i < nodes.length; i++) {
     const v = nodes[i];
-    acc[v] = dijkstra(g, v, weightFunc, edgeFunc);
+    acc[v as string] = dijkstra(g, v, weightFunc, edgeFunc);
   }
 
   return acc;

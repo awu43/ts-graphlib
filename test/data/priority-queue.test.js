@@ -31,7 +31,7 @@ describe("data.PriorityQueue", () => {
       pq.add(undefined, 4);
       pq.add(null, 5);
       expect(_.sortBy(pq.keys())).to.eql(
-        _.sortBy(["a", "1", "false", "undefined", "null"])
+        _.sortBy(["a", 1, false, undefined, null])
       );
     });
   });

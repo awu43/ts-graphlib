@@ -20,13 +20,13 @@ type Node = {
  * @return  an array of components. Each component is itself an array that contains
  *          the ids of all nodes in the component.
  */
-export default function tarjan(g: Graph): string[][] {
+export default function tarjan(g: Graph): unknown[][] {
   let index = 0;
-  const stack: string[] = [];
-  const visited = new DefinedMap<string, Node>();
-  const results: string[][] = [];
+  const stack: unknown[] = [];
+  const visited = new DefinedMap<unknown, Node>();
+  const results: unknown[][] = [];
 
-  function dfs(v: string) {
+  function dfs(v: unknown) {
     const entry = {
       onStack: true,
       lowlink: index,

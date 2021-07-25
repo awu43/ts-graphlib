@@ -10,12 +10,12 @@ export class CycleException extends Error {}
  * @argument graph - graph to apply topological sorting to.
  * @returns an array of nodes such that for each edge u -> v, u appears before v in the array.
  */
-export default function topsort(g: Graph): string[] {
-  const visited = new Set<string>();
-  const stack = new Set<string>();
-  const results: string[] = [];
+export default function topsort(g: Graph): unknown[] {
+  const visited = new Set<unknown>();
+  const stack = new Set<unknown>();
+  const results: unknown[] = [];
 
-  function visit(node: string) {
+  function visit(node: unknown) {
     if (stack.has(node)) {
       throw new CycleException();
     }

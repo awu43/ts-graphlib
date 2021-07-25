@@ -18,9 +18,9 @@ import type { WeightFn } from "./dijkstra";
  */
 export default function prim(g: Graph, weightFunc: WeightFn): Graph {
   const result = new Graph();
-  const parents = new DefinedMap<string, string>();
+  const parents = new DefinedMap<unknown, unknown>();
   const pq = new PriorityQueue();
-  let v: string;
+  let v: unknown;
 
   function updateNeighbors(edge: Edge) {
     const w = edge.v === v ? edge.w : edge.v;

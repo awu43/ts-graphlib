@@ -11,6 +11,6 @@ import dfs from "./dfs";
  * @argument vs - nodes list to traverse.
  * @returns the nodes in the order they were visited as a list of their names.
  */
-export default function preorder(g: Graph, vs: string | string[]): string[] {
+export default function preorder(g: Graph, vs: unknown | unknown[]): unknown[] {
   return dfs(g, vs, "pre");
 }

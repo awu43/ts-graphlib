@@ -1,7 +1,7 @@
 import DefinedMap from "../defined-map";
 
 interface QueueKey {
-  key: string;
+  key: unknown;
   priority: number;
 }
 
@@ -14,11 +14,11 @@ interface QueueKey {
  */
 export default class PriorityQueue {
   private _arr: QueueKey[];
-  private _keyIndices: DefinedMap<string, number>;
+  private _keyIndices: DefinedMap<unknown, number>;
 
   constructor() {
     this._arr = [];
-    this._keyIndices = new DefinedMap<string, number>();
+    this._keyIndices = new DefinedMap<unknown, number>();
   }
 
   /**
@@ -31,14 +31,14 @@ export default class PriorityQueue {
   /**
    * Returns the keys that are in the queue. Takes `O(n)` time.
    */
-  keys(): string[] {
+  keys(): unknown[] {
     return this._arr.map(x => x.key);
   }
 
   /**
    * Returns `true` if **key** is in the queue and `false` if not.
    */
-  has(key: string): boolean {
+  has(key: unknown): boolean {
     return this._keyIndices.has(key);
   }
 
@@ -48,7 +48,7 @@ export default class PriorityQueue {
    *
    * @param {Object} key
    */
-  priority(key: string): number | void {
+  priority(key: unknown): number | void {
     const index = this._keyIndices.get(key);
     if (index !== undefined) {
       return this._arr[index].priority;
@@ -59,7 +59,7 @@ export default class PriorityQueue {
    * Returns the key for the minimum element in this queue. If the queue is
    * empty this function throws an Error. Takes `O(1)` time.
    */
-  min(): string {
+  min(): unknown {
     if (!this.size()) {
       throw new Error("Queue underflow");
     }
@@ -74,8 +74,7 @@ export default class PriorityQueue {
    * @param {Object} key the key to add
    * @param {Number} priority the initial priority for the key
    */
-  add(key_: unknown, priority: number): boolean {
-    const key = String(key_);
+  add(key: unknown, priority: number): boolean {
     if (!this._keyIndices.has(key)) {
       const index = this._arr.length;
       this._keyIndices.set(key, index);
@@ -89,7 +88,7 @@ export default class PriorityQueue {
   /**
    * Removes and returns the smallest key in the queue. Takes `O(log n)` time.
    */
-  removeMin(): string {
+  removeMin(): unknown {
     this._swap(0, this._arr.length - 1);
     const min = this._arr.pop() as QueueKey;
     this._keyIndices.delete(min.key);
@@ -104,7 +103,7 @@ export default class PriorityQueue {
    * @param {Object} key the key for which to raise priority
    * @param {Number} priority the new priority for the key
    */
-  decrease(key: string, priority: number): void {
+  decrease(key: unknown, priority: number): void {
     const index = this._keyIndices.definedGet(key);
     if (priority > this._arr[index].priority) {
       throw new Error(

@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "lint": "eslint \"{src,test}/**/*.{js,ts}\"",
-    "tslint": "tsc --noEmit",
+    "tscheck": "tsc --noEmit",
     "test": "ts-mocha -r esm \"test/**/*.test.js\"",
     "build": "tsc",
     "bench": "tsc && node -r esm bench.js"

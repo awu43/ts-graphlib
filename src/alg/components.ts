@@ -8,14 +8,14 @@ import type Graph from "../graph";
  * @argument graph - graph to find components in.
  * @returns array of nodes list representing components
  */
-export default function components(g: Graph): string[][] {
-  const visited = new Set<string>();
-  const cmpts: string[][] = [];
+export default function components(g: Graph): unknown[][] {
+  const visited = new Set<unknown>();
+  const cmpts: unknown[][] = [];
 
   g.nodes().forEach(v => {
-    const cmpt: string[] = [];
+    const cmpt: unknown[] = [];
 
-    function dfs(v_: string) {
+    function dfs(v_: unknown) {
       if (visited.has(v_)) {
         return;
       }

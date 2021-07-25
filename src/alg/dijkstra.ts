@@ -7,29 +7,27 @@ import type { Edge } from "../graph";
 const DEFAULT_WEIGHT_FUNC = () => 1;
 
 export type WeightFn = (e: Edge) => number;
-export type EdgeFn = (v: string) => Edge[];
+export type EdgeFn = (v: unknown) => Edge[];
 interface Path {
   distance: number;
-  predecessor?: string;
+  predecessor?: unknown;
 }
-export interface PathMap {
-  [node: string]: Path;
-}
+export type PathMap = Record<string, Path>;
 
 function runDijkstra(
   g: Graph,
-  source: string,
+  source: unknown,
   weightFn: WeightFn,
   edgeFn: EdgeFn
 ) {
   const results: Record<string, Path> = {};
   const pq = new PriorityQueue();
-  let v: string;
+  let v: unknown;
   let vEntry: Path;
 
   function updateNeighbors(edge: Edge) {
     const w = edge.v !== v ? edge.v : edge.w;
-    const wEntry = results[w];
+    const wEntry = results[w as string];
     const weight = weightFn(edge);
     const distance = vEntry.distance + weight;
 
@@ -48,13 +46,13 @@ function runDijkstra(
 
   g.nodes().forEach(v_ => {
     const distance = v_ === source ? 0 : Number.POSITIVE_INFINITY;
-    results[v_] = { distance };
+    results[v_ as string] = { distance };
     pq.add(v_, distance);
   });
 
   while (pq.size() > 0) {
     v = pq.removeMin();
-    vEntry = results[v];
+    vEntry = results[v as string];
     if (vEntry.distance === Number.POSITIVE_INFINITY) {
       break;
     }
@@ -85,14 +83,14 @@ function runDijkstra(
  */
 export default function dijkstra(
   g: Graph,
-  source: string,
+  source: unknown,
   weightFn?: WeightFn,
   edgeFn?: EdgeFn
 ): PathMap {
   return runDijkstra(
     g,
-    String(source),
+    source,
     weightFn || DEFAULT_WEIGHT_FUNC,
-    edgeFn || ((v: string) => g.outEdges(v) as Edge[])
+    edgeFn || ((v: unknown) => g.outEdges(v) as Edge[])
   );
 }

@@ -2,11 +2,11 @@ import type Graph from "../graph";
 
 function doDfs(
   g: Graph,
-  v: string,
+  v: unknown,
   postorder: boolean,
-  visited: Set<string>,
-  navigation: (v_: string) => string[] | void,
-  acc: string[]
+  visited: Set<unknown>,
+  navigation: (v_: unknown) => unknown[] | void,
+  acc: unknown[]
 ) {
   if (!visited.has(v)) {
     visited.add(v);
@@ -33,9 +33,9 @@ function doDfs(
  */
 export default function dfs(
   g: Graph,
-  vs_: string[] | string,
+  vs_: unknown[] | unknown,
   order: string
-): string[] {
+): unknown[] {
   const vs = Array.isArray(vs_) ? vs_ : [vs_];
 
   const navigation = (g.isDirected() ? g.successors : g.neighbors).bind(g);

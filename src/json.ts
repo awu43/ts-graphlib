@@ -4,9 +4,9 @@ import type { Edge } from "./graph";
 // Types and function docs from https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/graphlib/index.d.ts
 
 interface Node {
-  v: string;
+  v: unknown;
   value?: unknown;
-  parent?: string;
+  parent?: unknown;
 }
 
 interface GraphJSON {
