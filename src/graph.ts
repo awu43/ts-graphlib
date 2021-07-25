@@ -1,5 +1,3 @@
-import * as utils from "./utils";
-
 const DEFAULT_EDGE_NAME = "\x00";
 const GRAPH_NODE = "\x00";
 const EDGE_KEY_DELIM = "\x01";
@@ -270,7 +268,7 @@ export default class Graph {
    * @returns the graph, allowing this to be chained with other functions.
    */
   setNode(v: string, value?: unknown): Graph {
-    if (utils.has(this._nodes, v)) {
+    if (v in this._nodes) {
       if (arguments.length > 1) {
         this._nodes[v] = value;
       }
@@ -327,7 +325,7 @@ export default class Graph {
    * @returns true if graph has node with specified name, false - otherwise.
    */
   hasNode(v: string): boolean {
-    return utils.has(this._nodes, v);
+    return v in this._nodes;
   }
 
   /**
@@ -340,7 +338,7 @@ export default class Graph {
    * @returns the graph, allowing this to be chained with other functions.
    */
   removeNode(v: string): Graph {
-    if (utils.has(this._nodes, v)) {
+    if (v in this._nodes) {
       const removeEdge = (e: string) => {
         this.removeEdge(this._edgeObjs[e]);
       };
@@ -690,7 +688,7 @@ export default class Graph {
     }
 
     const e = edgeArgsToId(this._isDirected, v, w, name);
-    if (utils.has(this._edgeLabels, e)) {
+    if (e in this._edgeLabels) {
       if (valueSpecified) {
         this._edgeLabels[e] = value;
       }
@@ -774,7 +772,7 @@ export default class Graph {
       arguments.length === 1
         ? edgeObjToId(this._isDirected, edgeOrV as Edge)
         : edgeArgsToId(this._isDirected, edgeOrV, w, name);
-    return utils.has(this._edgeLabels, e);
+    return e in this._edgeLabels;
   }
 
   /**

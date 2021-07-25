@@ -1,4 +1,3 @@
-import * as utils from "../utils";
 import Graph from "../graph";
 import type { Edge } from "../graph";
 import PriorityQueue from "../data/priority-queue";
@@ -49,7 +48,7 @@ export default function prim(g: Graph, weightFunc: WeightFn): Graph {
   let init = false;
   while (pq.size() > 0) {
     v = pq.removeMin();
-    if (utils.has(parents, v)) {
+    if (v in parents) {
       result.setEdge(v, parents[v]);
     } else if (init) {
       throw new Error(`Input graph is not connected: ${g}`);

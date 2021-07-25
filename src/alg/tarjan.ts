@@ -1,4 +1,3 @@
-import * as utils from "../utils";
 import type Graph from "../graph";
 
 type Visited = {
@@ -39,7 +38,7 @@ export default function tarjan(g: Graph): string[][] {
     stack.push(v);
 
     g.successors(v)?.forEach(w => {
-      if (!utils.has(visited, w)) {
+      if (!(w in visited)) {
         dfs(w);
         entry.lowlink = Math.min(entry.lowlink, visited[w].lowlink);
       } else if (visited[w].onStack) {
@@ -60,7 +59,7 @@ export default function tarjan(g: Graph): string[][] {
   }
 
   g.nodes().forEach(v => {
-    if (!utils.has(visited, v)) {
+    if (!(v in visited)) {
       dfs(v);
     }
   });

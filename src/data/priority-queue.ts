@@ -1,5 +1,3 @@
-import * as utils from "../utils";
-
 interface QueueKey {
   key: string;
   priority: number;
@@ -39,7 +37,7 @@ export default class PriorityQueue {
    * Returns `true` if **key** is in the queue and `false` if not.
    */
   has(key: string): boolean {
-    return utils.has(this._keyIndices, key);
+    return key in this._keyIndices;
   }
 
   /**
@@ -77,7 +75,7 @@ export default class PriorityQueue {
   add(key_: unknown, priority: number): boolean {
     const keyIndices = this._keyIndices;
     const key = String(key_);
-    if (!utils.has(keyIndices, key)) {
+    if (!(key in keyIndices)) {
       const arr = this._arr;
       const index = arr.length;
       keyIndices[key] = index;

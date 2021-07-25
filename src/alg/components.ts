@@ -1,5 +1,3 @@
-import * as utils from "../utils";
-
 import type Graph from "../graph";
 
 /**
@@ -18,7 +16,7 @@ export default function components(g: Graph): string[][] {
     const cmpt: string[] = [];
 
     function dfs(v_: string) {
-      if (utils.has(visited, v_)) {
+      if (v_ in visited) {
         return;
       }
       visited[v_] = true;

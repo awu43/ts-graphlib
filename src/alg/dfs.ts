@@ -1,5 +1,3 @@
-import * as utils from "../utils";
-
 import type Graph from "../graph";
 
 function doDfs(
@@ -10,7 +8,7 @@ function doDfs(
   navigation: (v_: string) => string[] | void,
   acc: string[]
 ) {
-  if (!utils.has(visited, v)) {
+  if (!(v in visited)) {
     visited[v] = true;
 
     if (!postorder) {

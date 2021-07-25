@@ -1,4 +1,3 @@
-import * as utils from "../utils";
 import type Graph from "../graph";
 
 class CycleException extends Error {}
@@ -17,11 +16,11 @@ export default function topsort(g: Graph): string[] {
   const results: string[] = [];
 
   function visit(node: string) {
-    if (utils.has(stack, node)) {
+    if (node in stack) {
       throw new CycleException();
     }
 
-    if (!utils.has(visited, node)) {
+    if (!(node in visited)) {
       stack[node] = true;
       visited[node] = true;
       g.predecessors(node)?.forEach(visit);
