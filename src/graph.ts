@@ -547,14 +547,14 @@ export default class Graph {
 
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
-    const parents: Record<string, string | void> = {};
-    function findParent(v: string): string | void {
+    const parents = new Map<unknown, unknown>();
+    function findParent(v: unknown): unknown {
       const parent = self.parent(v);
       if (parent === undefined || copy.hasNode(parent)) {
-        parents[v] = parent;
+        parents.set(v, parent);
         return parent;
-      } else if (parent in parents) {
-        return parents[parent];
+      } else if (parents.has(parent)) {
+        return parents.get(parent);
       } else {
         return findParent(parent);
       }
