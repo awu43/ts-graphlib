@@ -93,7 +93,7 @@ export default class Graph {
 
   // _parent, _children only valid if _isCompound
   private _parent!: Map<unknown, string>;
-  private _children!: DefinedMap<unknown, Record<string, boolean>>;
+  private _children!: DefinedMap<unknown, Set<unknown>>;
 
   constructor(opts?: GraphOptions) {
     this._isDirected = opts?.directed ?? true;
@@ -117,8 +117,8 @@ export default class Graph {
       this._parent = new Map<unknown, string>();
 
       // v -> children
-      this._children = new DefinedMap<unknown, Record<string, boolean>>();
-      this._children.set(GRAPH_NODE, {});
+      this._children = new DefinedMap<unknown, Set<unknown>>();
+      this._children.set(GRAPH_NODE, new Set<unknown>());
     }
   }
 
@@ -282,8 +282,8 @@ export default class Graph {
     );
     if (this._isCompound) {
       this._parent.set(v, GRAPH_NODE);
-      this._children.set(v, {});
-      this._children.definedGet(GRAPH_NODE)[v as string] = true;
+      this._children.set(v, new Set<unknown>());
+      this._children.definedGet(GRAPH_NODE).add(v);
     }
     this._in[v as string] = {};
     this._preds[v as string] = {};
@@ -402,12 +402,12 @@ export default class Graph {
     this.setNode(v);
     this._removeFromParentsChildList(v);
     this._parent.set(v, parent as string);
-    this._children.definedGet(parent)[v as string] = true;
+    this._children.definedGet(parent).add(v);
     return this;
   }
 
   private _removeFromParentsChildList(v: unknown): void {
-    delete this._children.definedGet(this._parent.get(v))[v as string];
+    this._children.definedGet(this._parent.get(v)).delete(v);
   }
 
   /**
@@ -439,7 +439,7 @@ export default class Graph {
     if (this._isCompound) {
       const children = this._children.get(v);
       if (children) {
-        return Object.keys(children);
+        return [...children.values()];
       }
     } else if (v === GRAPH_NODE) {
       return this.nodes();
