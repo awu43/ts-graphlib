@@ -89,7 +89,7 @@ export default class Graph {
   private _nodes: Map<unknown, unknown>;
 
   // _parent, _children only valid if _isCompound
-  private _parent!: Record<string, string>;
+  private _parent!: Map<unknown, string>;
   private _children!: Record<string, Record<string, boolean>>;
 
   constructor(opts?: GraphOptions) {
@@ -111,7 +111,7 @@ export default class Graph {
 
     if (this._isCompound) {
       // v -> parent
-      this._parent = {};
+      this._parent = new Map<unknown, string>();
 
       // v -> children
       this._children = {};
@@ -278,7 +278,7 @@ export default class Graph {
       arguments.length > 1 ? value : this._defaultNodeLabelFn(v)
     );
     if (this._isCompound) {
-      this._parent[v as string] = GRAPH_NODE;
+      this._parent.set(v, GRAPH_NODE);
       this._children[v as string] = {};
       this._children[GRAPH_NODE][v as string] = true;
     }
@@ -346,7 +346,7 @@ export default class Graph {
       this._nodes.delete(v);
       if (this._isCompound) {
         this._removeFromParentsChildList(v as string);
-        delete this._parent[v as string];
+        this._parent.delete(v);
         this.children(v as string)?.forEach(child => {
           this.setParent(child as string);
         });
@@ -401,13 +401,13 @@ export default class Graph {
 
     this.setNode(v);
     this._removeFromParentsChildList(v);
-    this._parent[v] = parent;
+    this._parent.set(v, parent);
     this._children[parent][v] = true;
     return this;
   }
 
-  private _removeFromParentsChildList(v: string): void {
-    delete this._children[this._parent[v]][v];
+  private _removeFromParentsChildList(v: unknown): void {
+    delete this._children[this._parent.get(v) as string][v as string];
   }
 
   /**
@@ -417,9 +417,9 @@ export default class Graph {
    * @argument v - node to get parent of.
    * @returns parent node name or void if v has no parent.
    */
-  parent(v: string): string | void {
+  parent(v: unknown): string | void {
     if (this._isCompound) {
-      const parent = this._parent[v];
+      const parent = this._parent.get(v);
       if (parent !== GRAPH_NODE) {
         return parent;
       }
