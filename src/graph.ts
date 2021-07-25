@@ -6,18 +6,19 @@ const EDGE_KEY_DELIM = "\x01";
 
 // Types and function docs from https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/graphlib/index.d.ts
 
-function incrementOrInitEntry(map: Record<string, number>, k: string): void {
-  if (map[k]) {
-    map[k] += 1;
+function incrementOrInitEntry(map: Map<unknown, number>, k: unknown): void {
+  const entry = map.get(k);
+  if (entry) {
+    map.set(k, entry + 1);
   } else {
-    map[k] = 1;
+    map.set(k, 1);
   }
 }
 
-function decrementOrRemoveEntry(map: Record<string, number>, k: string): void {
-  map[k] -= 1;
-  if (!map[k]) {
-    delete map[k];
+function decrementOrRemoveEntry(map: Map<unknown, number>, k: unknown): void {
+  map.set(k, (map.get(k) as number) - 1);
+  if (!map.get(k)) {
+    map.delete(k);
   }
 }
 
@@ -126,13 +127,13 @@ export default class Graph {
   private _in = new DefinedMap<unknown, Map<string, Edge>>();
 
   // u -> v -> Number
-  private _preds = new DefinedMap<unknown, Record<string, number>>();
+  private _preds = new DefinedMap<unknown, Map<unknown, number>>();
 
   // v -> edgeObj
   private _out = new DefinedMap<unknown, Map<string, Edge>>();
 
   // v -> w -> Number
-  private _sucs = new DefinedMap<unknown, Record<string, number>>();
+  private _sucs = new DefinedMap<unknown, Map<unknown, number>>();
 
   // e -> edgeObj
   private _edgeObjs: Record<string, Edge> = {};
@@ -286,9 +287,9 @@ export default class Graph {
       this._children.definedGet(GRAPH_NODE).add(v);
     }
     this._in.set(v, new Map<string, Edge>());
-    this._preds.set(v, {});
+    this._preds.set(v, new Map<unknown, number>());
     this._out.set(v, new Map<string, Edge>());
-    this._sucs.set(v, {});
+    this._sucs.set(v, new Map<unknown, number>());
     this._nodeCount += 1;
     return this;
   }
@@ -460,10 +461,10 @@ export default class Graph {
    * @argument v - node identifier.
    * @returns node identifiers list or undefined if v is not in the graph.
    */
-  predecessors(v: unknown): string[] | void {
+  predecessors(v: unknown): unknown[] | void {
     const predsV = this._preds.get(v);
     if (predsV) {
-      return Object.keys(predsV);
+      return [...predsV.keys()];
     }
   }
 
@@ -475,10 +476,10 @@ export default class Graph {
    * @argument v - node identifier.
    * @returns node identifiers list or undefined if v is not in the graph.
    */
-  successors(v: unknown): string[] | void {
+  successors(v: unknown): unknown[] | void {
     const sucsV = this._sucs.get(v);
     if (sucsV) {
-      return Object.keys(sucsV);
+      return [...sucsV.keys()];
     }
   }
 
@@ -490,7 +491,7 @@ export default class Graph {
    * @argument v - node identifier.
    * @returns node identifiers list or undefined if v is not in the graph.
    */
-  neighbors(v: unknown): string[] | void {
+  neighbors(v: unknown): unknown[] | void {
     const neighbors = this.predecessors(v);
     if (neighbors) {
       const uniqueNeighbors = new Set(neighbors);
@@ -689,8 +690,8 @@ export default class Graph {
 
     Object.freeze(edgeObj);
     this._edgeObjs[e] = edgeObj;
-    incrementOrInitEntry(this._preds.definedGet(w), v as string);
-    incrementOrInitEntry(this._sucs.definedGet(v), w as string);
+    incrementOrInitEntry(this._preds.definedGet(w), v);
+    incrementOrInitEntry(this._sucs.definedGet(v), w);
     this._in.definedGet(w).set(e, edgeObj);
     this._out.definedGet(v).set(e, edgeObj);
     this._edgeCount += 1;
@@ -801,8 +802,8 @@ export default class Graph {
       const { v: v_, w: w_ } = edge;
       delete this._edgeLabels[e];
       delete this._edgeObjs[e];
-      decrementOrRemoveEntry(this._preds.definedGet(w_), v_ as string);
-      decrementOrRemoveEntry(this._sucs.definedGet(v_), w_ as string);
+      decrementOrRemoveEntry(this._preds.definedGet(w_), v_);
+      decrementOrRemoveEntry(this._sucs.definedGet(v_), w_);
       this._in.definedGet(w_).delete(e);
       this._out.definedGet(v_).delete(e);
       this._edgeCount -= 1;
