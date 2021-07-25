@@ -21,25 +21,26 @@ function decrementOrRemoveEntry(map: Record<string, number>, k: string): void {
   }
 }
 
+// TODO: Enforce w/v order Graph option
 function edgeArgsToId(
   isDirected: boolean,
   v_: unknown,
   w_: unknown,
-  name: string | undefined
+  name: unknown
 ): string {
-  let v = String(v_);
-  let w = String(w_);
-  if (!isDirected && v > w) {
+  let v = v_;
+  let w = w_;
+  if (!isDirected && (v as string) > (w as string)) {
     [v, w] = [w, v];
   }
   return [v, w, name ?? DEFAULT_EDGE_NAME].join(EDGE_KEY_DELIM);
 }
 
 export interface Edge {
-  v: string;
-  w: string;
+  v: unknown;
+  w: unknown;
   /** The name that uniquely identifies a multi-edge. */
-  name?: string | undefined;
+  name?: unknown;
   value?: string;
 }
 
@@ -47,14 +48,14 @@ function edgeArgsToObj(
   isDirected: boolean,
   v_: unknown,
   w_: unknown,
-  name: string | undefined
-) {
-  let v = String(v_);
-  let w = String(w_);
-  if (!isDirected && v > w) {
+  name: unknown
+): Edge {
+  let v = v_;
+  let w = w_;
+  if (!isDirected && (v as string) > (w as string)) {
     [v, w] = [w, v];
   }
-  const edgeObj: Edge = { v, w };
+  const edgeObj: Edge = { v, w } as { v: unknown; w: unknown };
   if (name) {
     edgeObj.name = name;
   }
@@ -300,7 +301,7 @@ export default class Graph {
    * @argument label - value to set for each node in list.
    * @returns the graph, allowing this to be chained with other functions.
    */
-  setNodes(vs: string[], value?: unknown): Graph {
+  setNodes(vs: unknown[], value?: unknown): Graph {
     vs.forEach(v => {
       if (arguments.length > 1) {
         this.setNode(v, value);
@@ -375,7 +376,7 @@ export default class Graph {
    * @argument p - node to be parent for v.
    * @returns the graph, allowing this to be chained with other functions.
    */
-  setParent(v: string, parent_?: string): Graph {
+  setParent(v: unknown, parent_?: unknown): Graph {
     if (!this._isCompound) {
       throw new Error("Cannot set parent in a non-compound graph");
     }
@@ -384,9 +385,6 @@ export default class Graph {
     if (parent === undefined) {
       parent = GRAPH_NODE;
     } else {
-      // Coerce parent to string
-      parent = String(parent);
-
       let ancestor = parent;
       while (ancestor !== undefined) {
         if (ancestor === v) {
@@ -403,8 +401,8 @@ export default class Graph {
 
     this.setNode(v);
     this._removeFromParentsChildList(v);
-    this._parent.set(v, parent);
-    this._children.definedGet(parent)[v] = true;
+    this._parent.set(v, parent as string);
+    this._children.definedGet(parent)[v as string] = true;
     return this;
   }
 
@@ -458,8 +456,8 @@ export default class Graph {
    * @argument v - node identifier.
    * @returns node identifiers list or undefined if v is not in the graph.
    */
-  predecessors(v: string): string[] | void {
-    const predsV = this._preds[v];
+  predecessors(v: unknown): string[] | void {
+    const predsV = this._preds[v as string];
     if (predsV) {
       return Object.keys(predsV);
     }
@@ -473,8 +471,8 @@ export default class Graph {
    * @argument v - node identifier.
    * @returns node identifiers list or undefined if v is not in the graph.
    */
-  successors(v: string): string[] | void {
-    const sucsV = this._sucs[v];
+  successors(v: unknown): string[] | void {
+    const sucsV = this._sucs[v as string];
     if (sucsV) {
       return Object.keys(sucsV);
     }
@@ -488,7 +486,7 @@ export default class Graph {
    * @argument v - node identifier.
    * @returns node identifiers list or undefined if v is not in the graph.
    */
-  neighbors(v: string): string[] | void {
+  neighbors(v: unknown): string[] | void {
     const neighbors = this.predecessors(v);
     if (neighbors) {
       const uniqueNeighbors = new Set(neighbors);
@@ -502,7 +500,7 @@ export default class Graph {
     }
   }
 
-  isLeaf(v: string): boolean {
+  isLeaf(v: unknown): boolean {
     let neighbors;
     if (this.isDirected()) {
       neighbors = this.successors(v);
@@ -521,7 +519,7 @@ export default class Graph {
    * @argument filter - filtration function detecting whether the node should stay or not.
    * @returns new graph made from current and nodes filtered.
    */
-  filterNodes(filter: (v: string) => boolean): Graph {
+  filterNodes(filter: (v: unknown) => boolean): Graph {
     const copy = new Graph({
       directed: this._isDirected,
       multigraph: this._isMultigraph,
@@ -606,28 +604,6 @@ export default class Graph {
   }
 
   /**
-   * Establish an edges path over the nodes in nodes list. If some edge is already
-   * exists, it will update its label, otherwise it will create an edge between pair
-   * of nodes with label provided or default label if no label provided.
-   * Complexity: O(|nodes|).
-   *
-   * @argument nodes - list of nodes to be connected in series.
-   * @argument label - value to set for each edge between pairs of nodes.
-   * @returns the graph, allowing this to be chained with other functions.
-   */
-  setPath(vs: string[], value?: unknown): Graph {
-    vs.reduce((v, w) => {
-      if (arguments.length > 1) {
-        this.setEdge(v, w, value);
-      } else {
-        this.setEdge(v, w);
-      }
-      return w;
-    });
-    return this;
-  }
-
-  /**
    * Creates or updates the label for the specified edge. If label is supplied it is
    * set as the value for the edge. If label is not supplied and the edge was created
    * by this call then the default edge label will be assigned. The name parameter is
@@ -652,12 +628,12 @@ export default class Graph {
    * @argument name - unique name of the edge in order to identify it in multigraph.
    * @returns the graph, allowing this to be chained with other functions.
    */
-  setEdge(v: string, w: string, value?: unknown, name?: string): Graph;
+  setEdge(v: unknown, w: unknown, value?: unknown, name?: unknown): Graph;
   setEdge(
     edgeOrV: Edge | string,
     valueOrW?: unknown,
     value_?: unknown,
-    name_?: string
+    name_?: unknown
   ): Graph {
     let v;
     let w;
@@ -667,9 +643,7 @@ export default class Graph {
     const arg0 = edgeOrV;
 
     if (typeof arg0 === "object" && arg0 !== null && "v" in arg0) {
-      v = arg0.v;
-      w = arg0.w;
-      name = arg0.name;
+      ({ v, w, name } = arg0);
       if (arguments.length === 2) {
         value = valueOrW;
         valueSpecified = true;
@@ -682,12 +656,6 @@ export default class Graph {
         value = value_;
         valueSpecified = true;
       }
-    }
-
-    v = String(v);
-    w = String(w);
-    if (name !== undefined) {
-      name = String(name);
     }
 
     const e = edgeArgsToId(this._isDirected, v, w, name);
@@ -713,16 +681,37 @@ export default class Graph {
 
     const edgeObj = edgeArgsToObj(this._isDirected, v, w, name);
     // Ensure we add undirected edges in a consistent way.
-    v = edgeObj.v;
-    w = edgeObj.w;
+    ({ v, w } = edgeObj);
 
     Object.freeze(edgeObj);
     this._edgeObjs[e] = edgeObj;
-    incrementOrInitEntry(this._preds[w], v);
-    incrementOrInitEntry(this._sucs[v], w);
-    this._in[w][e] = edgeObj;
-    this._out[v][e] = edgeObj;
+    incrementOrInitEntry(this._preds[w as string], v as string);
+    incrementOrInitEntry(this._sucs[v as string], w as string);
+    this._in[w as string][e] = edgeObj;
+    this._out[v as string][e] = edgeObj;
     this._edgeCount += 1;
+    return this;
+  }
+
+  /**
+   * Establish an edges path over the nodes in nodes list. If some edge is already
+   * exists, it will update its label, otherwise it will create an edge between pair
+   * of nodes with label provided or default label if no label provided.
+   * Complexity: O(|nodes|).
+   *
+   * @argument nodes - list of nodes to be connected in series.
+   * @argument label - value to set for each edge between pairs of nodes.
+   * @returns the graph, allowing this to be chained with other functions.
+   */
+  setPath(vs: unknown[], value?: unknown): Graph {
+    vs.reduce((v, w) => {
+      if (arguments.length > 1) {
+        this.setEdge(v, w, value);
+      } else {
+        this.setEdge(v, w);
+      }
+      return w;
+    });
     return this;
   }
 
@@ -743,8 +732,8 @@ export default class Graph {
    * @argument name - name of the edge (actual for multigraph).
    * @returns value associated with specified edge.
    */
-  edge(v: string, w: string, name?: string): unknown;
-  edge(edgeOrV: Edge | string, w?: string, name?: string): unknown {
+  edge(v: unknown, w: unknown, name?: unknown): unknown;
+  edge(edgeOrV: Edge | unknown, w?: unknown, name?: unknown): unknown {
     const e =
       arguments.length === 1
         ? edgeObjToId(this._isDirected, edgeOrV as Edge)
@@ -769,8 +758,8 @@ export default class Graph {
    * @argument name - name of the edge (actual for multigraph).
    * @returns whether the graph contains the specified edge or not.
    */
-  hasEdge(v: string, w: string, name?: string): boolean;
-  hasEdge(edgeOrV: Edge | string, w?: string, name?: string): boolean {
+  hasEdge(v: unknown, w: unknown, name?: unknown): boolean;
+  hasEdge(edgeOrV: Edge | unknown, w?: unknown, name?: unknown): boolean {
     const e =
       arguments.length === 1
         ? edgeObjToId(this._isDirected, edgeOrV as Edge)
@@ -797,8 +786,8 @@ export default class Graph {
    * @argument name - name of the edge (actual for multigraph).
    * @returns the graph, allowing this to be chained with other functions.
    */
-  removeEdge(v: string, w: string, name?: string): Graph;
-  removeEdge(edgeOrV: Edge | string, w?: string, name?: string): Graph {
+  removeEdge(v: unknown, w: unknown, name?: unknown): Graph;
+  removeEdge(edgeOrV: Edge | unknown, w?: unknown, name?: unknown): Graph {
     const e =
       arguments.length === 1
         ? edgeObjToId(this._isDirected, edgeOrV as Edge)
@@ -808,10 +797,10 @@ export default class Graph {
       const { v: v_, w: w_ } = edge;
       delete this._edgeLabels[e];
       delete this._edgeObjs[e];
-      decrementOrRemoveEntry(this._preds[w_], v_);
-      decrementOrRemoveEntry(this._sucs[v_], w_);
-      delete this._in[w_][e];
-      delete this._out[v_][e];
+      decrementOrRemoveEntry(this._preds[w_ as string], v_ as string);
+      decrementOrRemoveEntry(this._sucs[v_ as string], w_ as string);
+      delete this._in[w_ as string][e];
+      delete this._out[v_ as string][e];
       this._edgeCount -= 1;
     }
     return this;
@@ -826,8 +815,8 @@ export default class Graph {
    * @argument w - edge source node.
    * @returns edges descriptors list if v is in the graph, or undefined otherwise.
    */
-  inEdges(v: string, u?: string): Edge[] | void {
-    const inV = this._in[v];
+  inEdges(v: unknown, u?: unknown): Edge[] | void {
+    const inV = this._in[v as string];
     if (inV) {
       const edges = Object.values(inV);
       if (!u) {
@@ -846,8 +835,8 @@ export default class Graph {
    * @argument w - edge sink node.
    * @returns edges descriptors list if v is in the graph, or undefined otherwise.
    */
-  outEdges(v: string, w?: string): Edge[] | void {
-    const outV = this._out[v];
+  outEdges(v: unknown, w?: unknown): Edge[] | void {
+    const outV = this._out[v as string];
     if (outV) {
       const edges = Object.values(outV);
       if (!w) {
@@ -866,7 +855,7 @@ export default class Graph {
    * @argument w - edge adjacent node.
    * @returns edges descriptors list if v is in the graph, or undefined otherwise.
    */
-  nodeEdges(v: string, w?: string): Edge[] | void {
+  nodeEdges(v: unknown, w?: unknown): Edge[] | void {
     const inEdges = this.inEdges(v, w);
     if (inEdges) {
       return inEdges.concat(this.outEdges(v, w) ?? []);
