@@ -272,12 +272,12 @@ describe("Graph", () => {
       expect(g.nodeCount()).to.equal(1);
     });
 
-    it("uses the stringified form of the id", () => {
-      g.setNode(1);
-      expect(g.hasNode(1)).to.be.true;
-      expect(g.hasNode("1")).to.be.true;
-      expect(g.nodes()).eqls(["1"]);
-    });
+    // it("uses the stringified form of the id", () => {
+    //   g.setNode(1);
+    //   expect(g.hasNode(1)).to.be.true;
+    //   expect(g.hasNode("1")).to.be.true;
+    //   expect(g.nodes()).eqls(["1"]);
+    // });
 
     it("is chainable", () => {
       expect(g.setNode("a")).to.equal(g);
@@ -439,13 +439,13 @@ describe("Graph", () => {
       expect(_.sortBy(g.children())).to.eql(["a", "parent"]);
     });
 
-    it("uses the stringified form of the id", () => {
-      g.setParent(2, 1);
-      g.setParent(3, 2);
-      expect(g.parent(2)).equals("1");
-      expect(g.parent("2")).equals("1");
-      expect(g.parent(3)).equals("2");
-    });
+    // it("uses the stringified form of the id", () => {
+    //   g.setParent(2, 1);
+    //   g.setParent(3, 2);
+    //   expect(g.parent(2)).equals("1");
+    //   expect(g.parent("2")).equals("1");
+    //   expect(g.parent(3)).equals("2");
+    // });
 
     it("preserves the tree invariant", () => {
       g.setParent("c", "b");
@@ -707,28 +707,28 @@ describe("Graph", () => {
       expect(g.edge("a", "b", "name")).to.equal("value");
     });
 
-    it("uses the stringified form of the id #1", () => {
-      g.setEdge(1, 2, "foo");
-      expect(g.edges()).eqls([{ v: "1", w: "2" }]);
-      expect(g.edge("1", "2")).to.equal("foo");
-      expect(g.edge(1, 2)).to.equal("foo");
-    });
+    // it("uses the stringified form of the id #1", () => {
+    //   g.setEdge(1, 2, "foo");
+    //   expect(g.edges()).eqls([{ v: "1", w: "2" }]);
+    //   expect(g.edge("1", "2")).to.equal("foo");
+    //   expect(g.edge(1, 2)).to.equal("foo");
+    // });
 
-    it("uses the stringified form of the id #2", () => {
-      g = new Graph({ multigraph: true });
-      g.setEdge(1, 2, "foo", undefined);
-      expect(g.edges()).eqls([{ v: "1", w: "2" }]);
-      expect(g.edge("1", "2")).to.equal("foo");
-      expect(g.edge(1, 2)).to.equal("foo");
-    });
+    // it("uses the stringified form of the id #2", () => {
+    //   g = new Graph({ multigraph: true });
+    //   g.setEdge(1, 2, "foo", undefined);
+    //   expect(g.edges()).eqls([{ v: "1", w: "2" }]);
+    //   expect(g.edge("1", "2")).to.equal("foo");
+    //   expect(g.edge(1, 2)).to.equal("foo");
+    // });
 
-    it("uses the stringified form of the id with a name", () => {
-      g = new Graph({ multigraph: true });
-      g.setEdge(1, 2, "foo", 3);
-      expect(g.edge("1", "2", "3")).to.equal("foo");
-      expect(g.edge(1, 2, 3)).to.equal("foo");
-      expect(g.edges()).eqls([{ v: "1", w: "2", name: "3" }]);
-    });
+    // it("uses the stringified form of the id with a name", () => {
+    //   g = new Graph({ multigraph: true });
+    //   g.setEdge(1, 2, "foo", 3);
+    //   expect(g.edge("1", "2", "3")).to.equal("foo");
+    //   expect(g.edge(1, 2, 3)).to.equal("foo");
+    //   expect(g.edges()).eqls([{ v: "1", w: "2", name: "3" }]);
+    // });
 
     it("treats edges in opposite directions as distinct in a digraph", () => {
       g.setEdge("a", "b");
@@ -743,16 +743,16 @@ describe("Graph", () => {
       expect(g.edge("b", "a")).to.equal("foo");
     });
 
-    it("handles undirected edges where id has different order than Stringified id", () => {
-      g = new Graph({ directed: false });
-      g.setEdge(9, 10, "foo");
-      expect(g.hasEdge("9", "10")).to.be.true;
-      expect(g.hasEdge(9, 10)).to.be.true;
-      expect(g.hasEdge("10", "9")).to.be.true;
-      expect(g.hasEdge(10, 9)).to.be.true;
-      expect(g.edge("9", "10")).eqls("foo");
-      expect(g.edge(9, 10)).eqls("foo");
-    });
+    // it("handles undirected edges where id has different order than Stringified id", () => {
+    //   g = new Graph({ directed: false });
+    //   g.setEdge(9, 10, "foo");
+    //   expect(g.hasEdge("9", "10")).to.be.true;
+    //   expect(g.hasEdge(9, 10)).to.be.true;
+    //   expect(g.hasEdge("10", "9")).to.be.true;
+    //   expect(g.hasEdge(10, 9)).to.be.true;
+    //   expect(g.edge("9", "10")).eqls("foo");
+    //   expect(g.edge(9, 10)).eqls("foo");
+    // });
 
     it("is chainable", () => {
       expect(g.setEdge("a", "b")).to.equal(g);

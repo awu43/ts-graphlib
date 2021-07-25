@@ -86,7 +86,7 @@ export default class Graph {
   private _label: unknown;
   private _defaultNodeLabelFn: (...args: unknown[]) => unknown;
   private _defaultEdgeLabelFn: (...args: unknown[]) => unknown;
-  private _nodes: Record<string, unknown>;
+  private _nodes: Map<unknown, unknown>;
 
   // _parent, _children only valid if _isCompound
   private _parent!: Record<string, string>;
@@ -107,7 +107,7 @@ export default class Graph {
     this._defaultEdgeLabelFn = () => undefined;
 
     // v -> label
-    this._nodes = {};
+    this._nodes = new Map<unknown, unknown>();
 
     if (this._isCompound) {
       // v -> parent
@@ -227,8 +227,8 @@ export default class Graph {
    *
    * @returns list of graph nodes.
    */
-  nodes(): string[] {
-    return Object.keys(this._nodes);
+  nodes(): unknown[] {
+    return [...this._nodes.keys()];
   }
 
   /**
@@ -237,9 +237,9 @@ export default class Graph {
    *
    * @returns the graph source nodes.
    */
-  sources(): string[] {
+  sources(): unknown[] {
     return this.nodes().filter(v => {
-      return !Object.keys(this._in[v]).length;
+      return !Object.keys(this._in[v as string]).length;
     });
   }
 
@@ -249,9 +249,9 @@ export default class Graph {
    *
    * @returns the graph source nodes.
    */
-  sinks(): string[] {
+  sinks(): unknown[] {
     return this.nodes().filter(v => {
-      return !Object.keys(this._out[v]).length;
+      return !Object.keys(this._out[v as string]).length;
     });
   }
 
@@ -265,24 +265,27 @@ export default class Graph {
    * @argument label - value to set for node.
    * @returns the graph, allowing this to be chained with other functions.
    */
-  setNode(v: string, value?: unknown): Graph {
-    if (v in this._nodes) {
+  setNode(v: unknown, value?: unknown): Graph {
+    if (this._nodes.has(v)) {
       if (arguments.length > 1) {
-        this._nodes[v] = value;
+        this._nodes.set(v, value);
       }
       return this;
     }
 
-    this._nodes[v] = arguments.length > 1 ? value : this._defaultNodeLabelFn(v);
+    this._nodes.set(
+      v,
+      arguments.length > 1 ? value : this._defaultNodeLabelFn(v)
+    );
     if (this._isCompound) {
-      this._parent[v] = GRAPH_NODE;
-      this._children[v] = {};
-      this._children[GRAPH_NODE][v] = true;
+      this._parent[v as string] = GRAPH_NODE;
+      this._children[v as string] = {};
+      this._children[GRAPH_NODE][v as string] = true;
     }
-    this._in[v] = {};
-    this._preds[v] = {};
-    this._out[v] = {};
-    this._sucs[v] = {};
+    this._in[v as string] = {};
+    this._preds[v as string] = {};
+    this._out[v as string] = {};
+    this._sucs[v as string] = {};
     this._nodeCount += 1;
     return this;
   }
@@ -312,8 +315,8 @@ export default class Graph {
    *
    * @returns label value of the node.
    */
-  node(v: string): unknown {
-    return this._nodes[v];
+  node(v: unknown): unknown {
+    return this._nodes.get(v);
   }
 
   /**
@@ -322,8 +325,8 @@ export default class Graph {
    * @argument name - name of the node.
    * @returns true if graph has node with specified name, false - otherwise.
    */
-  hasNode(v: string): boolean {
-    return v in this._nodes;
+  hasNode(v: unknown): boolean {
+    return this._nodes.has(v);
   }
 
   /**
@@ -335,26 +338,26 @@ export default class Graph {
    * @argument name - name of the node.
    * @returns the graph, allowing this to be chained with other functions.
    */
-  removeNode(v: string): Graph {
-    if (v in this._nodes) {
+  removeNode(v: unknown): Graph {
+    if (this._nodes.has(v)) {
       const removeEdge = (e: string) => {
         this.removeEdge(this._edgeObjs[e]);
       };
-      delete this._nodes[v];
+      this._nodes.delete(v);
       if (this._isCompound) {
-        this._removeFromParentsChildList(v);
-        delete this._parent[v];
-        this.children(v)?.forEach(child => {
-          this.setParent(child);
+        this._removeFromParentsChildList(v as string);
+        delete this._parent[v as string];
+        this.children(v as string)?.forEach(child => {
+          this.setParent(child as string);
         });
-        delete this._children[v];
+        delete this._children[v as string];
       }
-      Object.keys(this._in[v]).forEach(removeEdge);
-      delete this._in[v];
-      delete this._preds[v];
-      Object.keys(this._out[v]).forEach(removeEdge);
-      delete this._out[v];
-      delete this._sucs[v];
+      Object.keys(this._in[v as string]).forEach(removeEdge);
+      delete this._in[v as string];
+      delete this._preds[v as string];
+      Object.keys(this._out[v as string]).forEach(removeEdge);
+      delete this._out[v as string];
+      delete this._sucs[v as string];
       this._nodeCount -= 1;
     }
     return this;
@@ -430,11 +433,11 @@ export default class Graph {
    * @argument v - node to get children of.
    * @returns children nodes names list.
    */
-  children(v_?: string): string[] | void {
+  children(v_?: unknown): unknown[] | void {
     const v = v_ === undefined ? GRAPH_NODE : v_;
 
     if (this._isCompound) {
-      const children = this._children[v];
+      const children = this._children[v as string];
       if (children) {
         return Object.keys(children);
       }
@@ -525,11 +528,11 @@ export default class Graph {
 
     copy.setGraph(this.graph());
 
-    Object.entries(this._nodes).forEach(([v, value]) => {
-      if (filter(v)) {
+    for (const [v, value] of this._nodes.entries()) {
+      if (filter(v as string)) {
         copy.setNode(v, value);
       }
-    });
+    }
 
     Object.values(this._edgeObjs).forEach(e => {
       if (copy.hasNode(e.v) && copy.hasNode(e.w)) {
@@ -555,7 +558,7 @@ export default class Graph {
     if (this._isCompound) {
       copy.nodes().forEach(v => {
         // void is undefined here, but TS doesn't like that
-        copy.setParent(v, findParent(v) ?? undefined);
+        copy.setParent(v as string, findParent(v as string) ?? undefined);
       });
     }
 
