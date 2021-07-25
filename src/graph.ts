@@ -1,3 +1,5 @@
+import DefinedMap from "./defined-map";
+
 const DEFAULT_EDGE_NAME = "\x00";
 const GRAPH_NODE = "\x00";
 const EDGE_KEY_DELIM = "\x01";
@@ -90,7 +92,7 @@ export default class Graph {
 
   // _parent, _children only valid if _isCompound
   private _parent!: Map<unknown, string>;
-  private _children!: Record<string, Record<string, boolean>>;
+  private _children!: DefinedMap<unknown, Record<string, boolean>>;
 
   constructor(opts?: GraphOptions) {
     this._isDirected = opts?.directed ?? true;
@@ -114,8 +116,8 @@ export default class Graph {
       this._parent = new Map<unknown, string>();
 
       // v -> children
-      this._children = {};
-      this._children[GRAPH_NODE] = {};
+      this._children = new DefinedMap<unknown, Record<string, boolean>>();
+      this._children.set(GRAPH_NODE, {});
     }
   }
 
@@ -279,8 +281,8 @@ export default class Graph {
     );
     if (this._isCompound) {
       this._parent.set(v, GRAPH_NODE);
-      this._children[v as string] = {};
-      this._children[GRAPH_NODE][v as string] = true;
+      this._children.set(v, {});
+      this._children.definedGet(GRAPH_NODE)[v as string] = true;
     }
     this._in[v as string] = {};
     this._preds[v as string] = {};
@@ -350,7 +352,7 @@ export default class Graph {
         this.children(v as string)?.forEach(child => {
           this.setParent(child as string);
         });
-        delete this._children[v as string];
+        this._children.delete(v);
       }
       Object.keys(this._in[v as string]).forEach(removeEdge);
       delete this._in[v as string];
@@ -402,12 +404,12 @@ export default class Graph {
     this.setNode(v);
     this._removeFromParentsChildList(v);
     this._parent.set(v, parent);
-    this._children[parent][v] = true;
+    this._children.definedGet(parent)[v] = true;
     return this;
   }
 
   private _removeFromParentsChildList(v: unknown): void {
-    delete this._children[this._parent.get(v) as string][v as string];
+    delete this._children.definedGet(this._parent.get(v))[v as string];
   }
 
   /**
@@ -437,7 +439,7 @@ export default class Graph {
     const v = v_ === undefined ? GRAPH_NODE : v_;
 
     if (this._isCompound) {
-      const children = this._children[v as string];
+      const children = this._children.get(v);
       if (children) {
         return Object.keys(children);
       }
