@@ -132,7 +132,7 @@ export default class Graph {
   private _out = new DefinedMap<unknown, Record<string, Edge>>();
 
   // v -> w -> Number
-  private _sucs: Record<string, Record<string, number>> = {};
+  private _sucs = new DefinedMap<unknown, Record<string, number>>();
 
   // e -> edgeObj
   private _edgeObjs: Record<string, Edge> = {};
@@ -288,7 +288,7 @@ export default class Graph {
     this._in.set(v, {});
     this._preds.set(v, {});
     this._out.set(v, {});
-    this._sucs[v as string] = {};
+    this._sucs.set(v, {});
     this._nodeCount += 1;
     return this;
   }
@@ -360,7 +360,7 @@ export default class Graph {
       this._preds.delete(v);
       Object.keys(this._out.definedGet(v)).forEach(removeEdge);
       this._out.delete(v);
-      delete this._sucs[v as string];
+      this._sucs.delete(v);
       this._nodeCount -= 1;
     }
     return this;
@@ -472,7 +472,7 @@ export default class Graph {
    * @returns node identifiers list or undefined if v is not in the graph.
    */
   successors(v: unknown): string[] | void {
-    const sucsV = this._sucs[v as string];
+    const sucsV = this._sucs.get(v);
     if (sucsV) {
       return Object.keys(sucsV);
     }
@@ -686,7 +686,7 @@ export default class Graph {
     Object.freeze(edgeObj);
     this._edgeObjs[e] = edgeObj;
     incrementOrInitEntry(this._preds.definedGet(w), v as string);
-    incrementOrInitEntry(this._sucs[v as string], w as string);
+    incrementOrInitEntry(this._sucs.definedGet(v), w as string);
     this._in.definedGet(w)[e] = edgeObj;
     this._out.definedGet(v)[e] = edgeObj;
     this._edgeCount += 1;
@@ -798,7 +798,7 @@ export default class Graph {
       delete this._edgeLabels[e];
       delete this._edgeObjs[e];
       decrementOrRemoveEntry(this._preds.definedGet(w_), v_ as string);
-      decrementOrRemoveEntry(this._sucs[v_ as string], w_ as string);
+      decrementOrRemoveEntry(this._sucs.definedGet(v_), w_ as string);
       delete this._in.definedGet(w_)[e];
       delete this._out.definedGet(v_)[e];
       this._edgeCount -= 1;
