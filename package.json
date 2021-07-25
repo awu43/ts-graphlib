@@ -4,10 +4,10 @@
   "description": "A directed and undirected multi-graph library",
   "author": "Chris Pettitt <cpettitt@gmail.com>",
   "license": "MIT",
-  "main": "src/index.js",
   "files": [
-    "src/"
+    "dist/"
   ],
+  "main": "dist/index.js",
   "keywords": [
     "graph",
     "algorithms"
