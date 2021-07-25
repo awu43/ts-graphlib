@@ -1,6 +1,6 @@
 import type Graph from "../graph";
 
-class CycleException extends Error {}
+export class CycleException extends Error {}
 
 /**
  * Given a Graph graph this function applies topological sorting to it.
@@ -37,4 +37,3 @@ export default function topsort(g: Graph): string[] {
 
   return results;
 }
-topsort.CycleException = CycleException;

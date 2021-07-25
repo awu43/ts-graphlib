@@ -9,3 +9,4 @@ export { default as preorder } from "./preorder";
 export { default as prim } from "./prim";
 export { default as tarjan } from "./tarjan";
 export { default as topsort } from "./topsort";
+export { CycleException } from "./topsort";

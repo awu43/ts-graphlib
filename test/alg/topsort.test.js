@@ -3,7 +3,7 @@ import * as _ from "lodash";
 
 import Graph, { alg } from "../../src";
 
-const { topsort } = alg;
+const { topsort, CycleException } = alg;
 
 describe("alg.topsort", () => {
   it("returns an empty array for an empty graph", () => {
@@ -33,7 +33,7 @@ describe("alg.topsort", () => {
     g.setPath(["b", "c", "a", "b"]);
     expect(() => {
       topsort(g);
-    }).to.throw(topsort.CycleException);
+    }).to.throw(CycleException);
   });
 
   it("throws CycleException if there is a cycle #2", () => {
@@ -42,7 +42,7 @@ describe("alg.topsort", () => {
     g.setEdge("b", "d");
     expect(() => {
       topsort(g);
-    }).to.throw(topsort.CycleException);
+    }).to.throw(CycleException);
   });
 
   it("throws CycleException if there is a cycle #3", () => {
@@ -51,6 +51,6 @@ describe("alg.topsort", () => {
     g.setNode("d");
     expect(() => {
       topsort(g);
-    }).to.throw(topsort.CycleException);
+    }).to.throw(CycleException);
   });
 });

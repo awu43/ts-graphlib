@@ -1,6 +1,6 @@
 import type Graph from "../graph";
 
-import topsort from "./topsort";
+import topsort, { CycleException } from "./topsort";
 
 /**
  * Given a Graph, graph, this function returns true if the graph has no cycles and returns false if it
@@ -14,7 +14,7 @@ export default function isAcyclic(g: Graph): boolean {
   try {
     topsort(g);
   } catch (e) {
-    if (e instanceof topsort.CycleException) {
+    if (e instanceof CycleException) {
       return false;
     }
     throw e;
