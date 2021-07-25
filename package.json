@@ -17,7 +17,7 @@
     "tscheck": "tsc --noEmit",
     "test": "ts-mocha -r esm \"test/**/*.test.js\"",
     "build": "tsc",
-    "bench": "tsc && node -r esm bench.js"
+    "bench": "tsc && node bench.js"
   },
   "dependencies": {},
   "devDependencies": {
