@@ -527,7 +527,7 @@ export default class Graph {
 
     copy.setGraph(this.graph());
 
-    Object.entries(this._nodes).forEach(function ([v, value]) {
+    Object.entries(this._nodes).forEach(([v, value]) => {
       if (filter(v)) {
         copy.setNode(v, value);
       }
@@ -830,9 +830,7 @@ export default class Graph {
       if (!u) {
         return edges;
       }
-      return edges.filter(function (edge) {
-        return edge.v === u;
-      });
+      return edges.filter(edge => edge.v === u);
     }
   }
 
@@ -852,9 +850,7 @@ export default class Graph {
       if (!w) {
         return edges;
       }
-      return edges.filter(function (edge) {
-        return edge.w === w;
-      });
+      return edges.filter(edge => edge.w === w);
     }
   }
 

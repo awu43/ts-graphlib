@@ -35,20 +35,20 @@ interface GraphJSON {
  */
 export function read(json: GraphJSON): Graph {
   const g = new Graph(json.options).setGraph(json.value);
-  json.nodes.forEach(function (entry) {
+  json.nodes.forEach(entry => {
     g.setNode(entry.v, entry.value);
     if (entry.parent) {
       g.setParent(entry.v, entry.parent);
     }
   });
-  json.edges.forEach(function (entry) {
+  json.edges.forEach(entry => {
     g.setEdge({ v: entry.v, w: entry.w, name: entry.name }, entry.value);
   });
   return g;
 }
 
 function writeNodes(g: Graph) {
-  return g.nodes().map(function (v) {
+  return g.nodes().map(v => {
     const nodeValue = g.node(v);
     const parent = g.parent(v);
     const node: Node = { v };
@@ -63,7 +63,7 @@ function writeNodes(g: Graph) {
 }
 
 function writeEdges(g: Graph): Edge[] {
-  return g.edges().map(function (e) {
+  return g.edges().map(e => {
     const edgeValue = g.edge(e);
     const edge: Edge = { v: e.v, w: e.w };
     if (e.name !== undefined) {
