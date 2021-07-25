@@ -123,13 +123,13 @@ export default class Graph {
   }
 
   // v -> edgeObj
-  private _in = new DefinedMap<unknown, Record<string, Edge>>();
+  private _in = new DefinedMap<unknown, Map<string, Edge>>();
 
   // u -> v -> Number
   private _preds = new DefinedMap<unknown, Record<string, number>>();
 
   // v -> edgeObj
-  private _out = new DefinedMap<unknown, Record<string, Edge>>();
+  private _out = new DefinedMap<unknown, Map<string, Edge>>();
 
   // v -> w -> Number
   private _sucs = new DefinedMap<unknown, Record<string, number>>();
@@ -242,7 +242,7 @@ export default class Graph {
    */
   sources(): unknown[] {
     return this.nodes().filter(v => {
-      return !Object.keys(this._in.definedGet(v)).length;
+      return !this._in.definedGet(v).size;
     });
   }
 
@@ -254,7 +254,7 @@ export default class Graph {
    */
   sinks(): unknown[] {
     return this.nodes().filter(v => {
-      return !Object.keys(this._out.definedGet(v)).length;
+      return !this._out.definedGet(v).size;
     });
   }
 
@@ -285,9 +285,9 @@ export default class Graph {
       this._children.set(v, new Set<unknown>());
       this._children.definedGet(GRAPH_NODE).add(v);
     }
-    this._in.set(v, {});
+    this._in.set(v, new Map<string, Edge>());
     this._preds.set(v, {});
-    this._out.set(v, {});
+    this._out.set(v, new Map<string, Edge>());
     this._sucs.set(v, {});
     this._nodeCount += 1;
     return this;
@@ -355,10 +355,14 @@ export default class Graph {
         });
         this._children.delete(v);
       }
-      Object.keys(this._in.definedGet(v)).forEach(removeEdge);
+      for (const key of this._in.definedGet(v).keys()) {
+        removeEdge(key);
+      }
       this._in.delete(v);
       this._preds.delete(v);
-      Object.keys(this._out.definedGet(v)).forEach(removeEdge);
+      for (const key of this._out.definedGet(v).keys()) {
+        removeEdge(key);
+      }
       this._out.delete(v);
       this._sucs.delete(v);
       this._nodeCount -= 1;
@@ -687,8 +691,8 @@ export default class Graph {
     this._edgeObjs[e] = edgeObj;
     incrementOrInitEntry(this._preds.definedGet(w), v as string);
     incrementOrInitEntry(this._sucs.definedGet(v), w as string);
-    this._in.definedGet(w)[e] = edgeObj;
-    this._out.definedGet(v)[e] = edgeObj;
+    this._in.definedGet(w).set(e, edgeObj);
+    this._out.definedGet(v).set(e, edgeObj);
     this._edgeCount += 1;
     return this;
   }
@@ -799,8 +803,8 @@ export default class Graph {
       delete this._edgeObjs[e];
       decrementOrRemoveEntry(this._preds.definedGet(w_), v_ as string);
       decrementOrRemoveEntry(this._sucs.definedGet(v_), w_ as string);
-      delete this._in.definedGet(w_)[e];
-      delete this._out.definedGet(v_)[e];
+      this._in.definedGet(w_).delete(e);
+      this._out.definedGet(v_).delete(e);
       this._edgeCount -= 1;
     }
     return this;
@@ -818,7 +822,7 @@ export default class Graph {
   inEdges(v: unknown, u?: unknown): Edge[] | void {
     const inV = this._in.get(v);
     if (inV) {
-      const edges = Object.values(inV);
+      const edges = [...inV.values()];
       if (!u) {
         return edges;
       }
@@ -838,7 +842,7 @@ export default class Graph {
   outEdges(v: unknown, w?: unknown): Edge[] | void {
     const outV = this._out.get(v);
     if (outV) {
-      const edges = Object.values(outV);
+      const edges = [...outV.values()];
       if (!w) {
         return edges;
       }
