@@ -243,7 +243,7 @@ export default class Graph {
    */
   sources(): string[] {
     return this.nodes().filter(v => {
-      return utils.isEmpty(this._in[v]);
+      return !Object.keys(this._in[v]).length;
     });
   }
 
@@ -255,7 +255,7 @@ export default class Graph {
    */
   sinks(): string[] {
     return this.nodes().filter(v => {
-      return utils.isEmpty(this._out[v]);
+      return !Object.keys(this._out[v]).length;
     });
   }
 
