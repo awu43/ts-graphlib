@@ -69,13 +69,9 @@ function edgeObjToId(isDirected: boolean, edgeObj: Edge): string {
 
 // Implementation notes:
 //
-//  * Node id query functions should return string ids for the nodes
+//  * Node id query functions should return id objects for the nodes
 //  * Edge id query functions should return an "edgeObj", edge object, that is
 //    composed of enough information to uniquely identify an edge: {v, w, name}.
-//  * Internally we use an "edgeId", a stringified form of the edgeObj, to
-//    reference edges. This is because we need a performant way to look these
-//    edges up and, object properties, which have string keys, are the closest
-//    we're going to get to a performant hashtable in JavaScript.
 
 interface GraphOptions {
   directed?: boolean; // default: true.
@@ -93,7 +89,7 @@ export default class Graph {
   private _nodes: Map<unknown, unknown>;
 
   // _parent, _children only valid if _isCompound
-  private _parent!: Map<unknown, string>;
+  private _parent!: Map<unknown, unknown>;
   private _children!: DefinedMap<unknown, Set<unknown>>;
 
   constructor(opts?: GraphOptions) {
@@ -349,10 +345,10 @@ export default class Graph {
       };
       this._nodes.delete(v);
       if (this._isCompound) {
-        this._removeFromParentsChildList(v as string);
+        this._removeFromParentsChildList(v);
         this._parent.delete(v);
-        this.children(v as string)?.forEach(child => {
-          this.setParent(child as string);
+        this.children(v)?.forEach(child => {
+          this.setParent(child);
         });
         this._children.delete(v);
       }
@@ -398,7 +394,7 @@ export default class Graph {
           );
         }
         // While loop does the check for undefined
-        ancestor = this.parent(ancestor) as string;
+        ancestor = this.parent(ancestor);
       }
 
       this.setNode(parent);
@@ -406,7 +402,7 @@ export default class Graph {
 
     this.setNode(v);
     this._removeFromParentsChildList(v);
-    this._parent.set(v, parent as string);
+    this._parent.set(v, parent);
     this._children.definedGet(parent).add(v);
     return this;
   }
@@ -422,7 +418,7 @@ export default class Graph {
    * @argument v - node to get parent of.
    * @returns parent node name or void if v has no parent.
    */
-  parent(v: unknown): string | void {
+  parent(v: unknown): unknown | void {
     if (this._isCompound) {
       const parent = this._parent.get(v);
       if (parent !== GRAPH_NODE) {
@@ -534,7 +530,7 @@ export default class Graph {
     copy.setGraph(this.graph());
 
     for (const [v, value] of this._nodes.entries()) {
-      if (filter(v as string)) {
+      if (filter(v)) {
         copy.setNode(v, value);
       }
     }
@@ -562,8 +558,7 @@ export default class Graph {
 
     if (this._isCompound) {
       copy.nodes().forEach(v => {
-        // void is undefined here, but TS doesn't like that
-        copy.setParent(v as string, findParent(v as string) ?? undefined);
+        copy.setParent(v, findParent(v));
       });
     }
 
