@@ -8,8 +8,8 @@ function rw(g) {
   return read(write(g));
 }
 
-describe("json", function () {
-  it("preserves the graph options", function () {
+describe("json", () => {
+  it("preserves the graph options", () => {
     expect(rw(new Graph({ directed: true })).isDirected()).to.be.true;
     expect(rw(new Graph({ directed: false })).isDirected()).to.be.false;
     expect(rw(new Graph({ multigraph: true })).isMultigraph()).to.be.true;
@@ -18,7 +18,7 @@ describe("json", function () {
     expect(rw(new Graph({ compound: false })).isCompound()).to.be.false;
   });
 
-  it("preserves the graph value, if any", function () {
+  it("preserves the graph value, if any", () => {
     expect(rw(new Graph().setGraph(1)).graph()).equals(1);
     expect(rw(new Graph().setGraph({ foo: "bar" })).graph()).eqls({
       foo: "bar",
@@ -26,7 +26,7 @@ describe("json", function () {
     expect(rw(new Graph()).graph()).to.be.undefined;
   });
 
-  it("preserves nodes", function () {
+  it("preserves nodes", () => {
     expect(rw(new Graph().setNode("a")).hasNode("a")).to.be.true;
     expect(rw(new Graph().setNode("a")).node("a")).to.be.undefined;
     expect(rw(new Graph().setNode("a", 1)).node("a")).equals(1);
@@ -35,7 +35,7 @@ describe("json", function () {
     });
   });
 
-  it("preserves simple edges", function () {
+  it("preserves simple edges", () => {
     expect(rw(new Graph().setEdge("a", "b")).hasEdge("a", "b")).to.be.true;
     expect(rw(new Graph().setEdge("a", "b")).edge("a", "b")).to.be.undefined;
     expect(rw(new Graph().setEdge("a", "b", 1)).edge("a", "b")).equals(1);
@@ -44,7 +44,7 @@ describe("json", function () {
     ).eqls({ foo: "bar" });
   });
 
-  it("preserves multi-edges", function () {
+  it("preserves multi-edges", () => {
     const g = new Graph({ multigraph: true });
 
     g.setEdge({ v: "a", w: "b", name: "foo" });
@@ -60,7 +60,7 @@ describe("json", function () {
     expect(rw(g).edge("a", "b", "foo")).eqls({ foo: "bar" });
   });
 
-  it("preserves parent / child relationships", function () {
+  it("preserves parent / child relationships", () => {
     expect(rw(new Graph({ compound: true }).setNode("a")).parent("a")).to.be
       .undefined;
     expect(

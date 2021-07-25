@@ -5,18 +5,18 @@ import Graph, { alg } from "../../src";
 
 const { topsort } = alg;
 
-describe("alg.topsort", function () {
-  it("returns an empty array for an empty graph", function () {
+describe("alg.topsort", () => {
+  it("returns an empty array for an empty graph", () => {
     expect(topsort(new Graph())).to.be.empty;
   });
 
-  it("sorts nodes such that earlier nodes have directed edges to later nodes", function () {
+  it("sorts nodes such that earlier nodes have directed edges to later nodes", () => {
     const g = new Graph();
     g.setPath(["b", "c", "a"]);
     expect(topsort(g)).to.eql(["b", "c", "a"]);
   });
 
-  it("works for a diamond", function () {
+  it("works for a diamond", () => {
     const g = new Graph();
     g.setPath(["a", "b", "d"]);
     g.setPath(["a", "c", "d"]);
@@ -28,28 +28,28 @@ describe("alg.topsort", function () {
     expect(_.indexOf(result, "d")).to.equal(3);
   });
 
-  it("throws CycleException if there is a cycle #1", function () {
+  it("throws CycleException if there is a cycle #1", () => {
     const g = new Graph();
     g.setPath(["b", "c", "a", "b"]);
-    expect(function () {
+    expect(() => {
       topsort(g);
     }).to.throw(topsort.CycleException);
   });
 
-  it("throws CycleException if there is a cycle #2", function () {
+  it("throws CycleException if there is a cycle #2", () => {
     const g = new Graph();
     g.setPath(["b", "c", "a", "b"]);
     g.setEdge("b", "d");
-    expect(function () {
+    expect(() => {
       topsort(g);
     }).to.throw(topsort.CycleException);
   });
 
-  it("throws CycleException if there is a cycle #3", function () {
+  it("throws CycleException if there is a cycle #3", () => {
     const g = new Graph();
     g.setPath(["b", "c", "a", "b"]);
     g.setNode("d");
-    expect(function () {
+    expect(() => {
       topsort(g);
     }).to.throw(topsort.CycleException);
   });

@@ -6,15 +6,13 @@ import allShortestPathsTest from "./all-shortest-paths.test";
 const { floydWarshall } = alg;
 
 function weightFn(g) {
-  return function (edge) {
-    return g.edge(edge);
-  };
+  return edge => g.edge(edge);
 }
 
-describe("alg.floydWarshall", function () {
+describe("alg.floydWarshall", () => {
   allShortestPathsTest(floydWarshall);
 
-  it("handles negative weights", function () {
+  it("handles negative weights", () => {
     const g = new Graph();
     g.setEdge("a", "b", 1);
     g.setEdge("a", "c", -2);
@@ -49,7 +47,7 @@ describe("alg.floydWarshall", function () {
     });
   });
 
-  it("does include negative weight self edges", function () {
+  it("does include negative weight self edges", () => {
     const g = new Graph();
     g.setEdge("a", "a", -1);
 

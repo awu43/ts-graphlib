@@ -3,20 +3,18 @@ import { expect } from "chai";
 import Graph from "../../src";
 
 function weightFn(g) {
-  return function (e) {
-    return g.edge(e);
-  };
+  return e => g.edge(e);
 }
 
 export default function tests(sp) {
-  describe("allShortestPaths", function () {
-    it("returns 0 for the node itself", function () {
+  describe("allShortestPaths", () => {
+    it("returns 0 for the node itself", () => {
       const g = new Graph();
       g.setNode("a");
       expect(sp(g)).to.eql({ a: { a: { distance: 0 } } });
     });
 
-    it("returns the distance and path from all nodes to other nodes", function () {
+    it("returns the distance and path from all nodes to other nodes", () => {
       const g = new Graph();
       g.setEdge("a", "b");
       g.setEdge("b", "c");
@@ -39,7 +37,7 @@ export default function tests(sp) {
       });
     });
 
-    it("uses an optionally supplied weight function", function () {
+    it("uses an optionally supplied weight function", () => {
       const g = new Graph();
       g.setEdge("a", "b", 2);
       g.setEdge("b", "c", 3);
@@ -63,16 +61,12 @@ export default function tests(sp) {
       });
     });
 
-    it("uses an optionally supplied incident function", function () {
+    it("uses an optionally supplied incident function", () => {
       const g = new Graph();
       g.setEdge("a", "b");
       g.setEdge("b", "c");
 
-      expect(
-        sp(g, undefined, function (v) {
-          return g.inEdges(v);
-        })
-      ).to.eql({
+      expect(sp(g, undefined, v => g.inEdges(v))).to.eql({
         a: {
           a: { distance: 0 },
           b: { distance: Number.POSITIVE_INFINITY },
@@ -91,7 +85,7 @@ export default function tests(sp) {
       });
     });
 
-    it("works with undirected graphs", function () {
+    it("works with undirected graphs", () => {
       const g = new Graph({ directed: false });
       g.setEdge("a", "b", 1);
       g.setEdge("b", "c", 2);

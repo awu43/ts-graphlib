@@ -5,14 +5,14 @@ import Graph, { alg } from "../../src";
 
 const { preorder } = alg;
 
-describe("alg.preorder", function () {
-  it("returns the root for a singleton graph", function () {
+describe("alg.preorder", () => {
+  it("returns the root for a singleton graph", () => {
     const g = new Graph();
     g.setNode("a");
     expect(preorder(g, "a")).to.eql(["a"]);
   });
 
-  it("visits each node in the graph once", function () {
+  it("visits each node in the graph once", () => {
     const g = new Graph();
     g.setPath(["a", "b", "d", "e"]);
     g.setPath(["a", "c", "d", "e"]);
@@ -21,7 +21,7 @@ describe("alg.preorder", function () {
     expect(_.sortBy(nodes)).to.eql(["a", "b", "c", "d", "e"]);
   });
 
-  it("works for a tree", function () {
+  it("works for a tree", () => {
     const g = new Graph();
     g.setEdge("a", "b");
     g.setPath(["a", "c", "d"]);
@@ -35,7 +35,7 @@ describe("alg.preorder", function () {
     expect(nodes.indexOf("e")).to.be.gt(nodes.indexOf("c"));
   });
 
-  it("works for an array of roots", function () {
+  it("works for an array of roots", () => {
     const g = new Graph();
     g.setEdge("a", "b");
     g.setEdge("c", "d");
@@ -48,10 +48,10 @@ describe("alg.preorder", function () {
     expect(nodes.indexOf("d")).to.be.gt(nodes.indexOf("c"));
   });
 
-  it("fails if root is not in the graph", function () {
+  it("fails if root is not in the graph", () => {
     const g = new Graph();
     g.setNode("a");
-    expect(function () {
+    expect(() => {
       preorder(g, "b");
     }).to.throw();
   });
