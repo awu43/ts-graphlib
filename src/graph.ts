@@ -30,9 +30,7 @@ function edgeArgsToId(
   if (!isDirected && v > w) {
     [v, w] = [w, v];
   }
-  return [v, w, name === undefined ? DEFAULT_EDGE_NAME : name].join(
-    EDGE_KEY_DELIM
-  );
+  return [v, w, name ?? DEFAULT_EDGE_NAME].join(EDGE_KEY_DELIM);
 }
 
 export interface Edge {
