@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "lint": "eslint \"{src,test}/**/*.{js,ts}\"",
-    "test": "ts-mocha -r esm --recursive",
+    "test": "ts-mocha -r esm \"test/**/*.test.js\"",
     "build": "tsc",
     "bench": "tsc && node -r esm bench.js"
   },
