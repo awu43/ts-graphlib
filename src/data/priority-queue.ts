@@ -90,9 +90,6 @@ export default class PriorityQueue {
    * Removes and returns the smallest key in the queue. Takes `O(log n)` time.
    */
   removeMin(): string {
-    if (!this._arr.length) {
-      throw new Error("Cannot removeMin() on empty queue");
-    }
     this._swap(0, this._arr.length - 1);
     const min = this._arr.pop() as QueueKey;
     this._keyIndices.delete(min.key);
