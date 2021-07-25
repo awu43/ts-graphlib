@@ -129,7 +129,7 @@ export default class Graph {
   private _preds = new DefinedMap<unknown, Record<string, number>>();
 
   // v -> edgeObj
-  private _out: Record<string, Record<string, Edge>> = {};
+  private _out = new DefinedMap<unknown, Record<string, Edge>>();
 
   // v -> w -> Number
   private _sucs: Record<string, Record<string, number>> = {};
@@ -254,7 +254,7 @@ export default class Graph {
    */
   sinks(): unknown[] {
     return this.nodes().filter(v => {
-      return !Object.keys(this._out[v as string]).length;
+      return !Object.keys(this._out.definedGet(v)).length;
     });
   }
 
@@ -287,7 +287,7 @@ export default class Graph {
     }
     this._in.set(v, {});
     this._preds.set(v, {});
-    this._out[v as string] = {};
+    this._out.set(v, {});
     this._sucs[v as string] = {};
     this._nodeCount += 1;
     return this;
@@ -358,8 +358,8 @@ export default class Graph {
       Object.keys(this._in.definedGet(v)).forEach(removeEdge);
       this._in.delete(v);
       this._preds.delete(v);
-      Object.keys(this._out[v as string]).forEach(removeEdge);
-      delete this._out[v as string];
+      Object.keys(this._out.definedGet(v)).forEach(removeEdge);
+      this._out.delete(v);
       delete this._sucs[v as string];
       this._nodeCount -= 1;
     }
@@ -688,7 +688,7 @@ export default class Graph {
     incrementOrInitEntry(this._preds.definedGet(w), v as string);
     incrementOrInitEntry(this._sucs[v as string], w as string);
     this._in.definedGet(w)[e] = edgeObj;
-    this._out[v as string][e] = edgeObj;
+    this._out.definedGet(v)[e] = edgeObj;
     this._edgeCount += 1;
     return this;
   }
@@ -800,7 +800,7 @@ export default class Graph {
       decrementOrRemoveEntry(this._preds.definedGet(w_), v_ as string);
       decrementOrRemoveEntry(this._sucs[v_ as string], w_ as string);
       delete this._in.definedGet(w_)[e];
-      delete this._out[v_ as string][e];
+      delete this._out.definedGet(v_)[e];
       this._edgeCount -= 1;
     }
     return this;
@@ -836,7 +836,7 @@ export default class Graph {
    * @returns edges descriptors list if v is in the graph, or undefined otherwise.
    */
   outEdges(v: unknown, w?: unknown): Edge[] | void {
-    const outV = this._out[v as string];
+    const outV = this._out.get(v);
     if (outV) {
       const edges = Object.values(outV);
       if (!w) {
