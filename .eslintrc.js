@@ -24,6 +24,7 @@ module.exports = {
       "LabeledStatement",
       "WithStatement",
     ],
+    "max-classes-per-file": 0,
 
     "import/no-unresolved": 0,
     "import/extensions": 0,
@@ -52,6 +53,7 @@ module.exports = {
           "LabeledStatement",
           "WithStatement",
         ],
+        "max-classes-per-file": 0,
 
         "import/no-unresolved": 0,
         "import/extensions": 0,

@@ -6,6 +6,8 @@ const EDGE_KEY_DELIM = "\x01";
 
 // Original types and function docs from https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/graphlib/index.d.ts
 
+export class NodeIdError extends Error {}
+
 function incrementOrInitEntry(map: Map<unknown, number>, k: unknown): void {
   const entry = map.get(k);
   if (entry) {
@@ -22,6 +24,14 @@ function decrementOrRemoveEntry(map: Map<unknown, number>, k: unknown): void {
   }
 }
 
+export interface Edge {
+  v: unknown;
+  w: unknown;
+  /** The name that uniquely identifies a multi-edge. */
+  name?: unknown;
+  value?: string;
+}
+
 // TODO: Enforce w/v order Graph option
 function edgeArgsToId(
   isDirected: boolean,
@@ -35,14 +45,6 @@ function edgeArgsToId(
     [v, w] = [w, v];
   }
   return [v, w, name ?? DEFAULT_EDGE_NAME].join(EDGE_KEY_DELIM);
-}
-
-export interface Edge {
-  v: unknown;
-  w: unknown;
-  /** The name that uniquely identifies a multi-edge. */
-  name?: unknown;
-  value?: string;
 }
 
 function edgeArgsToObj(
@@ -272,11 +274,15 @@ export default class Graph {
    * created by this call then the default node value will be assigned.
    * Complexity: O(1).
    *
-   * @argument v - node name.
+   * @argument v - node id.
    * @argument value - value to set for node.
    * @returns the graph, allowing this to be chained with other functions.
    */
   setNode(v: unknown, value?: unknown): Graph {
+    if (v === undefined || v === null) {
+      throw new NodeIdError("Node IDs cannot be null or undefined");
+    }
+
     if (this._nodes.has(v)) {
       if (arguments.length > 1) {
         this._nodes.set(v, value);
@@ -302,10 +308,10 @@ export default class Graph {
   }
 
   /**
-   * Invokes setNode method for each node in names list.
-   * Complexity: O(|names|).
+   * Invokes setNode method for each node in id list.
+   * Complexity: O(|ids|).
    *
-   * @argument vs - list of nodes names to be set.
+   * @argument vs - list of nodes id to be set.
    * @argument value - value to set for each node in list.
    * @returns the graph, allowing this to be chained with other functions.
    */
@@ -321,10 +327,10 @@ export default class Graph {
   }
 
   /**
-   * Gets the label of node with specified name.
+   * Gets the label of node with specified id.
    * Complexity: O(|V|).
    *
-   * @argument v - name of the node.
+   * @argument v - id of the node.
    * @returns label value of the node.
    */
   node(v: unknown): unknown {
@@ -332,22 +338,22 @@ export default class Graph {
   }
 
   /**
-   * Detects whether graph has a node with specified name or not.
+   * Detects whether graph has a node with specified id or not.
    *
-   * @argument v - name of the node.
-   * @returns true if graph has node with specified name, false - otherwise.
+   * @argument v - id of the node.
+   * @returns true if graph has node with specified id, false - otherwise.
    */
   hasNode(v: unknown): boolean {
     return this._nodes.has(v);
   }
 
   /**
-   * Remove the node with the name from the graph or do nothing if the node is not in
+   * Remove the node with the id from the graph or do nothing if the node is not in
    * the graph. If the node was removed this function also removes any incident
    * edges.
    * Complexity: O(1).
    *
-   * @argument v - name of the node.
+   * @argument v - id of the node.
    * @returns the graph, allowing this to be chained with other functions.
    */
   removeNode(v: unknown): Graph {
@@ -386,15 +392,15 @@ export default class Graph {
    * Average-case complexity: O(1).
    *
    * @argument v - node to be child for p.
-   * @argument parent_ - node to be parent for v.
+   * @argument p - node to be parent for v.
    * @returns the graph, allowing this to be chained with other functions.
    */
-  setParent(v: unknown, parent_?: unknown): Graph {
+  setParent(v: unknown, p?: unknown): Graph {
     if (!this._isCompound) {
       throw new Error("Cannot set parent in a non-compound graph");
     }
 
-    let parent = parent_;
+    let parent = p;
     if (parent === undefined) {
       parent = GRAPH_NODE;
     } else {
@@ -428,7 +434,7 @@ export default class Graph {
    * Complexity: O(1).
    *
    * @argument v - node to get parent of.
-   * @returns parent node name or void if v has no parent.
+   * @returns parent node id or void if v has no parent.
    */
   parent(v: unknown): unknown | void {
     if (this._isCompound) {
@@ -444,7 +450,7 @@ export default class Graph {
    * Complexity: O(1).
    *
    * @argument v_ - node to get children of.
-   * @returns children nodes names list.
+   * @returns children nodes id list.
    */
   children(v_?: unknown): unknown[] | void {
     const v = v_ === undefined ? GRAPH_NODE : v_;

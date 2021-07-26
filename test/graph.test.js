@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import * as _ from "lodash";
 
-import Graph from "../src";
+import Graph, { NodeIdError } from "../src";
 
 describe("Graph", () => {
   let g;
@@ -236,12 +236,30 @@ describe("Graph", () => {
       expect(g.node("c")).to.equal("foo");
     });
 
+    it("throws NodeIdError if an ID is undefined or null", () => {
+      expect(() => {
+        g.setNodes([undefined, "bar"]);
+      }).to.throw(NodeIdError);
+      expect(() => {
+        g.setNodes(["foo", null]);
+      }).to.throw(NodeIdError);
+    });
+
     it("is chainable", () => {
       expect(g.setNodes(["a", "b", "c"])).to.equal(g);
     });
   });
 
   describe("setNode", () => {
+    it("throws NodeIdError if ID is undefined or null", () => {
+      expect(() => {
+        g.setNode(undefined);
+      }).to.throw(NodeIdError);
+      expect(() => {
+        g.setNode(null);
+      }).to.throw(NodeIdError);
+    });
+
     it("creates the node if it isn't part of the graph", () => {
       g.setNode("a");
       expect(g.hasNode("a")).to.be.true;

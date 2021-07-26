@@ -28,9 +28,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Graph from "./graph";
+import Graph, { NodeIdError } from "./graph";
 import * as json from "./json";
 import * as alg from "./alg";
 
 export default Graph;
-export { json, alg };
+export { NodeIdError, json, alg };
