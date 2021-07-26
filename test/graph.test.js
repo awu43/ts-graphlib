@@ -96,9 +96,7 @@ describe("Graph", () => {
       g.setNode("a", 123);
       g.setPath(["a", "b", "c"]);
       g.setEdge("a", "c", 456);
-      const g2 = g.filterNodes(() => {
-        return true;
-      });
+      const g2 = g.filterNodes(() => true);
       expect(_.sortBy(g2.nodes())).eqls(["a", "b", "c"]);
       expect(_.sortBy(g2.successors("a"))).eqls(["b", "c"]);
       expect(_.sortBy(g2.successors("b"))).eqls(["c"]);
@@ -109,9 +107,7 @@ describe("Graph", () => {
 
     it("returns an empty graph when the filter selects nothing", () => {
       g.setPath(["a", "b", "c"]);
-      const g2 = g.filterNodes(() => {
-        return false;
-      });
+      const g2 = g.filterNodes(() => false);
       expect(g2.nodes()).eqls([]);
       expect(g2.edges()).eqls([]);
     });
@@ -131,71 +127,33 @@ describe("Graph", () => {
 
     it("preserves the directed option", () => {
       g = new Graph({ directed: true });
-      expect(
-        g
-          .filterNodes(() => {
-            return true;
-          })
-          .isDirected()
-      ).to.be.true;
+      expect(g.filterNodes(() => true).isDirected()).to.be.true;
 
       g = new Graph({ directed: false });
-      expect(
-        g
-          .filterNodes(() => {
-            return true;
-          })
-          .isDirected()
-      ).to.be.false;
+      expect(g.filterNodes(() => true).isDirected()).to.be.false;
     });
 
     it("preserves the multigraph option", () => {
       g = new Graph({ multigraph: true });
-      expect(
-        g
-          .filterNodes(() => {
-            return true;
-          })
-          .isMultigraph()
-      ).to.be.true;
+      expect(g.filterNodes(() => true).isMultigraph()).to.be.true;
 
       g = new Graph({ multigraph: false });
-      expect(
-        g
-          .filterNodes(() => {
-            return true;
-          })
-          .isMultigraph()
-      ).to.be.false;
+      expect(g.filterNodes(() => true).isMultigraph()).to.be.false;
     });
 
     it("preserves the compound option", () => {
       g = new Graph({ compound: true });
-      expect(
-        g
-          .filterNodes(() => {
-            return true;
-          })
-          .isCompound()
-      ).to.be.true;
+      expect(g.filterNodes(() => true).isCompound()).to.be.true;
 
       g = new Graph({ compound: false });
-      expect(
-        g
-          .filterNodes(() => {
-            return true;
-          })
-          .isCompound()
-      ).to.be.false;
+      expect(g.filterNodes(() => true).isCompound()).to.be.false;
     });
 
     it("includes subgraphs", () => {
       g = new Graph({ compound: true });
       g.setParent("a", "parent");
 
-      const g2 = g.filterNodes(() => {
-        return true;
-      });
+      const g2 = g.filterNodes(() => true);
       expect(g2.parent("a")).eqls("parent");
     });
 
@@ -204,9 +162,7 @@ describe("Graph", () => {
       g.setParent("a", "parent");
       g.setParent("parent", "root");
 
-      const g2 = g.filterNodes(() => {
-        return true;
-      });
+      const g2 = g.filterNodes(() => true);
       expect(g2.parent("a")).eqls("parent");
       expect(g2.parent("parent")).eqls("root");
     });
@@ -315,9 +271,7 @@ describe("Graph", () => {
     });
 
     it("can take a function", () => {
-      g.setDefaultNodeLabel(() => {
-        return "foo";
-      });
+      g.setDefaultNodeLabel(() => "foo");
       g.setNode("a");
       expect(g.node("a")).to.equal("foo");
     });
@@ -748,9 +702,7 @@ describe("Graph", () => {
     });
 
     it("can take a function", () => {
-      g.setDefaultEdgeLabel(() => {
-        return "foo";
-      });
+      g.setDefaultEdgeLabel(() => "foo");
       g.setEdge("a", "b");
       expect(g.edge("a", "b")).to.equal("foo");
     });
