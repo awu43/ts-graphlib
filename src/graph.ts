@@ -501,6 +501,14 @@ export default class Graph {
     }
   }
 
+  /**
+   * Checks if a node v has any successors in a directed graph or any neighbors
+   * in an undirected graph.
+   * Complexity: O(|V|).
+   *
+   * @argument v - node identifier.
+   * @returns whether the node is a leaf.
+   */
   isLeaf(v: unknown): boolean {
     let neighbors;
     if (this.isDirected()) {
