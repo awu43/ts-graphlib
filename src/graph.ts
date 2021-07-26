@@ -4,7 +4,7 @@ const DEFAULT_EDGE_NAME = "\x00";
 const GRAPH_NODE = "\x00";
 const EDGE_KEY_DELIM = "\x01";
 
-// Types and function docs from https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/graphlib/index.d.ts
+// Original types and function docs from https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/graphlib/index.d.ts
 
 function incrementOrInitEntry(map: Map<unknown, number>, k: unknown): void {
   const entry = map.get(k);
@@ -199,11 +199,18 @@ export default class Graph {
   /* === Node functions ========== */
 
   /**
-   * Sets the default node label. This label will be assigned as default label
+   * Sets the default node label or node label factory function.
+   *
+   * If set with a label, the label will be assigned as default label
    * in case if no label was specified while setting a node.
+   *
+   * If set with a node label factory function, the function will be invoked
+   * each time when setting a node with no label specified and returned value
+   * will be used as a label for node.
+   *
    * Complexity: O(1).
    *
-   * @argument newDefault - default node label.
+   * @argument newDefault - default node label or factory function.
    * @returns the graph, allowing this to be chained with other functions.
    */
   setDefaultNodeLabel(
@@ -260,13 +267,13 @@ export default class Graph {
   }
 
   /**
-   * Creates or updates the value for the node v in the graph. If label is supplied
-   * it is set as the value for the node. If label is not supplied and the node was
-   * created by this call then the default node label will be assigned.
+   * Creates or updates the value for the node v in the graph. If value is supplied
+   * it is set as the value for the node. If value is not supplied and the node was
+   * created by this call then the default node value will be assigned.
    * Complexity: O(1).
    *
-   * @argument name - node name.
-   * @argument label - value to set for node.
+   * @argument v - node name.
+   * @argument value - value to set for node.
    * @returns the graph, allowing this to be chained with other functions.
    */
   setNode(v: unknown, value?: unknown): Graph {
@@ -298,8 +305,8 @@ export default class Graph {
    * Invokes setNode method for each node in names list.
    * Complexity: O(|names|).
    *
-   * @argument names - list of nodes names to be set.
-   * @argument label - value to set for each node in list.
+   * @argument vs - list of nodes names to be set.
+   * @argument value - value to set for each node in list.
    * @returns the graph, allowing this to be chained with other functions.
    */
   setNodes(vs: unknown[], value?: unknown): Graph {
@@ -317,6 +324,7 @@ export default class Graph {
    * Gets the label of node with specified name.
    * Complexity: O(|V|).
    *
+   * @argument v - name of the node.
    * @returns label value of the node.
    */
   node(v: unknown): unknown {
@@ -326,7 +334,7 @@ export default class Graph {
   /**
    * Detects whether graph has a node with specified name or not.
    *
-   * @argument name - name of the node.
+   * @argument v - name of the node.
    * @returns true if graph has node with specified name, false - otherwise.
    */
   hasNode(v: unknown): boolean {
@@ -339,7 +347,7 @@ export default class Graph {
    * edges.
    * Complexity: O(1).
    *
-   * @argument name - name of the node.
+   * @argument v - name of the node.
    * @returns the graph, allowing this to be chained with other functions.
    */
   removeNode(v: unknown): Graph {
@@ -378,7 +386,7 @@ export default class Graph {
    * Average-case complexity: O(1).
    *
    * @argument v - node to be child for p.
-   * @argument p - node to be parent for v.
+   * @argument parent_ - node to be parent for v.
    * @returns the graph, allowing this to be chained with other functions.
    */
   setParent(v: unknown, parent_?: unknown): Graph {
@@ -435,7 +443,7 @@ export default class Graph {
    * Gets list of direct children of node v.
    * Complexity: O(1).
    *
-   * @argument v - node to get children of.
+   * @argument v_ - node to get children of.
    * @returns children nodes names list.
    */
   children(v_?: unknown): unknown[] | void {
@@ -580,11 +588,18 @@ export default class Graph {
   /* === Edge functions ========== */
 
   /**
-   * Sets the default edge label. This label will be assigned as default label
+   * Sets the default edge label or edge label factory function.
+   *
+   * If set with a label, the label will be assigned as default label
    * in case if no label was specified while setting an edge.
+   *
+   * If set with a function, the function will be invoked
+   * each time when setting an edge with no label specified and returned value
+   * will be used as a label for edge.
+   *
    * Complexity: O(1).
    *
-   * @argument label - default edge label.
+   * @argument newDefault - default edge label or factory function.
    * @returns the graph, allowing this to be chained with other functions.
    */
   setDefaultEdgeLabel(
@@ -708,12 +723,12 @@ export default class Graph {
 
   /**
    * Establish an edges path over the nodes in nodes list. If some edge is already
-   * exists, it will update its label, otherwise it will create an edge between pair
-   * of nodes with label provided or default label if no label provided.
+   * exists, it will update its value, otherwise it will create an edge between pair
+   * of nodes with value provided or default value if no value provided.
    * Complexity: O(|nodes|).
    *
-   * @argument nodes - list of nodes to be connected in series.
-   * @argument label - value to set for each edge between pairs of nodes.
+   * @argument vs - list of nodes to be connected in series.
+   * @argument value - value to set for each edge between pairs of nodes.
    * @returns the graph, allowing this to be chained with other functions.
    */
   setPath(vs: unknown[], value?: unknown): Graph {
@@ -732,7 +747,7 @@ export default class Graph {
    * Gets the label for the specified edge.
    * Complexity: O(1).
    *
-   * @argument edge - edge descriptor.
+   * @argument e - edge descriptor.
    * @returns value associated with specified edge.
    */
   edge(e: Edge): unknown;
@@ -758,7 +773,7 @@ export default class Graph {
    * Detects whether the graph contains specified edge or not. No subgraphs are considered.
    * Complexity: O(1).
    *
-   * @argument edge - edge descriptor.
+   * @argument e - edge descriptor.
    * @returns whether the graph contains the specified edge or not.
    */
   hasEdge(e: Edge): boolean;
@@ -784,9 +799,7 @@ export default class Graph {
    * Removes the specified edge from the graph. No subgraphs are considered.
    * Complexity: O(1).
    *
-   * @argument v - edge source node.
-   * @argument w - edge sink node.
-   * @argument name - name of the edge (actual for multigraph).
+   * @argument e - edge descriptor.
    * @returns the graph, allowing this to be chained with other functions.
    */
   removeEdge(e: Edge): Graph;
@@ -825,7 +838,7 @@ export default class Graph {
    * Complexity: O(|E|).
    *
    * @argument v - edge sink node.
-   * @argument w - edge source node.
+   * @argument u - edge source node.
    * @returns edges descriptors list if v is in the graph, or undefined otherwise.
    */
   inEdges(v: unknown, u?: unknown): Edge[] | void {

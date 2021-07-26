@@ -5,7 +5,7 @@ import type Graph from "../graph";
  * Each component is itself an array that contains the ids of nodes in the component.
  * Complexity: O(|V|).
  *
- * @argument graph - graph to find components in.
+ * @argument g - graph to find components in.
  * @returns array of nodes list representing components
  */
 export default function components(g: Graph): unknown[][] {

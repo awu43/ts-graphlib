@@ -16,7 +16,7 @@ type Node = {
  * one cycle.
  * Complexity: O(|V| + |E|).
  *
- * @argument graph - graph to find all strongly connected components of.
+ * @argument g - graph to find all strongly connected components of.
  * @return  an array of components. Each component is itself an array that contains
  *          the ids of all nodes in the component.
  */

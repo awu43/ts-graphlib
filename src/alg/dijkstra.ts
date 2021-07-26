@@ -72,7 +72,7 @@ function runDijkstra(
  * path from source to v in reverse order.
  * Complexity: O((|E| + |V|) * log |V|).
  *
- * @argument graph - graph where to search pathes.
+ * @argument g - graph where to search pathes.
  * @argument source - node to start pathes from.
  * @argument weightFn - function which takes edge e and returns the weight of it. If no weightFn
  * is supplied then each edge is assumed to have a weight of 1. This function throws an

@@ -11,12 +11,12 @@ import type { WeightFn } from "./dijkstra";
  * from the description in "Introduction to Algorithms", Third Edition, Cormen, et al., Pg 634.
  * Complexity: O(|E| * log |V|);
  *
- * @argument graph - graph to generate a minimum spanning tree of.
+ * @argument g - graph to generate a minimum spanning tree of.
  * @argument weightFn - function which takes edge e and returns the weight of it. It throws an Error if
  *           the graph is not connected.
  * @returns minimum spanning tree of graph.
  */
-export default function prim(g: Graph, weightFunc: WeightFn): Graph {
+export default function prim(g: Graph, weightFn: WeightFn): Graph {
   const result = new Graph();
   const parents = new DefinedMap<unknown, unknown>();
   const pq = new PriorityQueue();
@@ -26,7 +26,7 @@ export default function prim(g: Graph, weightFunc: WeightFn): Graph {
     const w = edge.v === v ? edge.w : edge.v;
     const pri = pq.priority(w);
     if (pri !== undefined) {
-      const edgeWeight = weightFunc(edge);
+      const edgeWeight = weightFn(edge);
       if (edgeWeight < pri) {
         parents.set(w, v);
         pq.decrease(w, edgeWeight);

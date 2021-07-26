@@ -7,7 +7,7 @@ export class CycleException extends Error {}
  * If the graph has a cycle it is impossible to generate such a list and CycleException is thrown.
  * Complexity: O(|V| + |E|).
  *
- * @argument graph - graph to apply topological sorting to.
+ * @argument g - graph to apply topological sorting to.
  * @returns an array of nodes such that for each edge u -> v, u appears before v in the array.
  */
 export default function topsort(g: Graph): unknown[] {

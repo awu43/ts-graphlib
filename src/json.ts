@@ -1,7 +1,7 @@
 import Graph from "./graph";
 import type { Edge } from "./graph";
 
-// Types and function docs from https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/graphlib/index.d.ts
+// Original types and function docs from https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/graphlib/index.d.ts
 
 interface Node {
   v: unknown;
@@ -80,7 +80,7 @@ function writeEdges(g: Graph): Edge[] {
  * Creates a JSON representation of the graph that can be serialized to a string with
  * JSON.stringify. The graph can later be restored using json.read.
  *
- * @argument graph - target to create JSON representation of.
+ * @argument g - target graph to create JSON representation of.
  * @returns JSON serializable graph representation
  */
 export function write(g: Graph): GraphJSON {

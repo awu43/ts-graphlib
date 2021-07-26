@@ -9,7 +9,7 @@ import type Graph from "../graph";
  * cycle or not.
  * Complexity: O(|V| + |E|).
  *
- * @argument graph - graph where to search cycles.
+ * @argument g - graph where to search cycles.
  * @returns cycles list.
  */
 export default function findCycles(g: Graph): unknown[][] {

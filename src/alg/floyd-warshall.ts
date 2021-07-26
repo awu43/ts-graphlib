@@ -63,7 +63,7 @@ function runFloydWarshall(
  * order.
  * Complexity: O(|V|^3).
  *
- * @argument graph - graph where to search pathes.
+ * @argument g - graph where to search pathes.
  * @argument weightFn - function which takes edge e and returns the weight of it. If no weightFn
  * is supplied then each edge is assumed to have a weight of 1. This function throws an
  * Error if any of the traversed edges have a negative edge weight.

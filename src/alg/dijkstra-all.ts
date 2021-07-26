@@ -11,7 +11,7 @@ export type AllPathsMap = Record<string, PathMap>;
  * array, it returns a mapping of source -> alg.dijksta(g, source, weightFn, edgeFn).
  * Complexity: O(|V| * (|E| + |V|) * log |V|).
  *
- * @argument graph - graph where to search pathes.
+ * @argument g - graph where to search pathes.
  * @argument weightFn - function which takes edge e and returns the weight of it. If no weightFn
  * is supplied then each edge is assumed to have a weight of 1. This function throws an
  * Error if any of the traversed edges have a negative edge weight.
@@ -21,14 +21,14 @@ export type AllPathsMap = Record<string, PathMap>;
  */
 export default function dijkstraAll(
   g: Graph,
-  weightFunc: WeightFn,
-  edgeFunc: EdgeFn
+  weightFn: WeightFn,
+  edgeFn: EdgeFn
 ): AllPathsMap {
   const acc: AllPathsMap = {};
   const nodes = g.nodes();
   for (let i = 0; i < nodes.length; i++) {
     const v = nodes[i];
-    acc[v as string] = dijkstra(g, v, weightFunc, edgeFunc);
+    acc[v as string] = dijkstra(g, v, weightFn, edgeFn);
   }
 
   return acc;
