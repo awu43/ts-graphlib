@@ -34,7 +34,7 @@ function doDfs(
 export default function dfs(
   g: Graph,
   vs_: unknown[] | unknown,
-  order: string
+  order: "pre" | "post"
 ): unknown[] {
   const vs = Array.isArray(vs_) ? vs_ : [vs_];
 
