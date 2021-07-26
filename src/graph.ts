@@ -92,6 +92,10 @@ export default class Graph {
   private _parent!: Map<unknown, unknown>;
   private _children!: DefinedMap<unknown, Set<unknown>>;
 
+  /**
+   * @argument {Object} opts - defaults:  `{ directed: true, multigraph: false, compound: false }`
+   *
+   */
   constructor(opts?: GraphOptions) {
     this._isDirected = opts?.directed ?? true;
     this._isMultigraph = opts?.multigraph ?? false;
