@@ -1,5 +1,6 @@
-import { tarjan } from "./tarjan";
 import type { Graph } from "../graph";
+
+import { tarjan } from "./tarjan";
 
 /**
  * Given a Graph, graph, this function returns all nodes that are part of a cycle. As there

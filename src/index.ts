@@ -28,8 +28,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import * as json from "./json";
 import * as alg from "./alg";
+import * as json from "./json";
 
 export { json, alg };
 export { Graph, NodeIdError } from "./graph";

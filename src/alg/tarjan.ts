@@ -1,5 +1,5 @@
-import type { Graph } from "../graph";
 import { DefinedMap } from "../defined-map";
+import type { Graph } from "../graph";
 
 type Node = {
   onStack: boolean;

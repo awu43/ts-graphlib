@@ -1,7 +1,7 @@
+import { PriorityQueue } from "../data/priority-queue";
+import { DefinedMap } from "../defined-map";
 import { Graph } from "../graph";
 import type { Edge } from "../graph";
-import { DefinedMap } from "../defined-map";
-import { PriorityQueue } from "../data/priority-queue";
 
 import type { WeightFn } from "./dijkstra";
 

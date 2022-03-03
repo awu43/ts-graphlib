@@ -5,6 +5,7 @@
 const Benchmark = require("benchmark");
 const seedrandom = require("seedrandom");
 const { sprintf } = require("sprintf-js");
+
 const { Graph, alg } = require("./dist");
 
 const seed = process.env.SEED;

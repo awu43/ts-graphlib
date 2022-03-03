@@ -1,5 +1,4 @@
 import { PriorityQueue } from "../data/priority-queue";
-
 import type { Graph, Edge } from "../graph";
 
 const DEFAULT_WEIGHT_FUNC = () => 1;
