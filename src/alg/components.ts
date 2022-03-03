@@ -1,4 +1,4 @@
-import type Graph from "../graph";
+import type { Graph } from "../graph";
 
 /**
  * Finds all connected components in a graph and returns an array of these components.
@@ -8,7 +8,7 @@ import type Graph from "../graph";
  * @argument g - graph to find components in.
  * @returns array of nodes list representing components
  */
-export default function components(g: Graph): unknown[][] {
+export function components(g: Graph): unknown[][] {
   const visited = new Set<unknown>();
   const cmpts: unknown[][] = [];
 

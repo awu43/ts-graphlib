@@ -1,8 +1,6 @@
-/* eslint-disable import/no-duplicates */
-import PriorityQueue from "../data/priority-queue";
+import { PriorityQueue } from "../data/priority-queue";
 
-import type Graph from "../graph";
-import type { Edge } from "../graph";
+import type { Graph, Edge } from "../graph";
 
 const DEFAULT_WEIGHT_FUNC = () => 1;
 
@@ -81,7 +79,7 @@ function runDijkstra(
  * for the purposes of shortest path traversal. By default this function uses the graph.outEdges.
  * @returns shortest pathes map that starts from node source
  */
-export default function dijkstra(
+export function dijkstra(
   g: Graph,
   source: unknown,
   weightFn?: WeightFn,

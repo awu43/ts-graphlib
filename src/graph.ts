@@ -1,4 +1,4 @@
-import DefinedMap from "./defined-map";
+import { DefinedMap } from "./defined-map";
 
 const DEFAULT_EDGE_NAME = "\x00";
 const GRAPH_NODE = "\x00";
@@ -81,7 +81,7 @@ interface GraphOptions {
   compound?: boolean; // default: false.
 }
 
-export default class Graph {
+export class Graph {
   private _isDirected: boolean;
   private _isMultigraph: boolean;
   private _isCompound: boolean;

@@ -1,6 +1,4 @@
-/* eslint-disable import/no-duplicates */
-import type Graph from "../graph";
-import type { Edge } from "../graph";
+import type { Graph, Edge } from "../graph";
 
 import type { WeightFn, EdgeFn } from "./dijkstra";
 import type { AllPathsMap } from "./dijkstra-all";
@@ -71,7 +69,7 @@ function runFloydWarshall(
  * for the purposes of shortest path traversal. By default this function uses the graph.outEdges.
  * @returns shortest pathes map.
  */
-export default function floydWarshall(
+export function floydWarshall(
   g: Graph,
   weightFn: WeightFn,
   edgeFn: EdgeFn

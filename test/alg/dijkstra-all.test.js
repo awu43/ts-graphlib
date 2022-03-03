@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
-import Graph, { alg } from "../../src";
-import allShortestPathsTest from "./all-shortest-paths.test";
+import { Graph, alg } from "../../src";
+import { tests as allShortestPathsTest } from "./all-shortest-paths.test";
 
 const { dijkstraAll } = alg;
 

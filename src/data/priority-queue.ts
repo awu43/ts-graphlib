@@ -1,4 +1,4 @@
-import DefinedMap from "../defined-map";
+import { DefinedMap } from "../defined-map";
 
 interface QueueKey {
   key: unknown;
@@ -12,7 +12,7 @@ interface QueueKey {
  * the queue. Adding and removing elements takes O(log n) time. A key can
  * have its priority decreased in O(log n) time.
  */
-export default class PriorityQueue {
+export class PriorityQueue {
   private _arr: QueueKey[];
   private _keyIndices: DefinedMap<unknown, number>;
 

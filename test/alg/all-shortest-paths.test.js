@@ -1,12 +1,12 @@
 import { expect } from "chai";
 
-import Graph from "../../src";
+import { Graph } from "../../src";
 
 function weightFn(g) {
   return e => g.edge(e);
 }
 
-export default function tests(sp) {
+export function tests(sp) {
   describe("allShortestPaths", () => {
     it("returns 0 for the node itself", () => {
       const g = new Graph();

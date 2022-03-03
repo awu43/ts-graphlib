@@ -1,4 +1,4 @@
-import Graph from "./graph";
+import { Graph } from "./graph";
 import type { Edge } from "./graph";
 
 // Original types and function docs from https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/graphlib/index.d.ts

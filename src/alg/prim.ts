@@ -1,7 +1,7 @@
-import Graph from "../graph";
+import { Graph } from "../graph";
 import type { Edge } from "../graph";
-import DefinedMap from "../defined-map";
-import PriorityQueue from "../data/priority-queue";
+import { DefinedMap } from "../defined-map";
+import { PriorityQueue } from "../data/priority-queue";
 
 import type { WeightFn } from "./dijkstra";
 
@@ -16,7 +16,7 @@ import type { WeightFn } from "./dijkstra";
  *           the graph is not connected.
  * @returns minimum spanning tree of graph.
  */
-export default function prim(g: Graph, weightFn: WeightFn): Graph {
+export function prim(g: Graph, weightFn: WeightFn): Graph {
   const result = new Graph();
   const parents = new DefinedMap<unknown, unknown>();
   const pq = new PriorityQueue();

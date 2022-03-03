@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import Graph, { json } from "../src";
+import { Graph, json } from "../src";
 
 const { read, write } = json;
 

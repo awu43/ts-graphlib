@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import * as _ from "lodash";
 
-import Graph, { alg } from "../../src";
+import { Graph, alg } from "../../src";
 
 const { components } = alg;
 

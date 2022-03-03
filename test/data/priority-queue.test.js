@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import * as _ from "lodash";
 
-import PriorityQueue from "../../src/data/priority-queue";
+import { PriorityQueue } from "../../src/data/priority-queue";
 
 describe("data.PriorityQueue", () => {
   let pq;

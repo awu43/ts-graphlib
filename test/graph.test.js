@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import * as _ from "lodash";
 
-import Graph, { NodeIdError } from "../src";
+import { Graph, NodeIdError } from "../src";
 
 describe("Graph", () => {
   let g;

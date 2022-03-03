@@ -1,5 +1,5 @@
-import type Graph from "../graph";
-import DefinedMap from "../defined-map";
+import type { Graph } from "../graph";
+import { DefinedMap } from "../defined-map";
 
 type Node = {
   onStack: boolean;
@@ -20,7 +20,7 @@ type Node = {
  * @return  an array of components. Each component is itself an array that contains
  *          the ids of all nodes in the component.
  */
-export default function tarjan(g: Graph): unknown[][] {
+export function tarjan(g: Graph): unknown[][] {
   let index = 0;
   const stack: unknown[] = [];
   const visited = new DefinedMap<unknown, Node>();

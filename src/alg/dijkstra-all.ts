@@ -1,6 +1,6 @@
-import type Graph from "../graph";
+import type { Graph } from "../graph";
 
-import dijkstra from "./dijkstra";
+import { dijkstra } from "./dijkstra";
 import type { WeightFn, EdgeFn, PathMap } from "./dijkstra";
 
 export type AllPathsMap = Record<string, PathMap>;
@@ -19,7 +19,7 @@ export type AllPathsMap = Record<string, PathMap>;
  * for the purposes of shortest path traversal. By default this function uses the graph.outEdges.
  * @returns shortest pathes map.
  */
-export default function dijkstraAll(
+export function dijkstraAll(
   g: Graph,
   weightFn: WeightFn,
   edgeFn: EdgeFn

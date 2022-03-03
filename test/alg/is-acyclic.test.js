@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import Graph, { alg } from "../../src";
+import { Graph, alg } from "../../src";
 
 const { isAcyclic } = alg;
 

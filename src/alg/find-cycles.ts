@@ -1,5 +1,5 @@
-import tarjan from "./tarjan";
-import type Graph from "../graph";
+import { tarjan } from "./tarjan";
+import type { Graph } from "../graph";
 
 /**
  * Given a Graph, graph, this function returns all nodes that are part of a cycle. As there
@@ -12,7 +12,7 @@ import type Graph from "../graph";
  * @argument g - graph where to search cycles.
  * @returns cycles list.
  */
-export default function findCycles(g: Graph): unknown[][] {
+export function findCycles(g: Graph): unknown[][] {
   return tarjan(g).filter(
     cmpt =>
       cmpt.length > 1 || (cmpt.length === 1 && g.hasEdge(cmpt[0], cmpt[0]))

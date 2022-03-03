@@ -1,4 +1,4 @@
-import type Graph from "../graph";
+import type { Graph } from "../graph";
 
 function doDfs(
   g: Graph,
@@ -31,7 +31,7 @@ function doDfs(
  *
  * Order must be one of "pre" or "post".
  */
-export default function dfs(
+export function dfs(
   g: Graph,
   vs_: unknown[] | unknown,
   order: "pre" | "post"

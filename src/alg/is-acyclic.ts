@@ -1,6 +1,6 @@
-import type Graph from "../graph";
+import type { Graph } from "../graph";
 
-import topsort, { CycleException } from "./topsort";
+import { topsort, CycleException } from "./topsort";
 
 /**
  * Given a Graph, graph, this function returns true if the graph has no cycles and returns false if it
@@ -10,7 +10,7 @@ import topsort, { CycleException } from "./topsort";
  * @argument g - graph to detect whether it acyclic ot not.
  * @returns whether graph contain cycles or not.
  */
-export default function isAcyclic(g: Graph): boolean {
+export function isAcyclic(g: Graph): boolean {
   try {
     topsort(g);
   } catch (e) {

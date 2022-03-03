@@ -1,6 +1,6 @@
-import type Graph from "../graph";
+import type { Graph } from "../graph";
 
-import dfs from "./dfs";
+import { dfs } from "./dfs";
 
 /**
  * Performs post-order depth first traversal on the input graph. If the graph is
@@ -11,9 +11,6 @@ import dfs from "./dfs";
  * @argument vs - nodes list to traverse.
  * @returns the nodes in the order they were visited as a list of their names.
  */
-export default function postorder(
-  g: Graph,
-  vs: unknown | unknown[]
-): unknown[] {
+export function postorder(g: Graph, vs: unknown | unknown[]): unknown[] {
   return dfs(g, vs, "post");
 }
