@@ -1,8 +1,7 @@
 import { expect } from "chai";
 
-import { Graph, json } from "../src";
-
-const { read, write } = json;
+import { Graph } from "../src";
+import { read, write } from "../src/json";
 
 function rw(g) {
   return read(write(g));
