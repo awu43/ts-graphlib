@@ -1,9 +1,8 @@
 import { expect } from "chai";
-import * as _ from "lodash";
+import _ from "lodash";
 
-import { Graph, alg } from "../../src";
-
-const { tarjan } = alg;
+import { Graph } from "../../src";
+import { tarjan } from "../../src/alg";
 
 // A helper that sorts components and their contents
 function sort(cmpts) {

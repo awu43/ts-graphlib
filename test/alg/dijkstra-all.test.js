@@ -1,9 +1,8 @@
 import { expect } from "chai";
 
-import { Graph, alg } from "../../src";
+import { Graph } from "../../src";
 import { tests as allShortestPathsTest } from "./all-shortest-paths.test";
-
-const { dijkstraAll } = alg;
+import { dijkstraAll } from "../../src/alg";
 
 function weight(g) {
   return e => g.edge(e);

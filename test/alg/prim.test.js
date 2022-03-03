@@ -1,9 +1,8 @@
 import { expect } from "chai";
-import * as _ from "lodash";
+import _ from "lodash";
 
-import { Graph, alg } from "../../src";
-
-const { prim } = alg;
+import { Graph } from "../../src";
+import { prim } from "../../src/alg";
 
 function weightFn(g) {
   return edge => g.edge(edge);

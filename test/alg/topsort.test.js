@@ -1,9 +1,8 @@
 import { expect } from "chai";
-import * as _ from "lodash";
+import _ from "lodash";
 
-import { Graph, alg } from "../../src";
-
-const { topsort, CycleException } = alg;
+import { Graph } from "../../src";
+import { topsort, CycleException } from "../../src/alg";
 
 describe("alg.topsort", () => {
   it("returns an empty array for an empty graph", () => {

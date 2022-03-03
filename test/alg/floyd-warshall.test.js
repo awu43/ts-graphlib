@@ -1,9 +1,8 @@
 import { expect } from "chai";
 
-import { Graph, alg } from "../../src";
+import { Graph } from "../../src";
 import { tests as allShortestPathsTest } from "./all-shortest-paths.test";
-
-const { floydWarshall } = alg;
+import { floydWarshall } from "../../src/alg";
 
 function weightFn(g) {
   return edge => g.edge(edge);

@@ -1,8 +1,7 @@
 import { expect } from "chai";
 
-import { Graph, alg } from "../../src";
-
-const { dijkstra } = alg;
+import { Graph } from "../../src";
+import { dijkstra } from "../../src/alg";
 
 function weightFn(g) {
   return e => g.edge(e);

@@ -1,9 +1,8 @@
 import { expect } from "chai";
-import * as _ from "lodash";
+import _ from "lodash";
 
-import { Graph, alg } from "../../src";
-
-const { preorder } = alg;
+import { Graph } from "../../src";
+import { preorder } from "../../src/alg";
 
 describe("alg.preorder", () => {
   it("returns the root for a singleton graph", () => {

@@ -1,9 +1,8 @@
 import { expect } from "chai";
-import * as _ from "lodash";
+import _ from "lodash";
 
-import { Graph, alg } from "../../src";
-
-const { components } = alg;
+import { Graph } from "../../src";
+import { components } from "../../src/alg";
 
 describe("alg.components", () => {
   it("returns an empty list for an empty graph", () => {
