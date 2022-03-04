@@ -216,10 +216,12 @@ export class Graph {
    * @returns the graph, allowing this to be chained with other functions.
    */
   setDefaultNodeLabel(
-    newDefault: (...args: unknown[]) => unknown | unknown
+    newDefault: ((...args: unknown[]) => unknown) | unknown
   ): Graph {
     this._defaultNodeLabelFn =
-      typeof newDefault === "function" ? newDefault : () => newDefault;
+      typeof newDefault === "function"
+        ? (newDefault as (...args: unknown[]) => unknown)
+        : () => newDefault;
     return this;
   }
 
@@ -609,10 +611,12 @@ export class Graph {
    * @returns the graph, allowing this to be chained with other functions.
    */
   setDefaultEdgeLabel(
-    newDefault: (...args: unknown[]) => unknown | unknown
+    newDefault: ((...args: unknown[]) => unknown) | unknown
   ): Graph {
     this._defaultEdgeLabelFn =
-      typeof newDefault === "function" ? newDefault : () => newDefault;
+      typeof newDefault === "function"
+        ? (newDefault as (...args: unknown[]) => unknown)
+        : () => newDefault;
     return this;
   }
 

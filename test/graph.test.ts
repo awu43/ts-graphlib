@@ -3,7 +3,7 @@ import { expect } from "chai";
 import { Graph, NodeIdError } from "../src";
 
 describe("Graph", () => {
-  let g;
+  let g: Graph;
 
   beforeEach(() => {
     g = new Graph();

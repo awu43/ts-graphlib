@@ -3,7 +3,7 @@ import { expect } from "chai";
 import { Graph } from "../src";
 import { read, write } from "../src/json";
 
-function rw(g) {
+function rw(g: Graph) {
   return read(write(g));
 }
 

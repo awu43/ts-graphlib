@@ -3,7 +3,7 @@ import { expect } from "chai";
 import { PriorityQueue } from "../../src/data/priority-queue";
 
 describe("data.PriorityQueue", () => {
-  let pq;
+  let pq: PriorityQueue;
 
   beforeEach(() => {
     pq = new PriorityQueue();
