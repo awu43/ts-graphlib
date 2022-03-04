@@ -1,5 +1,4 @@
 import { expect } from "chai";
-import _ from "lodash";
 
 import { Graph } from "../../src";
 import { topsort, CycleException } from "../../src/alg";
@@ -21,10 +20,10 @@ describe("alg.topsort", () => {
     g.setPath(["a", "c", "d"]);
 
     const result = topsort(g);
-    expect(_.indexOf(result, "a")).to.equal(0);
-    expect(_.indexOf(result, "b")).to.be.lt(_.indexOf(result, "d"));
-    expect(_.indexOf(result, "c")).to.be.lt(_.indexOf(result, "d"));
-    expect(_.indexOf(result, "d")).to.equal(3);
+    expect(result.indexOf("a")).to.equal(0);
+    expect(result.indexOf("b")).to.be.lt(result.indexOf("d"));
+    expect(result.indexOf("c")).to.be.lt(result.indexOf("d"));
+    expect(result.indexOf("d")).to.equal(3);
   });
 
   it("throws CycleException if there is a cycle #1", () => {

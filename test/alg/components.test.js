@@ -1,5 +1,4 @@
 import { expect } from "chai";
-import _ from "lodash";
 
 import { Graph } from "../../src";
 import { components } from "../../src/alg";
@@ -14,8 +13,7 @@ describe("alg.components", () => {
     g.setNode("a");
     g.setNode("b");
 
-    const result = _.sortBy(components(g), arr => _.min(arr));
-    expect(result).to.eql([["a"], ["b"]]);
+    expect(components(g)).to.have.deep.members([["a"], ["b"]]);
   });
 
   it("returns a list of nodes in a component", () => {
@@ -23,8 +21,7 @@ describe("alg.components", () => {
     g.setEdge("a", "b");
     g.setEdge("b", "c");
 
-    const result = _.map(components(g), xs => _.sortBy(xs));
-    expect(result).to.eql([["a", "b", "c"]]);
+    expect(components(g)).to.have.deep.members([["a", "b", "c"]]);
   });
 
   it("returns nodes connected by a neighbor relationship in a digraph", () => {
@@ -33,11 +30,7 @@ describe("alg.components", () => {
     g.setEdge("d", "c");
     g.setEdge("e", "f");
 
-    const result = _.sortBy(
-      _.map(components(g), xs => _.sortBy(xs)),
-      "0"
-    );
-    expect(result).to.eql([
+    expect(components(g)).to.have.deep.members([
       ["a", "b", "c", "d"],
       ["e", "f"],
     ]);

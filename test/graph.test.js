@@ -1,5 +1,4 @@
 import { expect } from "chai";
-import _ from "lodash";
 
 import { Graph, NodeIdError } from "../src";
 
@@ -70,7 +69,7 @@ describe("Graph", () => {
     it("returns the ids of nodes in the graph", () => {
       g.setNode("a");
       g.setNode("b");
-      expect(_.sortBy(g.nodes())).to.eql(["a", "b"]);
+      expect(g.nodes()).to.have.members(["a", "b"]);
     });
   });
 
@@ -78,7 +77,7 @@ describe("Graph", () => {
     it("returns nodes in the graph that have no in-edges", () => {
       g.setPath(["a", "b", "c"]);
       g.setNode("d");
-      expect(_.sortBy(g.sources())).to.eql(["a", "d"]);
+      expect(g.sources()).to.have.members(["a", "d"]);
     });
   });
 
@@ -86,7 +85,7 @@ describe("Graph", () => {
     it("returns nodes in the graph that have no out-edges", () => {
       g.setPath(["a", "b", "c"]);
       g.setNode("d");
-      expect(_.sortBy(g.sinks())).to.eql(["c", "d"]);
+      expect(g.sinks()).to.have.members(["c", "d"]);
     });
   });
 
@@ -97,9 +96,9 @@ describe("Graph", () => {
       g.setPath(["a", "b", "c"]);
       g.setEdge("a", "c", 456);
       const g2 = g.filterNodes(() => true);
-      expect(_.sortBy(g2.nodes())).eqls(["a", "b", "c"]);
-      expect(_.sortBy(g2.successors("a"))).eqls(["b", "c"]);
-      expect(_.sortBy(g2.successors("b"))).eqls(["c"]);
+      expect(g2.nodes()).to.have.members(["a", "b", "c"]);
+      expect(g2.successors("a")).to.have.members(["b", "c"]);
+      expect(g2.successors("b")).eqls(["c"]);
       expect(g2.node("a")).eqls(123);
       expect(g2.edge("a", "c")).eqls(456);
       expect(g2.graph()).eqls("graph label");
@@ -121,7 +120,7 @@ describe("Graph", () => {
     it("removes edges that are connected to removed nodes", () => {
       g.setEdge("a", "b");
       const g2 = g.filterNodes(v => v === "a");
-      expect(_.sortBy(g2.nodes())).eqls(["a"]);
+      expect(g2.nodes()).eqls(["a"]);
       expect(g2.edges()).eqls([]);
     });
 
@@ -386,14 +385,14 @@ describe("Graph", () => {
       g.setParent("a", "parent");
       g.setParent("a", undefined);
       expect(g.parent("a")).to.be.undefined;
-      expect(_.sortBy(g.children())).to.eql(["a", "parent"]);
+      expect(g.children()).to.have.members(["a", "parent"]);
     });
 
     it("removes the parent if no parent was specified", () => {
       g.setParent("a", "parent");
       g.setParent("a");
       expect(g.parent("a")).to.be.undefined;
-      expect(_.sortBy(g.children())).to.eql(["a", "parent"]);
+      expect(g.children()).to.have.members(["a", "parent"]);
     });
 
     it("is idempotent to remove a parent", () => {
@@ -401,7 +400,7 @@ describe("Graph", () => {
       g.setParent("a");
       g.setParent("a");
       expect(g.parent("a")).to.be.undefined;
-      expect(_.sortBy(g.children())).to.eql(["a", "parent"]);
+      expect(g.children()).to.have.members(["a", "parent"]);
     });
 
     it("preserves the tree invariant", () => {
@@ -472,13 +471,13 @@ describe("Graph", () => {
       g = new Graph();
       g.setNode("a");
       g.setNode("b");
-      expect(_.sortBy(g.children())).eqls(["a", "b"]);
+      expect(g.children()).to.have.members(["a", "b"]);
     });
 
     it("returns children for the node", () => {
       g.setParent("a", "parent");
       g.setParent("b", "parent");
-      expect(_.sortBy(g.children("parent"))).to.eql(["a", "b"]);
+      expect(g.children("parent")).to.have.members(["a", "b"]);
     });
 
     it("returns all nodes without a parent when the parent is not set", () => {
@@ -487,8 +486,8 @@ describe("Graph", () => {
       g.setNode("c");
       g.setNode("parent");
       g.setParent("a", "parent");
-      expect(_.sortBy(g.children())).to.eql(["b", "c", "parent"]);
-      expect(_.sortBy(g.children(undefined))).to.eql(["b", "c", "parent"]);
+      expect(g.children()).to.have.members(["b", "c", "parent"]);
+      expect(g.children(undefined)).to.have.members(["b", "c", "parent"]);
     });
   });
 
@@ -501,9 +500,9 @@ describe("Graph", () => {
       g.setEdge("a", "b");
       g.setEdge("b", "c");
       g.setEdge("a", "a");
-      expect(_.sortBy(g.predecessors("a"))).to.eql(["a"]);
-      expect(_.sortBy(g.predecessors("b"))).to.eql(["a"]);
-      expect(_.sortBy(g.predecessors("c"))).to.eql(["b"]);
+      expect(g.predecessors("a")).to.eql(["a"]);
+      expect(g.predecessors("b")).to.eql(["a"]);
+      expect(g.predecessors("c")).to.eql(["b"]);
     });
   });
 
@@ -516,9 +515,9 @@ describe("Graph", () => {
       g.setEdge("a", "b");
       g.setEdge("b", "c");
       g.setEdge("a", "a");
-      expect(_.sortBy(g.successors("a"))).to.eql(["a", "b"]);
-      expect(_.sortBy(g.successors("b"))).to.eql(["c"]);
-      expect(_.sortBy(g.successors("c"))).to.eql([]);
+      expect(g.successors("a")).to.have.members(["a", "b"]);
+      expect(g.successors("b")).to.eql(["c"]);
+      expect(g.successors("c")).to.eql([]);
     });
   });
 
@@ -531,9 +530,9 @@ describe("Graph", () => {
       g.setEdge("a", "b");
       g.setEdge("b", "c");
       g.setEdge("a", "a");
-      expect(_.sortBy(g.neighbors("a"))).to.eql(["a", "b"]);
-      expect(_.sortBy(g.neighbors("b"))).to.eql(["a", "c"]);
-      expect(_.sortBy(g.neighbors("c"))).to.eql(["b"]);
+      expect(g.neighbors("a")).to.have.members(["a", "b"]);
+      expect(g.neighbors("b")).to.have.members(["a", "c"]);
+      expect(g.neighbors("c")).to.eql(["b"]);
     });
   });
 
@@ -576,7 +575,7 @@ describe("Graph", () => {
     it("returns the keys for edges in the graph", () => {
       g.setEdge("a", "b");
       g.setEdge("b", "c");
-      expect(_.sortBy(g.edges(), ["v", "w"])).to.eql([
+      expect(g.edges()).to.have.deep.members([
         { v: "a", w: "b" },
         { v: "b", w: "c" },
       ]);
@@ -835,7 +834,7 @@ describe("Graph", () => {
       g.setEdge("a", "b", undefined, "bar");
       g.setEdge("a", "b", undefined, "foo");
       expect(g.inEdges("a")).to.eql([]);
-      expect(_.sortBy(g.inEdges("b"), "name")).to.eql([
+      expect(g.inEdges("b"), "name").to.have.deep.members([
         { v: "a", w: "b", name: "bar" },
         { v: "a", w: "b", name: "foo" },
         { v: "a", w: "b" },
@@ -851,7 +850,7 @@ describe("Graph", () => {
       g.setEdge("z", "a");
       g.setEdge("z", "b");
       expect(g.inEdges("a", "b")).to.eql([]);
-      expect(_.sortBy(g.inEdges("b", "a"), "name")).to.eql([
+      expect(g.inEdges("b", "a"), "name").to.have.deep.members([
         { v: "a", w: "b", name: "foo" },
         { v: "a", w: "b" },
       ]);
@@ -876,7 +875,7 @@ describe("Graph", () => {
       g.setEdge("a", "b");
       g.setEdge("a", "b", undefined, "bar");
       g.setEdge("a", "b", undefined, "foo");
-      expect(_.sortBy(g.outEdges("a"), "name")).to.eql([
+      expect(g.outEdges("a"), "name").to.have.deep.members([
         { v: "a", w: "b", name: "bar" },
         { v: "a", w: "b", name: "foo" },
         { v: "a", w: "b" },
@@ -892,7 +891,7 @@ describe("Graph", () => {
       g.setEdge("b", "c");
       g.setEdge("z", "a");
       g.setEdge("z", "b");
-      expect(_.sortBy(g.outEdges("a", "b"), "name")).to.eql([
+      expect(g.outEdges("a", "b"), "name").to.have.deep.members([
         { v: "a", w: "b", name: "foo" },
         { v: "a", w: "b" },
       ]);
@@ -909,7 +908,7 @@ describe("Graph", () => {
       g.setEdge("a", "b");
       g.setEdge("b", "c");
       expect(g.nodeEdges("a")).to.eql([{ v: "a", w: "b" }]);
-      expect(_.sortBy(g.nodeEdges("b"), ["v", "w"])).to.eql([
+      expect(g.nodeEdges("b")).to.have.deep.members([
         { v: "a", w: "b" },
         { v: "b", w: "c" },
       ]);
@@ -921,12 +920,12 @@ describe("Graph", () => {
       g.setEdge("a", "b");
       g.setEdge({ v: "a", w: "b", name: "bar" });
       g.setEdge({ v: "a", w: "b", name: "foo" });
-      expect(_.sortBy(g.nodeEdges("a"), "name")).to.eql([
+      expect(g.nodeEdges("a"), "name").to.have.deep.members([
         { v: "a", w: "b", name: "bar" },
         { v: "a", w: "b", name: "foo" },
         { v: "a", w: "b" },
       ]);
-      expect(_.sortBy(g.nodeEdges("b"), "name")).to.eql([
+      expect(g.nodeEdges("b"), "name").to.have.deep.members([
         { v: "a", w: "b", name: "bar" },
         { v: "a", w: "b", name: "foo" },
         { v: "a", w: "b" },
@@ -941,11 +940,11 @@ describe("Graph", () => {
       g.setEdge("b", "c");
       g.setEdge("z", "a");
       g.setEdge("z", "b");
-      expect(_.sortBy(g.nodeEdges("a", "b"), "name")).to.eql([
+      expect(g.nodeEdges("a", "b"), "name").to.have.deep.members([
         { v: "a", w: "b", name: "foo" },
         { v: "a", w: "b" },
       ]);
-      expect(_.sortBy(g.nodeEdges("b", "a"), "name")).to.eql([
+      expect(g.nodeEdges("b", "a"), "name").to.have.deep.members([
         { v: "a", w: "b", name: "foo" },
         { v: "a", w: "b" },
       ]);

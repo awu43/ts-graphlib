@@ -1,15 +1,11 @@
 import { expect } from "chai";
-import _ from "lodash";
 
 import { Graph } from "../../src";
 import { findCycles } from "../../src/alg";
 
-// A helper that sorts components and their contents
+// A helper that sorts component contents
 function sort(cmpts) {
-  return _.sortBy(
-    _.map(cmpts, cmpt => _.sortBy(cmpt)),
-    c => c[0]
-  );
+  return cmpts.map(cmpt => cmpt.sort());
 }
 
 describe("alg.findCycles", () => {
@@ -32,13 +28,13 @@ describe("alg.findCycles", () => {
   it("returns a single entry for a cycle of 2 nodes", () => {
     const g = new Graph();
     g.setPath(["a", "b", "a"]);
-    expect(sort(findCycles(g))).to.eql([["a", "b"]]);
+    expect(sort(findCycles(g))).to.have.deep.members([["a", "b"]]);
   });
 
   it("returns a single entry for a triangle", () => {
     const g = new Graph();
     g.setPath(["a", "b", "c", "a"]);
-    expect(sort(findCycles(g))).to.eql([["a", "b", "c"]]);
+    expect(sort(findCycles(g))).to.have.deep.members([["a", "b", "c"]]);
   });
 
   it("returns multiple entries for multiple cycles", () => {
@@ -47,6 +43,10 @@ describe("alg.findCycles", () => {
     g.setPath(["c", "d", "e", "c"]);
     g.setPath(["f", "g", "g"]);
     g.setNode("h");
-    expect(sort(findCycles(g))).to.eql([["a", "b"], ["c", "d", "e"], ["g"]]);
+    expect(sort(findCycles(g))).to.have.deep.members([
+      ["a", "b"],
+      ["c", "d", "e"],
+      ["g"],
+    ]);
   });
 });

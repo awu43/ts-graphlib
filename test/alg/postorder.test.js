@@ -1,5 +1,4 @@
 import { expect } from "chai";
-import _ from "lodash";
 
 import { Graph } from "../../src";
 import { postorder } from "../../src/alg";
@@ -17,7 +16,7 @@ describe("alg.postorder", () => {
     g.setPath(["a", "c", "d", "e"]);
 
     const nodes = postorder(g, "a");
-    expect(_.sortBy(nodes)).to.eql(["a", "b", "c", "d", "e"]);
+    expect(nodes).to.have.members(["a", "b", "c", "d", "e"]);
   });
 
   it("works for a tree", () => {
@@ -27,7 +26,7 @@ describe("alg.postorder", () => {
     g.setEdge("c", "e");
 
     const nodes = postorder(g, "a");
-    expect(_.sortBy(nodes)).to.eql(["a", "b", "c", "d", "e"]);
+    expect(nodes).to.have.members(["a", "b", "c", "d", "e"]);
     expect(nodes.indexOf("b")).to.be.lt(nodes.indexOf("a"));
     expect(nodes.indexOf("c")).to.be.lt(nodes.indexOf("a"));
     expect(nodes.indexOf("d")).to.be.lt(nodes.indexOf("c"));
@@ -42,7 +41,7 @@ describe("alg.postorder", () => {
     g.setNode("f");
 
     const nodes = postorder(g, ["a", "b", "c", "e"]);
-    expect(_.sortBy(nodes)).to.eql(["a", "b", "c", "d", "e"]);
+    expect(nodes).to.have.members(["a", "b", "c", "d", "e"]);
     expect(nodes.indexOf("b")).to.be.lt(nodes.indexOf("a"));
     expect(nodes.indexOf("d")).to.be.lt(nodes.indexOf("c"));
   });
@@ -54,7 +53,7 @@ describe("alg.postorder", () => {
     g.setEdge("d", "c");
 
     const nodes = postorder(g, ["a", "d"]);
-    expect(_.sortBy(nodes)).to.eql(["a", "b", "c", "d"]);
+    expect(nodes).to.have.members(["a", "b", "c", "d"]);
     expect(nodes.indexOf("b")).to.be.lt(nodes.indexOf("a"));
     expect(nodes.indexOf("c")).to.be.lt(nodes.indexOf("a"));
     expect(nodes.indexOf("c")).to.be.lt(nodes.indexOf("d"));
