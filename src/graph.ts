@@ -45,7 +45,6 @@ export interface Edge {
   value?: EdgeValue;
 }
 
-// TODO: Enforce w/v order Graph option
 function edgeArgsToId(
   isDirected: boolean,
   v_: NodeId,
