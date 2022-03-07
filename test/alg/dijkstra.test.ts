@@ -3,7 +3,7 @@ import { expect } from "chai";
 import { dijkstra } from "../../src/alg";
 import { Graph } from "../../src/graph";
 
-import { edgeWeightFn } from "./edge-weight-fn";
+import { edgeWeightFn } from "./utils";
 
 describe("alg.dijkstra", () => {
   it("assigns distance 0 for the source node", () => {

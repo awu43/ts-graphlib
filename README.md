@@ -1,6 +1,6 @@
 A port of the now deprecated [dagrejs/graphlib](https://github.com/dagrejs/graphlib) library to modern TypeScript with JSDoc documentation from [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/graphlib/index.d.ts).
 
-Migrating from JS objects to Maps means that node IDs/keys are now evaluated with strict equality and not converted to strings internally as before. Because of this, only strings are now allowed as node IDs.
+Current TS target: ES2017.
 
 # Graphlib
 

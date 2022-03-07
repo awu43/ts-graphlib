@@ -3,7 +3,7 @@ import { expect } from "chai";
 import type { WeightFn, EdgeFn, AllPathsMap } from "../../src/alg/types";
 import { Graph } from "../../src/graph";
 
-import { edgeWeightFn } from "./edge-weight-fn";
+import { edgeWeightFn } from "./utils";
 
 type ShortestPathFunc = (
   g: Graph,

@@ -3,7 +3,7 @@ import { expect } from "chai";
 import { prim } from "../../src/alg";
 import { Graph } from "../../src/graph";
 
-import { edgeWeightFn } from "./edge-weight-fn";
+import { edgeWeightFn } from "./utils";
 
 describe("alg.prim", () => {
   it("returns an empty graph for an empty input", () => {

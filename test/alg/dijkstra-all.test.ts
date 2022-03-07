@@ -4,7 +4,7 @@ import { dijkstraAll } from "../../src/alg";
 import { Graph } from "../../src/graph";
 
 import { allShortestPathsTest } from "./all-shortest-paths.test";
-import { edgeWeightFn } from "./edge-weight-fn";
+import { edgeWeightFn } from "./utils";
 
 describe("alg.dijkstraAll", () => {
   allShortestPathsTest(dijkstraAll);

@@ -1,12 +1,9 @@
 import { expect } from "chai";
 
 import { tarjan } from "../../src/alg";
-import { Graph, type NodeId } from "../../src/graph";
+import { Graph } from "../../src/graph";
 
-// A helper that sorts component contents
-function sort(cmpts: NodeId[][]): NodeId[][] {
-  return cmpts.map(cmpt => cmpt.sort());
-}
+import { sortComponents } from "./utils";
 
 describe("alg.tarjan", () => {
   it("returns an empty array for an empty graph", () => {
@@ -17,19 +14,24 @@ describe("alg.tarjan", () => {
     const g = new Graph();
     g.setPath(["a", "b", "c"]);
     g.setEdge("d", "c");
-    expect(sort(tarjan(g))).to.have.deep.members([["a"], ["b"], ["c"], ["d"]]);
+    expect(sortComponents(tarjan(g))).to.have.deep.members([
+      ["a"],
+      ["b"],
+      ["c"],
+      ["d"],
+    ]);
   });
 
   it("returns a single component for a cycle of 1 edge", () => {
     const g = new Graph();
     g.setPath(["a", "b", "a"]);
-    expect(sort(tarjan(g))).to.have.deep.members([["a", "b"]]);
+    expect(sortComponents(tarjan(g))).to.have.deep.members([["a", "b"]]);
   });
 
   it("returns a single component for a triangle", () => {
     const g = new Graph();
     g.setPath(["a", "b", "c", "a"]);
-    expect(sort(tarjan(g))).to.have.deep.members([["a", "b", "c"]]);
+    expect(sortComponents(tarjan(g))).to.have.deep.members([["a", "b", "c"]]);
   });
 
   it("can find multiple components", () => {
@@ -37,7 +39,7 @@ describe("alg.tarjan", () => {
     g.setPath(["a", "b", "a"]);
     g.setPath(["c", "d", "e", "c"]);
     g.setNode("f");
-    expect(sort(tarjan(g))).to.have.deep.members([
+    expect(sortComponents(tarjan(g))).to.have.deep.members([
       ["a", "b"],
       ["c", "d", "e"],
       ["f"],
