@@ -45,6 +45,17 @@ export interface Edge {
   value?: EdgeValue;
 }
 
+function isEdge(edge: unknown): edge is Edge {
+  return !!(
+    edge &&
+    typeof edge === "object" &&
+    // @ts-expect-error: Might not exist
+    typeof edge.v === "string" &&
+    // @ts-expect-error: Might not exist
+    typeof edge.w === "string"
+  );
+}
+
 function edgeArgsToId(
   isDirected: boolean,
   v_: NodeId,
@@ -707,8 +718,8 @@ export class Graph {
     let name: EdgeName;
     let valueSpecified = false;
 
-    if (typeof edgeOrV === "object" && edgeOrV !== null && "v" in edgeOrV) {
-      ({ v, w, name } = edgeOrV as Edge);
+    if (isEdge(edgeOrV)) {
+      ({ v, w, name } = edgeOrV);
       if (arguments.length === 2) {
         value = valueOrW;
         valueSpecified = true;
@@ -804,10 +815,9 @@ export class Graph {
    */
   edge(v: NodeId, w: NodeId, name?: EdgeName): EdgeValue;
   edge(edgeOrV: Edge | NodeId, w?: NodeId, name?: EdgeName): EdgeValue {
-    const e =
-      arguments.length === 1
-        ? edgeObjToId(this._isDirected, edgeOrV as Edge)
-        : edgeArgsToId(this._isDirected, edgeOrV, w, name);
+    const e = isEdge(edgeOrV)
+      ? edgeObjToId(this._isDirected, edgeOrV)
+      : edgeArgsToId(this._isDirected, edgeOrV, w, name);
     return this._edgeLabels.get(e);
   }
 
@@ -834,10 +844,9 @@ export class Graph {
    */
   hasEdge(v: NodeId, w: NodeId, name?: EdgeName): boolean;
   hasEdge(edgeOrV: Edge | NodeId, w?: NodeId, name?: EdgeName): boolean {
-    const e =
-      arguments.length === 1
-        ? edgeObjToId(this._isDirected, edgeOrV as Edge)
-        : edgeArgsToId(this._isDirected, edgeOrV, w, name);
+    const e = isEdge(edgeOrV)
+      ? edgeObjToId(this._isDirected, edgeOrV)
+      : edgeArgsToId(this._isDirected, edgeOrV, w, name);
     return this._edgeLabels.has(e);
   }
 
@@ -862,10 +871,9 @@ export class Graph {
    */
   removeEdge(v: NodeId, w: NodeId, name?: EdgeName): Graph;
   removeEdge(edgeOrV: Edge | NodeId, w?: NodeId, name?: EdgeName): Graph {
-    const e =
-      arguments.length === 1
-        ? edgeObjToId(this._isDirected, edgeOrV as Edge)
-        : edgeArgsToId(this._isDirected, edgeOrV, w, name);
+    const e = isEdge(edgeOrV)
+      ? edgeObjToId(this._isDirected, edgeOrV)
+      : edgeArgsToId(this._isDirected, edgeOrV, w, name);
     const edge = this._edgeObjs.get(e);
     if (edge) {
       const { v: v_, w: w_ } = edge;
