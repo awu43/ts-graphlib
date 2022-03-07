@@ -2,17 +2,14 @@ import { expect } from "chai";
 
 import { Graph } from "../../src";
 import { prim } from "../../src/alg";
-import type { Edge } from "../../src/graph";
 
-function weightFn(g: Graph): (e: Edge) => number {
-  return edge => g.edge(edge) as number;
-}
+import { edgeWeightFn } from "./edge-weight-fn";
 
 describe("alg.prim", () => {
   it("returns an empty graph for an empty input", () => {
     const source = new Graph();
 
-    const g = prim(source, weightFn(source));
+    const g = prim(source, edgeWeightFn(source));
     expect(g.nodeCount()).to.equal(0);
     expect(g.edgeCount()).to.equal(0);
   });
@@ -21,7 +18,7 @@ describe("alg.prim", () => {
     const source = new Graph();
     source.setNode("a");
 
-    const g = prim(source, weightFn(source));
+    const g = prim(source, edgeWeightFn(source));
     expect(g.nodes()).to.eql(["a"]);
     expect(g.edgeCount()).to.equal(0);
   });
@@ -37,7 +34,7 @@ describe("alg.prim", () => {
     source.setEdge("c", "e", 60);
     source.setEdge("d", "e", 1);
 
-    const g = prim(source, weightFn(source));
+    const g = prim(source, edgeWeightFn(source));
     expect(g.neighbors("a")).to.eql(["b"]);
     expect(g.neighbors("b")).to.have.members(["a", "c", "d"]);
     expect(g.neighbors("c")).to.eql(["b"]);
@@ -51,7 +48,7 @@ describe("alg.prim", () => {
     source.setNode("b");
 
     expect(() => {
-      prim(source, weightFn(source));
+      prim(source, edgeWeightFn(source));
     }).to.throw();
   });
 });

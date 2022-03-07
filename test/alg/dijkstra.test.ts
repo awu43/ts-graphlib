@@ -2,11 +2,8 @@ import { expect } from "chai";
 
 import { Graph } from "../../src";
 import { dijkstra } from "../../src/alg";
-import type { Edge } from "../../src/graph";
 
-function weightFn(g: Graph): (e: Edge) => number {
-  return edge => g.edge(edge) as number;
-}
+import { edgeWeightFn } from "./edge-weight-fn";
 
 describe("alg.dijkstra", () => {
   it("assigns distance 0 for the source node", () => {
@@ -56,7 +53,7 @@ describe("alg.dijkstra", () => {
     g.setEdge("b", "d", 3);
     g.setEdge("c", "d", 3);
 
-    expect(dijkstra(g, "a", weightFn(g))).to.eql({
+    expect(dijkstra(g, "a", edgeWeightFn(g))).to.eql({
       a: { distance: 0 },
       b: { distance: 1, predecessor: "a" },
       c: { distance: 2, predecessor: "a" },
@@ -85,7 +82,7 @@ describe("alg.dijkstra", () => {
     g.setEdge("c", "d", 3);
 
     expect(() => {
-      dijkstra(g, "a", weightFn(g));
+      dijkstra(g, "a", edgeWeightFn(g));
     }).to.throw();
   });
 });

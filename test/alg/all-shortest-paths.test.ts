@@ -1,13 +1,9 @@
 import { expect } from "chai";
 
 import { Graph } from "../../src";
-import type { WeightFn, EdgeFn } from "../../src/alg/dijkstra";
-import type { AllPathsMap } from "../../src/alg/dijkstra-all";
-import type { Edge } from "../../src/graph";
+import type { WeightFn, EdgeFn, AllPathsMap } from "../../src/alg/types";
 
-function edgeWeightFn(g: Graph): (e: Edge) => number {
-  return edge => g.edge(edge) as number;
-}
+import { edgeWeightFn } from "./edge-weight-fn";
 
 type ShortestPathFunc = (
   g: Graph,
@@ -15,7 +11,7 @@ type ShortestPathFunc = (
   edgeFn?: EdgeFn
 ) => AllPathsMap;
 
-export function tests(sp: ShortestPathFunc): void {
+export function allShortestPathsTest(sp: ShortestPathFunc): void {
   describe("allShortestPaths", () => {
     it("returns 0 for the node itself", () => {
       const g = new Graph();

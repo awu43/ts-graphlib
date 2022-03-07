@@ -2,13 +2,9 @@ import { expect } from "chai";
 
 import { Graph } from "../../src";
 import { floydWarshall } from "../../src/alg";
-import type { Edge } from "../../src/graph";
 
-import { tests as allShortestPathsTest } from "./all-shortest-paths.test";
-
-function weightFn(g: Graph): (e: Edge) => number {
-  return edge => g.edge(edge) as number;
-}
+import { allShortestPathsTest } from "./all-shortest-paths.test";
+import { edgeWeightFn } from "./edge-weight-fn";
 
 describe("alg.floydWarshall", () => {
   allShortestPathsTest(floydWarshall);
@@ -20,7 +16,7 @@ describe("alg.floydWarshall", () => {
     g.setEdge("b", "d", 3);
     g.setEdge("c", "d", 3);
 
-    expect(floydWarshall(g, weightFn(g))).to.eql({
+    expect(floydWarshall(g, edgeWeightFn(g))).to.eql({
       a: {
         a: { distance: 0 },
         b: { distance: 1, predecessor: "a" },
@@ -54,7 +50,7 @@ describe("alg.floydWarshall", () => {
 
     // In the case of a negative cycle the distance is not well-defined beyond
     // having a negative value along the diagonal.
-    expect(floydWarshall(g, weightFn(g))).to.eql({
+    expect(floydWarshall(g, edgeWeightFn(g))).to.eql({
       a: {
         a: { distance: -2, predecessor: "a" },
       },

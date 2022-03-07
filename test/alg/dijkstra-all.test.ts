@@ -2,13 +2,9 @@ import { expect } from "chai";
 
 import { Graph } from "../../src";
 import { dijkstraAll } from "../../src/alg";
-import type { Edge } from "../../src/graph";
 
-import { tests as allShortestPathsTest } from "./all-shortest-paths.test";
-
-function weightFn(g: Graph): (e: Edge) => number {
-  return edge => g.edge(edge) as number;
-}
+import { allShortestPathsTest } from "./all-shortest-paths.test";
+import { edgeWeightFn } from "./edge-weight-fn";
 
 describe("alg.dijkstraAll", () => {
   allShortestPathsTest(dijkstraAll);
@@ -21,7 +17,7 @@ describe("alg.dijkstraAll", () => {
     g.setEdge("c", "d", 3);
 
     expect(() => {
-      dijkstraAll(g, weightFn(g));
+      dijkstraAll(g, edgeWeightFn(g));
     }).to.throw();
   });
 });
