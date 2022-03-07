@@ -1,4 +1,4 @@
-import type { Graph, Edge } from "../graph";
+import type { Graph, Edge, NodeId } from "../graph";
 
 import type { WeightFn, EdgeFn } from "./dijkstra";
 import type { AllPathsMap } from "./dijkstra-all";
@@ -71,12 +71,12 @@ function runFloydWarshall(
  */
 export function floydWarshall(
   g: Graph,
-  weightFn: WeightFn,
-  edgeFn: EdgeFn
+  weightFn?: WeightFn,
+  edgeFn?: EdgeFn
 ): AllPathsMap {
   return runFloydWarshall(
     g,
     weightFn || DEFAULT_WEIGHT_FUNC,
-    edgeFn || ((v: string) => g.outEdges(v) as Edge[])
+    edgeFn || ((v: NodeId) => g.outEdges(v) as Edge[])
   );
 }

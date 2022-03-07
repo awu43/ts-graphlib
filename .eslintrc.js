@@ -73,7 +73,7 @@ module.exports = {
       },
     },
     {
-      files: ["test/**/*.test.{ts,js}"],
+      files: ["*.test.ts"],
       rules: {
         "no-unused-expressions": 0,
         "import/no-unresolved": 0,

@@ -21,8 +21,8 @@ export type AllPathsMap = Record<string, PathMap>;
  */
 export function dijkstraAll(
   g: Graph,
-  weightFn: WeightFn,
-  edgeFn: EdgeFn
+  weightFn?: WeightFn,
+  edgeFn?: EdgeFn
 ): AllPathsMap {
   const acc: AllPathsMap = {};
   const nodes = g.nodes();

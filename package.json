@@ -13,9 +13,9 @@
     "algorithms"
   ],
   "scripts": {
-    "lint": "eslint \"{src,test}/**/*.{js,ts}\"",
+    "lint": "eslint \"{src,test}/**/*.ts\"",
     "tscheck": "tsc --noEmit",
-    "test": "ts-mocha -r esm \"test/**/*.test.{js,ts}\"",
+    "test": "ts-mocha -r esm \"test/**/*.test.ts\"",
     "build": "tsc",
     "bench": "tsc && node bench.js"
   },

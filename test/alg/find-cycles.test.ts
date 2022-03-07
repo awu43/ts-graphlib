@@ -2,9 +2,10 @@ import { expect } from "chai";
 
 import { Graph } from "../../src";
 import { findCycles } from "../../src/alg";
+import type { NodeId } from "../../src/graph";
 
 // A helper that sorts component contents
-function sort(cmpts) {
+function sort(cmpts: NodeId[][]): NodeId[][] {
   return cmpts.map(cmpt => cmpt.sort());
 }
 

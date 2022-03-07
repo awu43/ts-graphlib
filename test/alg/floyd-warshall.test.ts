@@ -2,11 +2,12 @@ import { expect } from "chai";
 
 import { Graph } from "../../src";
 import { floydWarshall } from "../../src/alg";
+import type { Edge } from "../../src/graph";
 
 import { tests as allShortestPathsTest } from "./all-shortest-paths.test";
 
-function weightFn(g) {
-  return edge => g.edge(edge);
+function weightFn(g: Graph): (e: Edge) => number {
+  return edge => g.edge(edge) as number;
 }
 
 describe("alg.floydWarshall", () => {

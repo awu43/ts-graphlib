@@ -2,9 +2,10 @@ import { expect } from "chai";
 
 import { Graph } from "../../src";
 import { prim } from "../../src/alg";
+import type { Edge } from "../../src/graph";
 
-function weightFn(g) {
-  return edge => g.edge(edge);
+function weightFn(g: Graph): (e: Edge) => number {
+  return edge => g.edge(edge) as number;
 }
 
 describe("alg.prim", () => {
