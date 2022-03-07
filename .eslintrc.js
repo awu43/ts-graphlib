@@ -1,4 +1,5 @@
 module.exports = {
+  extends: ["airbnb-base", "plugin:prettier/recommended"],
   env: {
     browser: true,
     commonjs: true,
@@ -6,11 +7,10 @@ module.exports = {
     node: true,
     mocha: true,
   },
-  extends: ["airbnb-base", "plugin:prettier/recommended"],
-  plugins: ["prettier"],
   parserOptions: {
     ecmaVersion: 11,
   },
+  plugins: ["prettier"],
   rules: {
     "consistent-return": 0,
     "func-names": 0,
@@ -76,7 +76,6 @@ module.exports = {
       files: ["*.test.ts"],
       rules: {
         "no-unused-expressions": 0,
-        "import/no-unresolved": 0,
       },
     },
   ],
