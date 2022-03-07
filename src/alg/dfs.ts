@@ -5,7 +5,7 @@ function doDfs(
   v: NodeId,
   postorder: boolean,
   visited: Set<NodeId>,
-  navigation: (v_: NodeId) => NodeId[] | void,
+  navigation: (v_: NodeId) => NodeId[] | undefined,
   acc: NodeId[]
 ) {
   if (!visited.has(v)) {

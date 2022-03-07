@@ -48,7 +48,7 @@ export class PriorityQueue<K = unknown> {
    *
    * @param {Object} key
    */
-  priority(key: K): number | void {
+  priority(key: K): number | undefined {
     const index = this._keyIndices.get(key);
     if (index !== undefined) {
       return this._arr[index].priority;
@@ -146,7 +146,7 @@ export class PriorityQueue<K = unknown> {
     }
   }
 
-  private _swap(i: number, j: number) {
+  private _swap(i: number, j: number): void {
     const arr = this._arr;
     [arr[i], arr[j]] = [arr[j], arr[i]];
     this._keyIndices.set(arr[i].key, i);

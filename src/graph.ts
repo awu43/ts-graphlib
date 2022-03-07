@@ -447,9 +447,9 @@ export class Graph {
    * Complexity: O(1).
    *
    * @argument v - node to get parent of.
-   * @returns parent node id or void if v has no parent.
+   * @returns parent node id or undefined if v has no parent.
    */
-  parent(v: NodeId): NodeId | void {
+  parent(v: NodeId): NodeId | undefined {
     if (this._isCompound) {
       const parent = this._parent.get(v);
       if (parent !== GRAPH_NODE) {
@@ -465,7 +465,7 @@ export class Graph {
    * @argument v_ - node to get children of.
    * @returns children nodes id list.
    */
-  children(v_?: NodeId): NodeId[] | void {
+  children(v_?: NodeId): NodeId[] | undefined {
     const v = v_ === undefined ? GRAPH_NODE : v_;
 
     if (this._isCompound) {
@@ -488,7 +488,7 @@ export class Graph {
    * @argument v - node identifier.
    * @returns node identifiers list or undefined if v is not in the graph.
    */
-  predecessors(v: NodeId): NodeId[] | void {
+  predecessors(v: NodeId): NodeId[] | undefined {
     const predsV = this._preds.get(v);
     if (predsV) {
       return [...predsV.keys()];
@@ -503,7 +503,7 @@ export class Graph {
    * @argument v - node identifier.
    * @returns node identifiers list or undefined if v is not in the graph.
    */
-  successors(v: NodeId): NodeId[] | void {
+  successors(v: NodeId): NodeId[] | undefined {
     const sucsV = this._sucs.get(v);
     if (sucsV) {
       return [...sucsV.keys()];
@@ -518,7 +518,7 @@ export class Graph {
    * @argument v - node identifier.
    * @returns node identifiers list or undefined if v is not in the graph.
    */
-  neighbors(v: NodeId): NodeId[] | void {
+  neighbors(v: NodeId): NodeId[] | undefined {
     const neighbors = this.predecessors(v);
     if (neighbors) {
       const uniqueNeighbors = new Set<NodeId>(neighbors);
@@ -547,7 +547,7 @@ export class Graph {
     } else {
       neighbors = this.neighbors(v);
     }
-    return neighbors?.length === 0;
+    return !!(neighbors && !neighbors.length);
   }
 
   /**
@@ -860,7 +860,7 @@ export class Graph {
    * @argument u - edge source node.
    * @returns edges descriptors list if v is in the graph, or undefined otherwise.
    */
-  inEdges(v: NodeId, u?: NodeId): Edge[] | void {
+  inEdges(v: NodeId, u?: NodeId): Edge[] | undefined {
     const inV = this._in.get(v);
     if (inV) {
       const edges = [...inV.values()];
@@ -880,7 +880,7 @@ export class Graph {
    * @argument w - edge sink node.
    * @returns edges descriptors list if v is in the graph, or undefined otherwise.
    */
-  outEdges(v: NodeId, w?: NodeId): Edge[] | void {
+  outEdges(v: NodeId, w?: NodeId): Edge[] | undefined {
     const outV = this._out.get(v);
     if (outV) {
       const edges = [...outV.values()];
@@ -900,7 +900,7 @@ export class Graph {
    * @argument w - edge adjacent node.
    * @returns edges descriptors list if v is in the graph, or undefined otherwise.
    */
-  nodeEdges(v: NodeId, w?: NodeId): Edge[] | void {
+  nodeEdges(v: NodeId, w?: NodeId): Edge[] | undefined {
     const inEdges = this.inEdges(v, w);
     if (inEdges) {
       return inEdges.concat(this.outEdges(v, w) ?? []);
