@@ -1,15 +1,9 @@
 import { PriorityQueue } from "../data/priority-queue";
 import type { Graph, Edge, NodeId } from "../graph";
 
-const DEFAULT_WEIGHT_FUNC = () => 1;
+import type { WeightFn, EdgeFn, Path, PathMap } from "./types";
 
-export type WeightFn = (e: Edge) => number;
-export type EdgeFn = (v: NodeId) => Edge[] | undefined;
-interface Path {
-  distance: number;
-  predecessor?: NodeId;
-}
-export type PathMap = Record<NodeId, Path>;
+const DEFAULT_WEIGHT_FUNC = () => 1;
 
 function runDijkstra(
   g: Graph,

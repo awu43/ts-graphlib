@@ -3,7 +3,7 @@ import { DefinedMap } from "../defined-map";
 import { Graph } from "../graph";
 import type { Edge, NodeId } from "../graph";
 
-import type { WeightFn } from "./dijkstra";
+import type { WeightFn } from "./types";
 
 /**
  * Prim's algorithm takes a connected undirected graph and generates a minimum

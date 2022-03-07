@@ -1,9 +1,7 @@
-import type { Graph, NodeId } from "../graph";
+import type { Graph } from "../graph";
 
 import { dijkstra } from "./dijkstra";
-import type { WeightFn, EdgeFn, PathMap } from "./dijkstra";
-
-export type AllPathsMap = Record<NodeId, PathMap>;
+import type { WeightFn, EdgeFn, AllPathsMap } from "./types";
 
 /**
  * This function finds the shortest path from each node to every other

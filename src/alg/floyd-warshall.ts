@@ -1,7 +1,6 @@
-import type { Graph, Edge, NodeId } from "../graph";
+import type { Graph, NodeId } from "../graph";
 
-import type { WeightFn, EdgeFn } from "./dijkstra";
-import type { AllPathsMap } from "./dijkstra-all";
+import type { WeightFn, EdgeFn, AllPathsMap } from "./types";
 
 const DEFAULT_WEIGHT_FUNC = () => 1;
 
