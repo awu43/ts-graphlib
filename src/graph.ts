@@ -701,21 +701,20 @@ export class Graph {
     value_?: EdgeValue,
     name_?: EdgeName
   ): Graph {
-    let v;
-    let w;
-    let name;
-    let value;
+    let v: Edge | NodeId;
+    let w: EdgeValue | NodeId;
+    let value: EdgeValue;
+    let name: EdgeName;
     let valueSpecified = false;
-    const arg0 = edgeOrV;
 
-    if (typeof arg0 === "object" && arg0 !== null && "v" in arg0) {
-      ({ v, w, name } = arg0 as Edge);
+    if (typeof edgeOrV === "object" && edgeOrV !== null && "v" in edgeOrV) {
+      ({ v, w, name } = edgeOrV as Edge);
       if (arguments.length === 2) {
         value = valueOrW;
         valueSpecified = true;
       }
     } else {
-      v = arg0;
+      v = edgeOrV;
       w = valueOrW;
       name = name_;
       if (arguments.length > 2) {
