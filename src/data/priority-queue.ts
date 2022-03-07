@@ -13,11 +13,11 @@ interface QueueKey<QK = unknown> {
  * have its priority decreased in O(log n) time.
  */
 export class PriorityQueue<K = unknown> {
-  private _arr: QueueKey<K>[];
+  private _queue: QueueKey<K>[];
   private _keyIndices: DefinedMap<K, number>;
 
   constructor() {
-    this._arr = [];
+    this._queue = [];
     this._keyIndices = new DefinedMap<K, number>();
   }
 
@@ -25,14 +25,14 @@ export class PriorityQueue<K = unknown> {
    * Returns the number of elements in the queue. Takes `O(1)` time.
    */
   size(): number {
-    return this._arr.length;
+    return this._queue.length;
   }
 
   /**
    * Returns the keys that are in the queue. Takes `O(n)` time.
    */
   keys(): K[] {
-    return this._arr.map(x => x.key);
+    return this._queue.map(x => x.key);
   }
 
   /**
@@ -51,7 +51,7 @@ export class PriorityQueue<K = unknown> {
   priority(key: K): number | undefined {
     const index = this._keyIndices.get(key);
     if (index !== undefined) {
-      return this._arr[index].priority;
+      return this._queue[index].priority;
     }
   }
 
@@ -63,7 +63,7 @@ export class PriorityQueue<K = unknown> {
     if (!this.size()) {
       throw new Error("Queue underflow");
     }
-    return this._arr[0].key;
+    return this._queue[0].key;
   }
 
   /**
@@ -76,9 +76,9 @@ export class PriorityQueue<K = unknown> {
    */
   add(key: K, priority: number): boolean {
     if (!this._keyIndices.has(key)) {
-      const index = this._arr.length;
+      const index = this._queue.length;
       this._keyIndices.set(key, index);
-      this._arr.push({ key, priority });
+      this._queue.push({ key, priority });
       this._decrease(index);
       return true;
     }
@@ -89,8 +89,8 @@ export class PriorityQueue<K = unknown> {
    * Removes and returns the smallest key in the queue. Takes `O(log n)` time.
    */
   removeMin(): K {
-    this._swap(0, this._arr.length - 1);
-    const min = this._arr.pop() as QueueKey<K>;
+    this._swap(0, this._queue.length - 1);
+    const min = this._queue.pop() as QueueKey<K>;
     this._keyIndices.delete(min.key);
     this._heapify(0);
     return min.key;
@@ -105,17 +105,17 @@ export class PriorityQueue<K = unknown> {
    */
   decrease(key: K, priority: number): void {
     const index = this._keyIndices.definedGet(key);
-    if (priority > this._arr[index].priority) {
+    if (priority > this._queue[index].priority) {
       throw new Error(
-        `New priority is greater than current priority. QueueKey: ${key} Old: ${this._arr[index].priority} New: ${priority}`
+        `New priority is greater than current priority. QueueKey: ${key} Old: ${this._queue[index].priority} New: ${priority}`
       );
     }
-    this._arr[index].priority = priority;
+    this._queue[index].priority = priority;
     this._decrease(index);
   }
 
   private _heapify(i: number): void {
-    const arr = this._arr;
+    const arr = this._queue;
     const l = 2 * i;
     const r = l + 1;
     let largest = i;
@@ -133,12 +133,12 @@ export class PriorityQueue<K = unknown> {
 
   private _decrease(index_: number): void {
     let index = index_;
-    const { priority } = this._arr[index];
+    const { priority } = this._queue[index];
     let parent;
     while (index !== 0) {
       // eslint-disable-next-line no-bitwise
       parent = index >> 1;
-      if (this._arr[parent].priority < priority) {
+      if (this._queue[parent].priority < priority) {
         break;
       }
       this._swap(index, parent);
@@ -147,9 +147,9 @@ export class PriorityQueue<K = unknown> {
   }
 
   private _swap(i: number, j: number): void {
-    const arr = this._arr;
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-    this._keyIndices.set(arr[i].key, i);
-    this._keyIndices.set(arr[j].key, j);
+    const queue = this._queue;
+    [queue[i], queue[j]] = [queue[j], queue[i]];
+    this._keyIndices.set(queue[i].key, i);
+    this._keyIndices.set(queue[j].key, j);
   }
 }
