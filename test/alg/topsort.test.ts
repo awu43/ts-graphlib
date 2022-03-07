@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
-import { Graph } from "../../src";
 import { topsort, CycleException } from "../../src/alg";
+import { Graph } from "../../src/graph";
 
 describe("alg.topsort", () => {
   it("returns an empty array for an empty graph", () => {

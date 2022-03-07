@@ -1,7 +1,6 @@
 import { expect } from "chai";
 
-import { Graph } from "../src";
-import { NodeIdError } from "../src/graph";
+import { Graph, NodeIdError } from "../src/graph";
 
 describe("Graph", () => {
   let g: Graph;

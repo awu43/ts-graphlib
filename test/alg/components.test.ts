@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
-import { Graph } from "../../src";
 import { components } from "../../src/alg";
+import { Graph } from "../../src/graph";
 
 describe("alg.components", () => {
   it("returns an empty list for an empty graph", () => {

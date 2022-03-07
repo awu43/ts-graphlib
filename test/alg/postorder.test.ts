@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
-import { Graph } from "../../src";
 import { postorder } from "../../src/alg";
+import { Graph } from "../../src/graph";
 
 describe("alg.postorder", () => {
   it("returns the root for a singleton graph", () => {

@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
-import { Graph } from "../../src";
 import { floydWarshall } from "../../src/alg";
+import { Graph } from "../../src/graph";
 
 import { allShortestPathsTest } from "./all-shortest-paths.test";
 import { edgeWeightFn } from "./edge-weight-fn";

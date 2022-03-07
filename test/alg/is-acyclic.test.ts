@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
-import { Graph } from "../../src";
 import { isAcyclic } from "../../src/alg";
+import { Graph } from "../../src/graph";
 
 describe("alg.isAcyclic", () => {
   it("returns true if the graph has no cycles", () => {

@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
-import { Graph } from "../../src";
 import { dijkstra } from "../../src/alg";
+import { Graph } from "../../src/graph";
 
 import { edgeWeightFn } from "./edge-weight-fn";
 

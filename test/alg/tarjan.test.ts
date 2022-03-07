@@ -1,8 +1,7 @@
 import { expect } from "chai";
 
-import { Graph } from "../../src";
 import { tarjan } from "../../src/alg";
-import type { NodeId } from "../../src/graph";
+import { Graph, type NodeId } from "../../src/graph";
 
 // A helper that sorts component contents
 function sort(cmpts: NodeId[][]): NodeId[][] {
