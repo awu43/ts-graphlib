@@ -23,7 +23,7 @@ function runFloydWarshall(
         };
       }
     });
-    edgeFn(v).forEach(edge => {
+    edgeFn(v)?.forEach(edge => {
       const w = edge.v === v ? edge.w : edge.v;
       const d = weightFn(edge);
       results[v][w] = { distance: d, predecessor: v };
@@ -81,7 +81,7 @@ export function floydWarshall(
 ): AllPathsMap {
   return runFloydWarshall(
     g,
-    weightFn || DEFAULT_WEIGHT_FUNC,
-    edgeFn || ((v: NodeId) => g.outEdges(v) as Edge[])
+    weightFn ?? DEFAULT_WEIGHT_FUNC,
+    edgeFn ?? ((v: NodeId) => g.outEdges(v))
   );
 }

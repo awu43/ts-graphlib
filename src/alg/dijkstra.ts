@@ -4,7 +4,7 @@ import type { Graph, Edge, NodeId } from "../graph";
 const DEFAULT_WEIGHT_FUNC = () => 1;
 
 export type WeightFn = (e: Edge) => number;
-export type EdgeFn = (v: NodeId) => Edge[];
+export type EdgeFn = (v: NodeId) => Edge[] | undefined;
 interface Path {
   distance: number;
   predecessor?: NodeId;
@@ -54,7 +54,7 @@ function runDijkstra(
       break;
     }
 
-    edgeFn(v).forEach(updateNeighbors);
+    edgeFn(v)?.forEach(updateNeighbors);
   }
 
   return results;
@@ -91,7 +91,7 @@ export function dijkstra(
   return runDijkstra(
     g,
     source,
-    weightFn || DEFAULT_WEIGHT_FUNC,
-    edgeFn || ((v: NodeId) => g.outEdges(v) as Edge[])
+    weightFn ?? DEFAULT_WEIGHT_FUNC,
+    edgeFn ?? ((v: NodeId) => g.outEdges(v))
   );
 }

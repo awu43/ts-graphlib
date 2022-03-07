@@ -75,7 +75,7 @@ export function tests(sp: ShortestPathFunc): void {
       g.setEdge("a", "b");
       g.setEdge("b", "c");
 
-      expect(sp(g, undefined, v => g.inEdges(v) as Edge[])).to.eql({
+      expect(sp(g, undefined, v => g.inEdges(v))).to.eql({
         a: {
           a: { distance: 0 },
           b: { distance: Number.POSITIVE_INFINITY },

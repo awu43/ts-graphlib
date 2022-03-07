@@ -69,7 +69,7 @@ describe("alg.dijkstra", () => {
     g.setPath(["a", "c", "d"]);
     g.setEdge("b", "c");
 
-    expect(dijkstra(g, "d", undefined, e => g.inEdges(e) as Edge[])).to.eql({
+    expect(dijkstra(g, "d", undefined, e => g.inEdges(e))).to.eql({
       a: { distance: 2, predecessor: "c" },
       b: { distance: 2, predecessor: "c" },
       c: { distance: 1, predecessor: "d" },
