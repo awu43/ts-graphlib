@@ -247,8 +247,9 @@ export class Graph {
   }
 
   /**
-   * Gets all nodes of the graph. Note, the in case of compound graph subnodes are
-   * not included in list.
+   * Gets all nodes of the graph. Note, the in case of compound graph subnodes
+   * are not included in list.
+   *
    * Complexity: O(1).
    *
    * @returns list of graph nodes.
@@ -282,9 +283,11 @@ export class Graph {
   }
 
   /**
-   * Creates or updates the value for the node v in the graph. If value is supplied
-   * it is set as the value for the node. If value is not supplied and the node was
-   * created by this call then the default node value will be assigned.
+   * Creates or updates the value for the node v in the graph. If value is
+   * supplied it is set as the value for the node. If value is not supplied
+   * and the node was created by this call then the default node value will
+   * be assigned.
+   *
    * Complexity: O(1).
    *
    * @argument v - node id.
@@ -322,6 +325,7 @@ export class Graph {
 
   /**
    * Invokes setNode method for each node in id list.
+   *
    * Complexity: O(|ids|).
    *
    * @argument vs - list of nodes id to be set.
@@ -341,6 +345,7 @@ export class Graph {
 
   /**
    * Gets the label of node with specified id.
+   *
    * Complexity: O(|V|).
    *
    * @argument v - id of the node.
@@ -361,9 +366,10 @@ export class Graph {
   }
 
   /**
-   * Remove the node with the id from the graph or do nothing if the node is not in
-   * the graph. If the node was removed this function also removes any incident
-   * edges.
+   * Remove the node with the id from the graph or do nothing if the node is
+   * not in the graph. If the node was removed this function also removes any
+   * incident edges.
+   *
    * Complexity: O(1).
    *
    * @argument v - id of the node.
@@ -402,6 +408,7 @@ export class Graph {
    * Sets node p as a parent for node v if it is defined, or removes the
    * parent for v if p is undefined. Method throws an exception in case of
    * invoking it in context of noncompound graph.
+   *
    * Average-case complexity: O(1).
    *
    * @argument v - node to be child for p.
@@ -444,6 +451,7 @@ export class Graph {
 
   /**
    * Gets parent node for node v.
+   *
    * Complexity: O(1).
    *
    * @argument v - node to get parent of.
@@ -460,6 +468,7 @@ export class Graph {
 
   /**
    * Gets list of direct children of node v.
+   *
    * Complexity: O(1).
    *
    * @argument v_ - node to get children of.
@@ -481,8 +490,10 @@ export class Graph {
   }
 
   /**
-   * Return all nodes that are predecessors of the specified node or undefined if node v is not in
-   * the graph. Behavior is undefined for undirected graphs - use neighbors instead.
+   * Return all nodes that are predecessors of the specified node or
+   * undefined if node v is not in the graph. Behavior is undefined for
+   * undirected graphs - use neighbors instead.
+   *
    * Complexity: O(|V|).
    *
    * @argument v - node identifier.
@@ -496,8 +507,10 @@ export class Graph {
   }
 
   /**
-   * Return all nodes that are successors of the specified node or undefined if node v is not in
-   * the graph. Behavior is undefined for undirected graphs - use neighbors instead.
+   * Return all nodes that are successors of the specified node or undefined
+   * if node v is not in the graph. Behavior is undefined for undirected
+   * graphs - use neighbors instead.
+   *
    * Complexity: O(|V|).
    *
    * @argument v - node identifier.
@@ -511,8 +524,9 @@ export class Graph {
   }
 
   /**
-   * Return all nodes that are predecessors or successors of the specified node or undefined if
-   * node v is not in the graph.
+   * Return all nodes that are predecessors or successors of the specified
+   * node or undefined if node v is not in the graph.
+   *
    * Complexity: O(|V|).
    *
    * @argument v - node identifier.
@@ -551,9 +565,10 @@ export class Graph {
   }
 
   /**
-   * Creates new graph with nodes filtered via filter. Edges incident to rejected node
-   * are also removed. In case of compound graph, if parent is rejected by filter,
-   * than all its children are rejected too.
+   * Creates new graph with nodes filtered via filter. Edges incident to
+   * rejected node are also removed. In case of compound graph, if parent is
+   * rejected by filter, than all its children are rejected too.
+   *
    * Average-case complexity: O(|E|+|V|).
    *
    * @argument filter - filtration function detecting whether the node should stay or not.
@@ -631,6 +646,7 @@ export class Graph {
 
   /**
    * Gets the number of edges in the graph.
+   *
    * Complexity: O(1).
    *
    * @returns edges count.
@@ -640,7 +656,9 @@ export class Graph {
   }
 
   /**
-   * Gets edges of the graph. In case of compound graph subgraphs are not considered.
+   * Gets edges of the graph. In case of compound graph subgraphs are
+   * not considered.
+   *
    * Complexity: O(|E|).
    *
    * @return graph edges list.
@@ -650,10 +668,11 @@ export class Graph {
   }
 
   /**
-   * Creates or updates the label for the specified edge. If label is supplied it is
-   * set as the value for the edge. If label is not supplied and the edge was created
-   * by this call then the default edge label will be assigned. The name parameter is
-   * only useful with multigraphs.
+   * Creates or updates the label for the specified edge. If label is
+   * supplied it is set as the value for the edge. If label is not supplied and
+   * the edge was created by this call then the default edge label will
+   * be assigned. The name parameter is only useful with multigraphs.
+   *
    * Complexity: O(1).
    *
    * @argument edge - edge descriptor.
@@ -662,10 +681,12 @@ export class Graph {
    */
   setEdge(edge: Edge, value?: EdgeValue): Graph;
   /**
-   * Creates or updates the label for the edge (v, w) with the optionally supplied
-   * name. If label is supplied it is set as the value for the edge. If label is not
-   * supplied and the edge was created by this call then the default edge label will
-   * be assigned. The name parameter is only useful with multigraphs.
+   * Creates or updates the label for the edge (v, w) with the optionally
+   * supplied name. If label is supplied it is set as the value for the edge.
+   * If label is not supplied and the edge was created by this call then the
+   * default edge label will be assigned. The name parameter is only useful
+   * with multigraphs.
+   *
    * Complexity: O(1).
    *
    * @argument v - edge source node.
@@ -741,9 +762,11 @@ export class Graph {
   }
 
   /**
-   * Establish an edges path over the nodes in nodes list. If some edge is already
-   * exists, it will update its value, otherwise it will create an edge between pair
-   * of nodes with value provided or default value if no value provided.
+   * Establish an edges path over the nodes in nodes list. If an edge already
+   * exists, it will update its value, otherwise it will create an edge
+   * between pair of nodes with value provided or default value if no
+   * value provided.
+   *
    * Complexity: O(|nodes|).
    *
    * @argument vs - list of nodes to be connected in series.
@@ -764,6 +787,7 @@ export class Graph {
 
   /**
    * Gets the label for the specified edge.
+   *
    * Complexity: O(1).
    *
    * @argument e - edge descriptor.
@@ -772,6 +796,7 @@ export class Graph {
   edge(e: Edge): EdgeValue;
   /**
    * Gets the label for the specified edge.
+   *
    * Complexity: O(1).
    *
    * @argument v - edge source node.
@@ -789,7 +814,9 @@ export class Graph {
   }
 
   /**
-   * Detects whether the graph contains specified edge or not. No subgraphs are considered.
+   * Detects whether the graph contains specified edge or not. No subgraphs
+   * are considered.
+   *
    * Complexity: O(1).
    *
    * @argument e - edge descriptor.
@@ -797,7 +824,9 @@ export class Graph {
    */
   hasEdge(e: Edge): boolean;
   /**
-   * Detects whether the graph contains specified edge or not. No subgraphs are considered.
+   * Detects whether the graph contains specified edge or not. No subgraphs
+   * are considered.
+   *
    * Complexity: O(1).
    *
    * @argument v - edge source node.
@@ -816,6 +845,7 @@ export class Graph {
 
   /**
    * Removes the specified edge from the graph. No subgraphs are considered.
+   *
    * Complexity: O(1).
    *
    * @argument e - edge descriptor.
@@ -824,6 +854,7 @@ export class Graph {
   removeEdge(e: Edge): Graph;
   /**
    * Removes the specified edge from the graph. No subgraphs are considered.
+   *
    * Complexity: O(1).
    *
    * @argument v - edge source node.
@@ -852,8 +883,10 @@ export class Graph {
   }
 
   /**
-   * Return all edges that point to the node v. Optionally filters those edges down to just those
-   * coming from node u. Behavior is undefined for undirected graphs - use nodeEdges instead.
+   * Return all edges that point to the node v. Optionally filters those edges
+   * down to just those coming from node u. Behavior is undefined for
+   * undirected graphs - use nodeEdges instead.
+   *
    * Complexity: O(|E|).
    *
    * @argument v - edge sink node.
@@ -872,8 +905,10 @@ export class Graph {
   }
 
   /**
-   * Return all edges that are pointed at by node v. Optionally filters those edges down to just
-   * those point to w. Behavior is undefined for undirected graphs - use nodeEdges instead.
+   * Return all edges that are pointed at by node v. Optionally filters those
+   * edges down to just those point to w. Behavior is undefined for undirected
+   * graphs - use nodeEdges instead.
+   *
    * Complexity: O(|E|).
    *
    * @argument v - edge source node.
@@ -892,8 +927,10 @@ export class Graph {
   }
 
   /**
-   * Returns all edges to or from node v regardless of direction. Optionally filters those edges
-   * down to just those between nodes v and w regardless of direction.
+   * Returns all edges to or from node v regardless of direction. Optionally
+   * filters those edges down to just those between nodes v and w regardless
+   * of direction.
+   *
    * Complexity: O(|E|).
    *
    * @argument v - edge adjacent node.

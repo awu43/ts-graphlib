@@ -77,8 +77,8 @@ function writeEdges(g: Graph): Edge[] {
 }
 
 /**
- * Creates a JSON representation of the graph that can be serialized to a string with
- * JSON.stringify. The graph can later be restored using json.read.
+ * Creates a JSON representation of the graph that can be serialized to a
+ * string with JSON.stringify. The graph can later be restored using json.read.
  *
  * @argument g - target graph to create JSON representation of.
  * @returns JSON serializable graph representation

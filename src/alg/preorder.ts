@@ -3,9 +3,11 @@ import type { Graph, NodeId } from "../graph";
 import { dfs } from "./dfs";
 
 /**
- * Performs pre-order depth first traversal on the input graph. If the graph is
- * undirected then this algorithm will navigate using neighbors. If the graph
- * is directed then this algorithm will navigate using successors.
+ * Performs pre-order depth first traversal on the input graph.
+ *
+ * If the graph is undirected then this algorithm will navigate using neighbors.
+ *
+ * If the graph is directed then this algorithm will navigate using successors.
  *
  * @argument g - depth first traversal target.
  * @argument vs - nodes list to traverse.

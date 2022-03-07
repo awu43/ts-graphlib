@@ -4,7 +4,10 @@ export class CycleException extends Error {}
 
 /**
  * Given a Graph graph this function applies topological sorting to it.
- * If the graph has a cycle it is impossible to generate such a list and CycleException is thrown.
+ *
+ * If the graph has a cycle it is impossible to generate such a list and
+ * CycleException is thrown.
+ *
  * Complexity: O(|V| + |E|).
  *
  * @argument g - graph to apply topological sorting to.
