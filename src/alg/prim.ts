@@ -1,7 +1,7 @@
 import { PriorityQueue } from "../data/priority-queue";
 import { DefinedMap } from "../defined-map";
 import { Graph } from "../graph";
-import type { Edge } from "../graph";
+import type { Edge, NodeId } from "../graph";
 
 import type { WeightFn } from "./dijkstra";
 
@@ -18,9 +18,9 @@ import type { WeightFn } from "./dijkstra";
  */
 export function prim(g: Graph, weightFn: WeightFn): Graph {
   const result = new Graph();
-  const parents = new DefinedMap<unknown, unknown>();
-  const pq = new PriorityQueue();
-  let v: unknown;
+  const parents = new DefinedMap<NodeId, NodeId>();
+  const pq = new PriorityQueue<NodeId>();
+  let v: NodeId;
 
   function updateNeighbors(edge: Edge) {
     const w = edge.v === v ? edge.w : edge.v;

@@ -6,9 +6,22 @@ const EDGE_KEY_DELIM = "\x01";
 
 // Original types and function docs from https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/graphlib/index.d.ts
 
+export type GraphLabel = unknown;
+
+export type NodeId = unknown;
+export type NodeValue = unknown;
+type NodeLabel = unknown;
+
+type EdgeId = string;
+type EdgeLabel = unknown;
+type EdgeValue = unknown;
+type EdgeName = unknown;
+
+type FactoryFunc<V> = (...args: unknown[]) => V;
+
 export class NodeIdError extends Error {}
 
-function incrementOrInitEntry(map: Map<unknown, number>, k: unknown): void {
+function incrementOrInitEntry<K = unknown>(map: Map<K, number>, k: K): void {
   const entry = map.get(k);
   if (entry) {
     map.set(k, entry + 1);
@@ -17,7 +30,7 @@ function incrementOrInitEntry(map: Map<unknown, number>, k: unknown): void {
   }
 }
 
-function decrementOrRemoveEntry(map: Map<unknown, number>, k: unknown): void {
+function decrementOrRemoveEntry<K = unknown>(map: Map<K, number>, k: K): void {
   map.set(k, (map.get(k) as number) - 1);
   if (!map.get(k)) {
     map.delete(k);
@@ -25,20 +38,20 @@ function decrementOrRemoveEntry(map: Map<unknown, number>, k: unknown): void {
 }
 
 export interface Edge {
-  v: unknown;
-  w: unknown;
+  v: NodeId;
+  w: NodeId;
   /** The name that uniquely identifies a multi-edge. */
-  name?: unknown;
-  value?: string;
+  name?: EdgeName;
+  value?: EdgeValue;
 }
 
 // TODO: Enforce w/v order Graph option
 function edgeArgsToId(
   isDirected: boolean,
-  v_: unknown,
-  w_: unknown,
-  name: unknown
-): string {
+  v_: NodeId,
+  w_: NodeId,
+  name?: EdgeName
+): EdgeId {
   let v = v_;
   let w = w_;
   if (!isDirected && (v as string) > (w as string)) {
@@ -49,23 +62,23 @@ function edgeArgsToId(
 
 function edgeArgsToObj(
   isDirected: boolean,
-  v_: unknown,
-  w_: unknown,
-  name: unknown
+  v_: NodeId,
+  w_: NodeId,
+  name?: EdgeName
 ): Edge {
   let v = v_;
   let w = w_;
   if (!isDirected && (v as string) > (w as string)) {
     [v, w] = [w, v];
   }
-  const edgeObj: Edge = { v, w } as { v: unknown; w: unknown };
+  const edgeObj: Edge = { v, w };
   if (name) {
     edgeObj.name = name;
   }
   return edgeObj;
 }
 
-function edgeObjToId(isDirected: boolean, edgeObj: Edge): string {
+function edgeObjToId(isDirected: boolean, edgeObj: Edge): EdgeId {
   return edgeArgsToId(isDirected, edgeObj.v, edgeObj.w, edgeObj.name);
 }
 
@@ -85,14 +98,14 @@ export class Graph {
   private _isDirected: boolean;
   private _isMultigraph: boolean;
   private _isCompound: boolean;
-  private _label: unknown;
-  private _defaultNodeLabelFn: (...args: unknown[]) => unknown;
-  private _defaultEdgeLabelFn: (...args: unknown[]) => unknown;
-  private _nodes: Map<unknown, unknown>;
+  private _label: GraphLabel;
+  private _defaultNodeLabelFn: FactoryFunc<NodeLabel>;
+  private _defaultEdgeLabelFn: FactoryFunc<EdgeLabel>;
+  private _nodes: Map<NodeId, NodeValue>;
 
   // _parent, _children only valid if _isCompound
-  private _parent!: Map<unknown, unknown>;
-  private _children!: DefinedMap<unknown, Set<unknown>>;
+  private _parent!: Map<NodeId, NodeId>;
+  private _children!: DefinedMap<NodeId, Set<NodeId>>;
 
   /**
    * @argument {Object} opts - defaults:  `{ directed: true, multigraph: false, compound: false }`
@@ -113,35 +126,35 @@ export class Graph {
     this._defaultEdgeLabelFn = () => undefined;
 
     // v -> label
-    this._nodes = new Map<unknown, unknown>();
+    this._nodes = new Map<NodeId, NodeValue>();
 
     if (this._isCompound) {
       // v -> parent
-      this._parent = new Map<unknown, string>();
+      this._parent = new Map<NodeId, NodeId>();
 
       // v -> children
-      this._children = new DefinedMap<unknown, Set<unknown>>();
-      this._children.set(GRAPH_NODE, new Set<unknown>());
+      this._children = new DefinedMap<NodeId, Set<NodeId>>();
+      this._children.set(GRAPH_NODE, new Set<NodeId>());
     }
   }
 
-  // v -> edgeObj
-  private _in = new DefinedMap<unknown, Map<string, Edge>>();
+  // v -> e -> edgeObj
+  private _in = new DefinedMap<NodeId, Map<EdgeId, Edge>>();
 
   // u -> v -> Number
-  private _preds = new DefinedMap<unknown, Map<unknown, number>>();
+  private _preds = new DefinedMap<NodeId, Map<NodeId, number>>();
 
-  // v -> edgeObj
-  private _out = new DefinedMap<unknown, Map<string, Edge>>();
+  // v -> e -> edgeObj
+  private _out = new DefinedMap<NodeId, Map<EdgeId, Edge>>();
 
   // v -> w -> Number
-  private _sucs = new DefinedMap<unknown, Map<unknown, number>>();
+  private _sucs = new DefinedMap<NodeId, Map<NodeId, number>>();
 
   // e -> edgeObj
-  private _edgeObjs = new DefinedMap<string, Edge>();
+  private _edgeObjs = new DefinedMap<EdgeId, Edge>();
 
   // e -> label
-  private _edgeLabels = new DefinedMap<string, unknown>();
+  private _edgeLabels = new DefinedMap<EdgeId, EdgeLabel>();
 
   /* Number of nodes in the graph. Should only be changed by the implementation. */
   private _nodeCount = 0;
@@ -183,7 +196,7 @@ export class Graph {
    *
    * @returns currently assigned label for the graph or undefined if no label assigned.
    */
-  graph(): unknown {
+  graph(): GraphLabel {
     return this._label;
   }
 
@@ -193,7 +206,7 @@ export class Graph {
    * @argument label - label value.
    * @returns the graph, allowing this to be chained with other functions.
    */
-  setGraph(label: unknown): Graph {
+  setGraph(label: GraphLabel): Graph {
     this._label = label;
     return this;
   }
@@ -215,12 +228,10 @@ export class Graph {
    * @argument newDefault - default node label or factory function.
    * @returns the graph, allowing this to be chained with other functions.
    */
-  setDefaultNodeLabel(
-    newDefault: ((...args: unknown[]) => unknown) | unknown
-  ): Graph {
+  setDefaultNodeLabel(newDefault: FactoryFunc<NodeLabel> | NodeLabel): Graph {
     this._defaultNodeLabelFn =
       typeof newDefault === "function"
-        ? (newDefault as (...args: unknown[]) => unknown)
+        ? (newDefault as FactoryFunc<NodeLabel>)
         : () => newDefault;
     return this;
   }
@@ -242,7 +253,7 @@ export class Graph {
    *
    * @returns list of graph nodes.
    */
-  nodes(): unknown[] {
+  nodes(): NodeId[] {
     return [...this._nodes.keys()];
   }
 
@@ -252,7 +263,7 @@ export class Graph {
    *
    * @returns the graph source nodes.
    */
-  sources(): unknown[] {
+  sources(): NodeId[] {
     return this.nodes().filter(v => {
       return !this._in.definedGet(v).size;
     });
@@ -264,7 +275,7 @@ export class Graph {
    *
    * @returns the graph source nodes.
    */
-  sinks(): unknown[] {
+  sinks(): NodeId[] {
     return this.nodes().filter(v => {
       return !this._out.definedGet(v).size;
     });
@@ -280,7 +291,7 @@ export class Graph {
    * @argument value - value to set for node.
    * @returns the graph, allowing this to be chained with other functions.
    */
-  setNode(v: unknown, value?: unknown): Graph {
+  setNode(v: NodeId, value?: NodeValue): Graph {
     if (v === undefined || v === null) {
       throw new NodeIdError("Node IDs cannot be null or undefined");
     }
@@ -298,13 +309,13 @@ export class Graph {
     );
     if (this._isCompound) {
       this._parent.set(v, GRAPH_NODE);
-      this._children.set(v, new Set<unknown>());
+      this._children.set(v, new Set<NodeId>());
       this._children.definedGet(GRAPH_NODE).add(v);
     }
-    this._in.set(v, new Map<string, Edge>());
-    this._preds.set(v, new Map<unknown, number>());
-    this._out.set(v, new Map<string, Edge>());
-    this._sucs.set(v, new Map<unknown, number>());
+    this._in.set(v, new Map<EdgeId, Edge>());
+    this._preds.set(v, new Map<NodeId, number>());
+    this._out.set(v, new Map<EdgeId, Edge>());
+    this._sucs.set(v, new Map<NodeId, number>());
     this._nodeCount += 1;
     return this;
   }
@@ -317,7 +328,7 @@ export class Graph {
    * @argument value - value to set for each node in list.
    * @returns the graph, allowing this to be chained with other functions.
    */
-  setNodes(vs: unknown[], value?: unknown): Graph {
+  setNodes(vs: NodeId[], value?: NodeValue): Graph {
     vs.forEach(v => {
       if (arguments.length > 1) {
         this.setNode(v, value);
@@ -335,7 +346,7 @@ export class Graph {
    * @argument v - id of the node.
    * @returns label value of the node.
    */
-  node(v: unknown): unknown {
+  node(v: NodeId): NodeValue {
     return this._nodes.get(v);
   }
 
@@ -345,7 +356,7 @@ export class Graph {
    * @argument v - id of the node.
    * @returns true if graph has node with specified id, false - otherwise.
    */
-  hasNode(v: unknown): boolean {
+  hasNode(v: NodeId): boolean {
     return this._nodes.has(v);
   }
 
@@ -358,9 +369,9 @@ export class Graph {
    * @argument v - id of the node.
    * @returns the graph, allowing this to be chained with other functions.
    */
-  removeNode(v: unknown): Graph {
+  removeNode(v: NodeId): Graph {
     if (this._nodes.has(v)) {
-      const removeEdge = (e: string) => {
+      const removeEdge = (e: EdgeId) => {
         this.removeEdge(this._edgeObjs.definedGet(e));
       };
       this._nodes.delete(v);
@@ -397,7 +408,7 @@ export class Graph {
    * @argument p - node to be parent for v.
    * @returns the graph, allowing this to be chained with other functions.
    */
-  setParent(v: unknown, p?: unknown): Graph {
+  setParent(v: NodeId, p?: NodeId): Graph {
     if (!this._isCompound) {
       throw new Error("Cannot set parent in a non-compound graph");
     }
@@ -427,7 +438,7 @@ export class Graph {
     return this;
   }
 
-  private _removeFromParentsChildList(v: unknown): void {
+  private _removeFromParentsChildList(v: NodeId): void {
     this._children.definedGet(this._parent.get(v)).delete(v);
   }
 
@@ -438,7 +449,7 @@ export class Graph {
    * @argument v - node to get parent of.
    * @returns parent node id or void if v has no parent.
    */
-  parent(v: unknown): unknown | void {
+  parent(v: NodeId): NodeId | void {
     if (this._isCompound) {
       const parent = this._parent.get(v);
       if (parent !== GRAPH_NODE) {
@@ -454,7 +465,7 @@ export class Graph {
    * @argument v_ - node to get children of.
    * @returns children nodes id list.
    */
-  children(v_?: unknown): unknown[] | void {
+  children(v_?: NodeId): NodeId[] | void {
     const v = v_ === undefined ? GRAPH_NODE : v_;
 
     if (this._isCompound) {
@@ -477,7 +488,7 @@ export class Graph {
    * @argument v - node identifier.
    * @returns node identifiers list or undefined if v is not in the graph.
    */
-  predecessors(v: unknown): unknown[] | void {
+  predecessors(v: NodeId): NodeId[] | void {
     const predsV = this._preds.get(v);
     if (predsV) {
       return [...predsV.keys()];
@@ -492,7 +503,7 @@ export class Graph {
    * @argument v - node identifier.
    * @returns node identifiers list or undefined if v is not in the graph.
    */
-  successors(v: unknown): unknown[] | void {
+  successors(v: NodeId): NodeId[] | void {
     const sucsV = this._sucs.get(v);
     if (sucsV) {
       return [...sucsV.keys()];
@@ -507,10 +518,10 @@ export class Graph {
    * @argument v - node identifier.
    * @returns node identifiers list or undefined if v is not in the graph.
    */
-  neighbors(v: unknown): unknown[] | void {
+  neighbors(v: NodeId): NodeId[] | void {
     const neighbors = this.predecessors(v);
     if (neighbors) {
-      const uniqueNeighbors = new Set(neighbors);
+      const uniqueNeighbors = new Set<NodeId>(neighbors);
       for (const s of this.successors(v) ?? []) {
         if (!uniqueNeighbors.has(s)) {
           neighbors.push(s);
@@ -522,14 +533,14 @@ export class Graph {
   }
 
   /**
-   * Checks if a node v has any successors in a directed graph or any neighbors
+   * Checks if a node v has no successors in a directed graph or no neighbors
    * in an undirected graph.
    * Complexity: O(|V|).
    *
    * @argument v - node identifier.
    * @returns whether the node is a leaf.
    */
-  isLeaf(v: unknown): boolean {
+  isLeaf(v: NodeId): boolean {
     let neighbors;
     if (this.isDirected()) {
       neighbors = this.successors(v);
@@ -548,7 +559,7 @@ export class Graph {
    * @argument filter - filtration function detecting whether the node should stay or not.
    * @returns new graph made from current and nodes filtered.
    */
-  filterNodes(filter: (v: unknown) => boolean): Graph {
+  filterNodes(filter: (v: NodeId) => boolean): Graph {
     const copy = new Graph({
       directed: this._isDirected,
       multigraph: this._isMultigraph,
@@ -571,8 +582,8 @@ export class Graph {
 
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
-    const parents = new Map<unknown, unknown>();
-    function findParent(v: unknown): unknown {
+    const parents = new Map<NodeId, NodeId>();
+    function findParent(v: NodeId): NodeId {
       const parent = self.parent(v);
       if (parent === undefined || copy.hasNode(parent)) {
         parents.set(v, parent);
@@ -610,12 +621,10 @@ export class Graph {
    * @argument newDefault - default edge label or factory function.
    * @returns the graph, allowing this to be chained with other functions.
    */
-  setDefaultEdgeLabel(
-    newDefault: ((...args: unknown[]) => unknown) | unknown
-  ): Graph {
+  setDefaultEdgeLabel(newDefault: FactoryFunc<EdgeLabel> | EdgeLabel): Graph {
     this._defaultEdgeLabelFn =
       typeof newDefault === "function"
-        ? (newDefault as (...args: unknown[]) => unknown)
+        ? (newDefault as FactoryFunc<EdgeLabel>)
         : () => newDefault;
     return this;
   }
@@ -651,7 +660,7 @@ export class Graph {
    * @argument value - value to associate with the edge.
    * @returns the graph, allowing this to be chained with other functions.
    */
-  setEdge(edge: Edge, value?: unknown): Graph;
+  setEdge(edge: Edge, value?: EdgeValue): Graph;
   /**
    * Creates or updates the label for the edge (v, w) with the optionally supplied
    * name. If label is supplied it is set as the value for the edge. If label is not
@@ -665,12 +674,12 @@ export class Graph {
    * @argument name - unique name of the edge in order to identify it in multigraph.
    * @returns the graph, allowing this to be chained with other functions.
    */
-  setEdge(v: unknown, w: unknown, value?: unknown, name?: unknown): Graph;
+  setEdge(v: NodeId, w: NodeId, value?: EdgeValue, name?: EdgeName): Graph;
   setEdge(
-    edgeOrV: Edge | string,
-    valueOrW?: unknown,
-    value_?: unknown,
-    name_?: unknown
+    edgeOrV: Edge | NodeId,
+    valueOrW?: EdgeValue | NodeId,
+    value_?: EdgeValue,
+    name_?: EdgeName
   ): Graph {
     let v;
     let w;
@@ -680,7 +689,7 @@ export class Graph {
     const arg0 = edgeOrV;
 
     if (typeof arg0 === "object" && arg0 !== null && "v" in arg0) {
-      ({ v, w, name } = arg0);
+      ({ v, w, name } = arg0 as Edge);
       if (arguments.length === 2) {
         value = valueOrW;
         valueSpecified = true;
@@ -741,7 +750,7 @@ export class Graph {
    * @argument value - value to set for each edge between pairs of nodes.
    * @returns the graph, allowing this to be chained with other functions.
    */
-  setPath(vs: unknown[], value?: unknown): Graph {
+  setPath(vs: NodeId[], value?: EdgeValue): Graph {
     vs.reduce((v, w) => {
       if (arguments.length > 1) {
         this.setEdge(v, w, value);
@@ -760,7 +769,7 @@ export class Graph {
    * @argument e - edge descriptor.
    * @returns value associated with specified edge.
    */
-  edge(e: Edge): unknown;
+  edge(e: Edge): EdgeValue;
   /**
    * Gets the label for the specified edge.
    * Complexity: O(1).
@@ -770,8 +779,8 @@ export class Graph {
    * @argument name - name of the edge (actual for multigraph).
    * @returns value associated with specified edge.
    */
-  edge(v: unknown, w: unknown, name?: unknown): unknown;
-  edge(edgeOrV: Edge | unknown, w?: unknown, name?: unknown): unknown {
+  edge(v: NodeId, w: NodeId, name?: EdgeName): EdgeValue;
+  edge(edgeOrV: Edge | NodeId, w?: NodeId, name?: EdgeName): EdgeValue {
     const e =
       arguments.length === 1
         ? edgeObjToId(this._isDirected, edgeOrV as Edge)
@@ -796,8 +805,8 @@ export class Graph {
    * @argument name - name of the edge (actual for multigraph).
    * @returns whether the graph contains the specified edge or not.
    */
-  hasEdge(v: unknown, w: unknown, name?: unknown): boolean;
-  hasEdge(edgeOrV: Edge | unknown, w?: unknown, name?: unknown): boolean {
+  hasEdge(v: NodeId, w: NodeId, name?: EdgeName): boolean;
+  hasEdge(edgeOrV: Edge | NodeId, w?: NodeId, name?: EdgeName): boolean {
     const e =
       arguments.length === 1
         ? edgeObjToId(this._isDirected, edgeOrV as Edge)
@@ -822,8 +831,8 @@ export class Graph {
    * @argument name - name of the edge (actual for multigraph).
    * @returns the graph, allowing this to be chained with other functions.
    */
-  removeEdge(v: unknown, w: unknown, name?: unknown): Graph;
-  removeEdge(edgeOrV: Edge | unknown, w?: unknown, name?: unknown): Graph {
+  removeEdge(v: NodeId, w: NodeId, name?: EdgeName): Graph;
+  removeEdge(edgeOrV: Edge | NodeId, w?: NodeId, name?: EdgeName): Graph {
     const e =
       arguments.length === 1
         ? edgeObjToId(this._isDirected, edgeOrV as Edge)
@@ -851,7 +860,7 @@ export class Graph {
    * @argument u - edge source node.
    * @returns edges descriptors list if v is in the graph, or undefined otherwise.
    */
-  inEdges(v: unknown, u?: unknown): Edge[] | void {
+  inEdges(v: NodeId, u?: NodeId): Edge[] | void {
     const inV = this._in.get(v);
     if (inV) {
       const edges = [...inV.values()];
@@ -871,7 +880,7 @@ export class Graph {
    * @argument w - edge sink node.
    * @returns edges descriptors list if v is in the graph, or undefined otherwise.
    */
-  outEdges(v: unknown, w?: unknown): Edge[] | void {
+  outEdges(v: NodeId, w?: NodeId): Edge[] | void {
     const outV = this._out.get(v);
     if (outV) {
       const edges = [...outV.values()];
@@ -891,7 +900,7 @@ export class Graph {
    * @argument w - edge adjacent node.
    * @returns edges descriptors list if v is in the graph, or undefined otherwise.
    */
-  nodeEdges(v: unknown, w?: unknown): Edge[] | void {
+  nodeEdges(v: NodeId, w?: NodeId): Edge[] | void {
     const inEdges = this.inEdges(v, w);
     if (inEdges) {
       return inEdges.concat(this.outEdges(v, w) ?? []);

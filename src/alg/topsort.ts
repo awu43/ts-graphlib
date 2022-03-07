@@ -1,4 +1,4 @@
-import type { Graph } from "../graph";
+import type { Graph, NodeId } from "../graph";
 
 export class CycleException extends Error {}
 
@@ -10,12 +10,12 @@ export class CycleException extends Error {}
  * @argument g - graph to apply topological sorting to.
  * @returns an array of nodes such that for each edge u -> v, u appears before v in the array.
  */
-export function topsort(g: Graph): unknown[] {
-  const visited = new Set<unknown>();
-  const stack = new Set<unknown>();
-  const results: unknown[] = [];
+export function topsort(g: Graph): NodeId[] {
+  const visited = new Set<NodeId>();
+  const stack = new Set<NodeId>();
+  const results: NodeId[] = [];
 
-  function visit(node: unknown) {
+  function visit(node: NodeId) {
     if (stack.has(node)) {
       throw new CycleException();
     }

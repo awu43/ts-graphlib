@@ -1,4 +1,4 @@
-import type { Graph } from "../graph";
+import type { Graph, NodeId } from "../graph";
 
 import { dfs } from "./dfs";
 
@@ -11,6 +11,6 @@ import { dfs } from "./dfs";
  * @argument vs - nodes list to traverse.
  * @returns the nodes in the order they were visited as a list of their names.
  */
-export function postorder(g: Graph, vs: unknown | unknown[]): unknown[] {
+export function postorder(g: Graph, vs: NodeId | NodeId[]): NodeId[] {
   return dfs(g, vs, "post");
 }

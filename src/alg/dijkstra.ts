@@ -1,25 +1,25 @@
 import { PriorityQueue } from "../data/priority-queue";
-import type { Graph, Edge } from "../graph";
+import type { Graph, Edge, NodeId } from "../graph";
 
 const DEFAULT_WEIGHT_FUNC = () => 1;
 
 export type WeightFn = (e: Edge) => number;
-export type EdgeFn = (v: unknown) => Edge[];
+export type EdgeFn = (v: NodeId) => Edge[];
 interface Path {
   distance: number;
-  predecessor?: unknown;
+  predecessor?: NodeId;
 }
 export type PathMap = Record<string, Path>;
 
 function runDijkstra(
   g: Graph,
-  source: unknown,
+  source: NodeId,
   weightFn: WeightFn,
   edgeFn: EdgeFn
 ) {
   const results: Record<string, Path> = {};
-  const pq = new PriorityQueue();
-  let v: unknown;
+  const pq = new PriorityQueue<NodeId>();
+  let v: NodeId;
   let vEntry: Path;
 
   function updateNeighbors(edge: Edge) {
@@ -80,7 +80,7 @@ function runDijkstra(
  */
 export function dijkstra(
   g: Graph,
-  source: unknown,
+  source: NodeId,
   weightFn?: WeightFn,
   edgeFn?: EdgeFn
 ): PathMap {
@@ -88,6 +88,6 @@ export function dijkstra(
     g,
     source,
     weightFn || DEFAULT_WEIGHT_FUNC,
-    edgeFn || ((v: unknown) => g.outEdges(v) as Edge[])
+    edgeFn || ((v: NodeId) => g.outEdges(v) as Edge[])
   );
 }

@@ -1,12 +1,12 @@
-import type { Graph } from "../graph";
+import type { Graph, NodeId } from "../graph";
 
 function doDfs(
   g: Graph,
-  v: unknown,
+  v: NodeId,
   postorder: boolean,
-  visited: Set<unknown>,
-  navigation: (v_: unknown) => unknown[] | void,
-  acc: unknown[]
+  visited: Set<NodeId>,
+  navigation: (v_: NodeId) => NodeId[] | void,
+  acc: NodeId[]
 ) {
   if (!visited.has(v)) {
     visited.add(v);
@@ -33,15 +33,15 @@ function doDfs(
  */
 export function dfs(
   g: Graph,
-  vs_: unknown[] | unknown,
+  vs_: NodeId[] | NodeId,
   order: "pre" | "post"
-): unknown[] {
+): NodeId[] {
   const vs = Array.isArray(vs_) ? vs_ : [vs_];
 
   const navigation = (g.isDirected() ? g.successors : g.neighbors).bind(g);
 
-  const acc: string[] = [];
-  const visited = new Set<string>();
+  const acc: NodeId[] = [];
+  const visited = new Set<NodeId>();
   vs.forEach(v => {
     if (!g.hasNode(v)) {
       throw new Error(`Graph does not have node: ${v}`);

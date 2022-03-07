@@ -1,4 +1,4 @@
-import type { Graph } from "../graph";
+import type { Graph, NodeId } from "../graph";
 
 /**
  * Finds all connected components in a graph and returns an array of these components.
@@ -8,14 +8,14 @@ import type { Graph } from "../graph";
  * @argument g - graph to find components in.
  * @returns array of nodes list representing components
  */
-export function components(g: Graph): unknown[][] {
-  const visited = new Set<unknown>();
-  const cmpts: unknown[][] = [];
+export function components(g: Graph): NodeId[][] {
+  const visited = new Set<NodeId>();
+  const cmpts: NodeId[][] = [];
 
   g.nodes().forEach(v => {
-    const cmpt: unknown[] = [];
+    const cmpt: NodeId[] = [];
 
-    function dfs(v_: unknown) {
+    function dfs(v_: NodeId) {
       if (visited.has(v_)) {
         return;
       }

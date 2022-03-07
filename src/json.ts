@@ -1,12 +1,12 @@
 import { Graph } from "./graph";
-import type { Edge } from "./graph";
+import type { Edge, NodeId, NodeValue, GraphLabel } from "./graph";
 
 // Original types and function docs from https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/graphlib/index.d.ts
 
 interface Node {
-  v: unknown;
-  value?: unknown;
-  parent?: unknown;
+  v: NodeId;
+  value?: NodeValue;
+  parent?: NodeId;
 }
 
 interface GraphJSON {
@@ -17,7 +17,7 @@ interface GraphJSON {
   };
   nodes: Node[];
   edges: Edge[];
-  value?: unknown;
+  value?: GraphLabel;
 }
 
 /**
