@@ -76,6 +76,8 @@ module.exports = {
       files: ["*.test.ts"],
       rules: {
         "no-unused-expressions": 0,
+
+        "@typescript-eslint/no-explicit-any": 0,
       },
     },
   ],

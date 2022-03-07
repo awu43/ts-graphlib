@@ -9,7 +9,7 @@ interface Path {
   distance: number;
   predecessor?: NodeId;
 }
-export type PathMap = Record<string, Path>;
+export type PathMap = Record<NodeId, Path>;
 
 function runDijkstra(
   g: Graph,
@@ -17,14 +17,14 @@ function runDijkstra(
   weightFn: WeightFn,
   edgeFn: EdgeFn
 ) {
-  const results: Record<string, Path> = {};
+  const results: Record<NodeId, Path> = {};
   const pq = new PriorityQueue<NodeId>();
   let v: NodeId;
   let vEntry: Path;
 
   function updateNeighbors(edge: Edge) {
     const w = edge.v !== v ? edge.v : edge.w;
-    const wEntry = results[w as string];
+    const wEntry = results[w];
     const weight = weightFn(edge);
     const distance = vEntry.distance + weight;
 
@@ -43,13 +43,13 @@ function runDijkstra(
 
   g.nodes().forEach(v_ => {
     const distance = v_ === source ? 0 : Number.POSITIVE_INFINITY;
-    results[v_ as string] = { distance };
+    results[v_] = { distance };
     pq.add(v_, distance);
   });
 
   while (pq.size() > 0) {
     v = pq.removeMin();
-    vEntry = results[v as string];
+    vEntry = results[v];
     if (vEntry.distance === Number.POSITIVE_INFINITY) {
       break;
     }

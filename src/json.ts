@@ -70,7 +70,7 @@ function writeEdges(g: Graph): Edge[] {
       edge.name = e.name;
     }
     if (edgeValue !== undefined) {
-      edge.value = edgeValue as string;
+      edge.value = edgeValue;
     }
     return edge;
   });

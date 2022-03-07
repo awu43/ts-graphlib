@@ -192,12 +192,13 @@ describe("Graph", () => {
       expect(g.node("c")).to.equal("foo");
     });
 
-    it("throws NodeIdError if an ID is undefined or null", () => {
+    it("throws NodeIdError if an ID is not a string", () => {
       expect(() => {
-        g.setNodes([undefined, "bar"]);
+        // eslint-disable-next-line symbol-description
+        g.setNodes([Symbol() as any, "bar"]);
       }).to.throw(NodeIdError);
       expect(() => {
-        g.setNodes(["foo", null]);
+        g.setNodes([13 as any, null]);
       }).to.throw(NodeIdError);
     });
 
@@ -207,9 +208,9 @@ describe("Graph", () => {
   });
 
   describe("setNode", () => {
-    it("throws NodeIdError if ID is undefined or null", () => {
+    it("throws NodeIdError if ID is not a string", () => {
       expect(() => {
-        g.setNode(undefined);
+        g.setNode(4 as any);
       }).to.throw(NodeIdError);
       expect(() => {
         g.setNode(null);

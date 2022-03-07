@@ -8,7 +8,7 @@ const EDGE_KEY_DELIM = "\x01";
 
 export type GraphLabel = unknown;
 
-export type NodeId = unknown;
+export type NodeId = string;
 export type NodeValue = unknown;
 type NodeLabel = unknown;
 
@@ -64,7 +64,7 @@ function edgeArgsToId(
 ): EdgeId {
   let v = v_;
   let w = w_;
-  if (!isDirected && (v as string) > (w as string)) {
+  if (!isDirected && v > w) {
     [v, w] = [w, v];
   }
   return [v, w, name ?? DEFAULT_EDGE_NAME].join(EDGE_KEY_DELIM);
@@ -78,7 +78,7 @@ function edgeArgsToObj(
 ): Edge {
   let v = v_;
   let w = w_;
-  if (!isDirected && (v as string) > (w as string)) {
+  if (!isDirected && v > w) {
     [v, w] = [w, v];
   }
   const edgeObj: Edge = { v, w };
@@ -114,7 +114,7 @@ export class Graph {
   private _nodes: Map<NodeId, NodeValue>;
 
   // _parent, _children only valid if _isCompound
-  private _parent!: Map<NodeId, NodeId>;
+  private _parent!: DefinedMap<NodeId, NodeId>;
   private _children!: DefinedMap<NodeId, Set<NodeId>>;
 
   /**
@@ -140,7 +140,7 @@ export class Graph {
 
     if (this._isCompound) {
       // v -> parent
-      this._parent = new Map<NodeId, NodeId>();
+      this._parent = new DefinedMap<NodeId, NodeId>();
 
       // v -> children
       this._children = new DefinedMap<NodeId, Set<NodeId>>();
@@ -305,8 +305,8 @@ export class Graph {
    * @returns the graph, allowing this to be chained with other functions.
    */
   setNode(v: NodeId, value?: NodeValue): Graph {
-    if (v === undefined || v === null) {
-      throw new NodeIdError("Node IDs cannot be null or undefined");
+    if (typeof v !== "string") {
+      throw new NodeIdError("Node IDs must be strings");
     }
 
     if (this._nodes.has(v)) {
@@ -430,18 +430,17 @@ export class Graph {
       throw new Error("Cannot set parent in a non-compound graph");
     }
 
-    let parent = p;
+    let parent: NodeId | undefined = p;
     if (parent === undefined) {
       parent = GRAPH_NODE;
     } else {
-      let ancestor = parent;
+      let ancestor: NodeId | undefined = parent;
       while (ancestor !== undefined) {
         if (ancestor === v) {
           throw new Error(
             `Setting ${parent} as parent of ${v} would create a cycle`
           );
         }
-        // While loop does the check for undefined
         ancestor = this.parent(ancestor);
       }
 
@@ -456,7 +455,7 @@ export class Graph {
   }
 
   private _removeFromParentsChildList(v: NodeId): void {
-    this._children.definedGet(this._parent.get(v)).delete(v);
+    this._children.definedGet(this._parent.definedGet(v)).delete(v);
   }
 
   /**
@@ -607,8 +606,8 @@ export class Graph {
 
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
-    const parents = new Map<NodeId, NodeId>();
-    function findParent(v: NodeId): NodeId {
+    const parents = new Map<NodeId, NodeId | undefined>();
+    function findParent(v: NodeId): NodeId | undefined {
       const parent = self.parent(v);
       if (parent === undefined || copy.hasNode(parent)) {
         parents.set(v, parent);
@@ -712,8 +711,8 @@ export class Graph {
     value_?: EdgeValue,
     name_?: EdgeName
   ): Graph {
-    let v: Edge | NodeId;
-    let w: EdgeValue | NodeId;
+    let v: NodeId;
+    let w: NodeId;
     let value: EdgeValue;
     let name: EdgeName;
     let valueSpecified = false;
@@ -726,7 +725,7 @@ export class Graph {
       }
     } else {
       v = edgeOrV;
-      w = valueOrW;
+      w = valueOrW as NodeId;
       name = name_;
       if (arguments.length > 2) {
         value = value_;
@@ -817,7 +816,7 @@ export class Graph {
   edge(edgeOrV: Edge | NodeId, w?: NodeId, name?: EdgeName): EdgeValue {
     const e = isEdge(edgeOrV)
       ? edgeObjToId(this._isDirected, edgeOrV)
-      : edgeArgsToId(this._isDirected, edgeOrV, w, name);
+      : edgeArgsToId(this._isDirected, edgeOrV, w as NodeId, name);
     return this._edgeLabels.get(e);
   }
 
@@ -846,7 +845,7 @@ export class Graph {
   hasEdge(edgeOrV: Edge | NodeId, w?: NodeId, name?: EdgeName): boolean {
     const e = isEdge(edgeOrV)
       ? edgeObjToId(this._isDirected, edgeOrV)
-      : edgeArgsToId(this._isDirected, edgeOrV, w, name);
+      : edgeArgsToId(this._isDirected, edgeOrV, w as NodeId, name);
     return this._edgeLabels.has(e);
   }
 
@@ -873,7 +872,7 @@ export class Graph {
   removeEdge(edgeOrV: Edge | NodeId, w?: NodeId, name?: EdgeName): Graph {
     const e = isEdge(edgeOrV)
       ? edgeObjToId(this._isDirected, edgeOrV)
-      : edgeArgsToId(this._isDirected, edgeOrV, w, name);
+      : edgeArgsToId(this._isDirected, edgeOrV, w as NodeId, name);
     const edge = this._edgeObjs.get(e);
     if (edge) {
       const { v: v_, w: w_ } = edge;

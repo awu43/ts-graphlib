@@ -51,7 +51,7 @@ export function tarjan(g: Graph): NodeId[][] {
       const cmpt = [];
       let w;
       do {
-        w = stack.pop() as string;
+        w = stack.pop() as NodeId;
         visited.definedGet(w).onStack = false;
         cmpt.push(w);
       } while (v !== w);

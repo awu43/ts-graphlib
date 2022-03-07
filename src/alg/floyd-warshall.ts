@@ -14,11 +14,11 @@ function runFloydWarshall(
   const nodes = g.nodes();
 
   nodes.forEach(v => {
-    results[v as string] = {};
-    results[v as string][v as string] = { distance: 0 };
+    results[v] = {};
+    results[v][v] = { distance: 0 };
     nodes.forEach(w => {
-      if ((v as string) !== w) {
-        results[v as string][w as string] = {
+      if (v !== w) {
+        results[v][w] = {
           distance: Number.POSITIVE_INFINITY,
         };
       }
@@ -26,18 +26,18 @@ function runFloydWarshall(
     edgeFn(v).forEach(edge => {
       const w = edge.v === v ? edge.w : edge.v;
       const d = weightFn(edge);
-      results[v as string][w as string] = { distance: d, predecessor: v };
+      results[v][w] = { distance: d, predecessor: v };
     });
   });
 
   nodes.forEach(k => {
-    const rowK = results[k as string];
+    const rowK = results[k];
     nodes.forEach(i => {
-      const rowI = results[i as string];
+      const rowI = results[i];
       nodes.forEach(j => {
-        const ik = rowI[k as string];
-        const kj = rowK[j as string];
-        const ij = rowI[j as string];
+        const ik = rowI[k];
+        const kj = rowK[j];
+        const ij = rowI[j];
         const altDistance = ik.distance + kj.distance;
         if (altDistance < ij.distance) {
           ij.distance = altDistance;
