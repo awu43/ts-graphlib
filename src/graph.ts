@@ -604,11 +604,9 @@ export class Graph {
       }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const self = this;
     const parents = new Map<NodeId, NodeId | undefined>();
-    function findParent(v: NodeId): NodeId | undefined {
-      const parent = self.parent(v);
+    const findParent = (v: NodeId): NodeId | undefined => {
+      const parent = this.parent(v);
       if (parent === undefined || copy.hasNode(parent)) {
         parents.set(v, parent);
         return parent;
@@ -617,7 +615,7 @@ export class Graph {
       } else {
         return findParent(parent);
       }
-    }
+    };
 
     if (this._isCompound) {
       copy.nodes.forEach(v => {
