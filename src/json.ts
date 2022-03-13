@@ -17,7 +17,7 @@ interface GraphJSON {
   };
   nodes: Node[];
   edges: Edge[];
-  value?: GraphLabel;
+  label?: GraphLabel;
 }
 
 /**
@@ -34,7 +34,7 @@ interface GraphJSON {
  * @returns graph constructed acccording to specified representation
  */
 export function read(json: GraphJSON): Graph {
-  const g = new Graph(json.options).setGraph(json.value);
+  const g = new Graph(json.options).setLabel(json.label);
   json.nodes.forEach(entry => {
     g.setNode(entry.v, entry.value);
     if (entry.parent) {
@@ -93,8 +93,8 @@ export function write(g: Graph): GraphJSON {
     nodes: writeNodes(g),
     edges: writeEdges(g),
   };
-  if (g.graph !== undefined) {
-    json.value = JSON.parse(JSON.stringify(g.graph));
+  if (g.label !== undefined) {
+    json.label = JSON.parse(JSON.stringify(g.label));
   }
   return json;
 }

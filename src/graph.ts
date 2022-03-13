@@ -206,7 +206,7 @@ export class Graph {
    *
    * @returns currently assigned label for the graph or undefined if no label assigned.
    */
-  get graph(): GraphLabel {
+  get label(): GraphLabel {
     return this._label;
   }
 
@@ -216,7 +216,7 @@ export class Graph {
    * @argument label - label value.
    * @returns the graph, allowing this to be chained with other functions.
    */
-  setGraph(label: GraphLabel): Graph {
+  setLabel(label: GraphLabel): Graph {
     this._label = label;
     return this;
   }
@@ -590,7 +590,7 @@ export class Graph {
       compound: this._isCompound,
     });
 
-    copy.setGraph(this.graph);
+    copy.setLabel(this.label);
 
     for (const [v, value] of this._nodes.entries()) {
       if (filter(v)) {

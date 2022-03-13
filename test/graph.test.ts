@@ -19,7 +19,7 @@ describe("Graph", () => {
     });
 
     it("has no attributes", () => {
-      expect(g.graph).to.be.undefined;
+      expect(g.label).to.be.undefined;
     });
 
     it("defaults to a simple directed graph", () => {
@@ -50,14 +50,14 @@ describe("Graph", () => {
     });
   });
 
-  describe("setGraph", () => {
+  describe("setLabel", () => {
     it("can be used to get and set properties for the graph", () => {
-      g.setGraph("foo");
-      expect(g.graph).to.equal("foo");
+      g.setLabel("foo");
+      expect(g.label).to.equal("foo");
     });
 
     it("is chainable", () => {
-      expect(g.setGraph("foo")).to.equal(g);
+      expect(g.setLabel("foo")).to.equal(g);
     });
   });
 
@@ -91,7 +91,7 @@ describe("Graph", () => {
 
   describe("filterNodes", () => {
     it("returns an identical graph when the filter selects everything", () => {
-      g.setGraph("graph label");
+      g.setLabel("graph label");
       g.setNode("a", 123);
       g.setPath(["a", "b", "c"]);
       g.setEdge("a", "c", 456);
@@ -101,7 +101,7 @@ describe("Graph", () => {
       expect(g2.successors("b")).eqls(["c"]);
       expect(g2.node("a")).eqls(123);
       expect(g2.edge("a", "c")).eqls(456);
-      expect(g2.graph).eqls("graph label");
+      expect(g2.label).eqls("graph label");
     });
 
     it("returns an empty graph when the filter selects nothing", () => {

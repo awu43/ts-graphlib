@@ -18,11 +18,11 @@ describe("json", () => {
   });
 
   it("preserves the graph value, if any", () => {
-    expect(rw(new Graph().setGraph(1)).graph).equals(1);
-    expect(rw(new Graph().setGraph({ foo: "bar" })).graph).eqls({
+    expect(rw(new Graph().setLabel(1)).label).equals(1);
+    expect(rw(new Graph().setLabel({ foo: "bar" })).label).eqls({
       foo: "bar",
     });
-    expect(rw(new Graph()).graph).to.be.undefined;
+    expect(rw(new Graph()).label).to.be.undefined;
   });
 
   it("preserves nodes", () => {
