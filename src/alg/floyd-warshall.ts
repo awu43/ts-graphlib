@@ -10,7 +10,7 @@ function runFloydWarshall(
   edgeFn: EdgeFn
 ): AllPathsMap {
   const results: AllPathsMap = {};
-  const nodes = g.nodes();
+  const { nodes } = g;
 
   nodes.forEach(v => {
     results[v] = {};

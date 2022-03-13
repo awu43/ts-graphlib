@@ -32,9 +32,9 @@ export function topsort(g: Graph): NodeId[] {
     }
   }
 
-  g.sinks().forEach(visit);
+  g.sinks.forEach(visit);
 
-  if (visited.size !== g.nodeCount()) {
+  if (visited.size !== g.nodeCount) {
     throw new CycleException();
   }
 

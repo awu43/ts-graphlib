@@ -36,17 +36,17 @@ export function prim(g: Graph, weightFn: WeightFn): Graph {
     }
   }
 
-  if (!g.nodeCount()) {
+  if (!g.nodeCount) {
     return result;
   }
 
-  g.nodes().forEach(v_ => {
+  g.nodes.forEach(v_ => {
     pq.add(v_, Number.POSITIVE_INFINITY);
     result.setNode(v_);
   });
 
   // Start from an arbitrary node
-  pq.decrease(g.nodes()[0], 0);
+  pq.decrease(g.nodes[0], 0);
 
   let init = false;
   while (pq.size() > 0) {

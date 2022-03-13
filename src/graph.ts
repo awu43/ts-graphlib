@@ -179,7 +179,7 @@ export class Graph {
    *
    * @returns whether the graph edges have an orientation.
    */
-  isDirected(): boolean {
+  get isDirected(): boolean {
     return this._isDirected;
   }
 
@@ -188,7 +188,7 @@ export class Graph {
    *
    * @returns whether the pair of nodes of the graph can have multiple edges.
    */
-  isMultigraph(): boolean {
+  get isMultigraph(): boolean {
     return this._isMultigraph;
   }
 
@@ -197,7 +197,7 @@ export class Graph {
    *
    * @returns whether a node of the graph can have subnodes.
    */
-  isCompound(): boolean {
+  get isCompound(): boolean {
     return this._isCompound;
   }
 
@@ -206,7 +206,7 @@ export class Graph {
    *
    * @returns currently assigned label for the graph or undefined if no label assigned.
    */
-  graph(): GraphLabel {
+  get graph(): GraphLabel {
     return this._label;
   }
 
@@ -252,7 +252,7 @@ export class Graph {
    *
    * @returns nodes count.
    */
-  nodeCount(): number {
+  get nodeCount(): number {
     return this._nodeCount;
   }
 
@@ -264,7 +264,7 @@ export class Graph {
    *
    * @returns list of graph nodes.
    */
-  nodes(): NodeId[] {
+  get nodes(): NodeId[] {
     return [...this._nodes.keys()];
   }
 
@@ -274,8 +274,8 @@ export class Graph {
    *
    * @returns the graph source nodes.
    */
-  sources(): NodeId[] {
-    return this.nodes().filter(v => {
+  get sources(): NodeId[] {
+    return this.nodes.filter(v => {
       return !this._inEdges.definedGet(v).size;
     });
   }
@@ -286,8 +286,8 @@ export class Graph {
    *
    * @returns the graph source nodes.
    */
-  sinks(): NodeId[] {
-    return this.nodes().filter(v => {
+  get sinks(): NodeId[] {
+    return this.nodes.filter(v => {
       return !this._outEdges.definedGet(v).size;
     });
   }
@@ -492,7 +492,7 @@ export class Graph {
         return [...children.values()];
       }
     } else if (v === GRAPH_NODE) {
-      return this.nodes();
+      return this.nodes;
     } else if (this.hasNode(v)) {
       return [];
     }
@@ -565,7 +565,7 @@ export class Graph {
    */
   isLeaf(v: NodeId): boolean {
     let neighbors;
-    if (this.isDirected()) {
+    if (this.isDirected) {
       neighbors = this.successors(v);
     } else {
       neighbors = this.neighbors(v);
@@ -590,7 +590,7 @@ export class Graph {
       compound: this._isCompound,
     });
 
-    copy.setGraph(this.graph());
+    copy.setGraph(this.graph);
 
     for (const [v, value] of this._nodes.entries()) {
       if (filter(v)) {
@@ -620,7 +620,7 @@ export class Graph {
     }
 
     if (this._isCompound) {
-      copy.nodes().forEach(v => {
+      copy.nodes.forEach(v => {
         copy.setParent(v, findParent(v));
       });
     }
@@ -660,7 +660,7 @@ export class Graph {
    *
    * @returns edges count.
    */
-  edgeCount(): number {
+  get edgeCount(): number {
     return this._edgeCount;
   }
 
@@ -672,7 +672,7 @@ export class Graph {
    *
    * @return graph edges list.
    */
-  edges(): Edge[] {
+  get edges(): Edge[] {
     return [...this._edgeObjs.values()];
   }
 

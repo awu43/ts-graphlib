@@ -40,7 +40,7 @@ export function dfs(
 ): NodeId[] {
   const vs = Array.isArray(vs_) ? vs_ : [vs_];
 
-  const navigation = (g.isDirected() ? g.successors : g.neighbors).bind(g);
+  const navigation = (g.isDirected ? g.successors : g.neighbors).bind(g);
 
   const acc: NodeId[] = [];
   const visited = new Set<NodeId>();

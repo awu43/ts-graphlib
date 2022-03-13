@@ -48,7 +48,7 @@ export function read(json: GraphJSON): Graph {
 }
 
 function writeNodes(g: Graph) {
-  return g.nodes().map(v => {
+  return g.nodes.map(v => {
     const nodeValue = g.node(v);
     const parent = g.parent(v);
     const node: Node = { v };
@@ -63,7 +63,7 @@ function writeNodes(g: Graph) {
 }
 
 function writeEdges(g: Graph): Edge[] {
-  return g.edges().map(e => {
+  return g.edges.map(e => {
     const edgeValue = g.edge(e);
     const edge: Edge = { v: e.v, w: e.w };
     if (e.name !== undefined) {
@@ -86,15 +86,15 @@ function writeEdges(g: Graph): Edge[] {
 export function write(g: Graph): GraphJSON {
   const json: GraphJSON = {
     options: {
-      directed: g.isDirected(),
-      multigraph: g.isMultigraph(),
-      compound: g.isCompound(),
+      directed: g.isDirected,
+      multigraph: g.isMultigraph,
+      compound: g.isCompound,
     },
     nodes: writeNodes(g),
     edges: writeEdges(g),
   };
-  if (g.graph() !== undefined) {
-    json.value = JSON.parse(JSON.stringify(g.graph()));
+  if (g.graph !== undefined) {
+    json.value = JSON.parse(JSON.stringify(g.graph));
   }
   return json;
 }

@@ -9,20 +9,20 @@ function rw(g: Graph) {
 
 describe("json", () => {
   it("preserves the graph options", () => {
-    expect(rw(new Graph({ directed: true })).isDirected()).to.be.true;
-    expect(rw(new Graph({ directed: false })).isDirected()).to.be.false;
-    expect(rw(new Graph({ multigraph: true })).isMultigraph()).to.be.true;
-    expect(rw(new Graph({ multigraph: false })).isMultigraph()).to.be.false;
-    expect(rw(new Graph({ compound: true })).isCompound()).to.be.true;
-    expect(rw(new Graph({ compound: false })).isCompound()).to.be.false;
+    expect(rw(new Graph({ directed: true })).isDirected).to.be.true;
+    expect(rw(new Graph({ directed: false })).isDirected).to.be.false;
+    expect(rw(new Graph({ multigraph: true })).isMultigraph).to.be.true;
+    expect(rw(new Graph({ multigraph: false })).isMultigraph).to.be.false;
+    expect(rw(new Graph({ compound: true })).isCompound).to.be.true;
+    expect(rw(new Graph({ compound: false })).isCompound).to.be.false;
   });
 
   it("preserves the graph value, if any", () => {
-    expect(rw(new Graph().setGraph(1)).graph()).equals(1);
-    expect(rw(new Graph().setGraph({ foo: "bar" })).graph()).eqls({
+    expect(rw(new Graph().setGraph(1)).graph).equals(1);
+    expect(rw(new Graph().setGraph({ foo: "bar" })).graph).eqls({
       foo: "bar",
     });
-    expect(rw(new Graph()).graph()).to.be.undefined;
+    expect(rw(new Graph()).graph).to.be.undefined;
   });
 
   it("preserves nodes", () => {

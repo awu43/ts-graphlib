@@ -27,7 +27,7 @@ export function dijkstraAll(
   edgeFn?: EdgeFn
 ): AllPathsMap {
   const acc: AllPathsMap = {};
-  const nodes = g.nodes();
+  const { nodes } = g;
   for (let i = 0; i < nodes.length; i++) {
     const v = nodes[i];
     acc[v] = dijkstra(g, v, weightFn, edgeFn);

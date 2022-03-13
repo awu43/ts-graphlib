@@ -11,49 +11,49 @@ describe("Graph", () => {
 
   describe("initial state", () => {
     it("has no nodes", () => {
-      expect(g.nodeCount()).to.equal(0);
+      expect(g.nodeCount).to.equal(0);
     });
 
     it("has no edges", () => {
-      expect(g.edgeCount()).to.equal(0);
+      expect(g.edgeCount).to.equal(0);
     });
 
     it("has no attributes", () => {
-      expect(g.graph()).to.be.undefined;
+      expect(g.graph).to.be.undefined;
     });
 
     it("defaults to a simple directed graph", () => {
-      expect(g.isDirected()).to.be.true;
-      expect(g.isCompound()).to.be.false;
-      expect(g.isMultigraph()).to.be.false;
+      expect(g.isDirected).to.be.true;
+      expect(g.isCompound).to.be.false;
+      expect(g.isMultigraph).to.be.false;
     });
 
     it("can be set to undirected", () => {
       g = new Graph({ directed: false });
-      expect(g.isDirected()).to.be.false;
-      expect(g.isCompound()).to.be.false;
-      expect(g.isMultigraph()).to.be.false;
+      expect(g.isDirected).to.be.false;
+      expect(g.isCompound).to.be.false;
+      expect(g.isMultigraph).to.be.false;
     });
 
     it("can be set to a compound graph", () => {
       g = new Graph({ compound: true });
-      expect(g.isDirected()).to.be.true;
-      expect(g.isCompound()).to.be.true;
-      expect(g.isMultigraph()).to.be.false;
+      expect(g.isDirected).to.be.true;
+      expect(g.isCompound).to.be.true;
+      expect(g.isMultigraph).to.be.false;
     });
 
     it("can be set to a mulitgraph", () => {
       g = new Graph({ multigraph: true });
-      expect(g.isDirected()).to.be.true;
-      expect(g.isCompound()).to.be.false;
-      expect(g.isMultigraph()).to.be.true;
+      expect(g.isDirected).to.be.true;
+      expect(g.isCompound).to.be.false;
+      expect(g.isMultigraph).to.be.true;
     });
   });
 
   describe("setGraph", () => {
     it("can be used to get and set properties for the graph", () => {
       g.setGraph("foo");
-      expect(g.graph()).to.equal("foo");
+      expect(g.graph).to.equal("foo");
     });
 
     it("is chainable", () => {
@@ -63,13 +63,13 @@ describe("Graph", () => {
 
   describe("nodes", () => {
     it("is empty if there are no nodes in the graph", () => {
-      expect(g.nodes()).to.eql([]);
+      expect(g.nodes).to.eql([]);
     });
 
     it("returns the ids of nodes in the graph", () => {
       g.setNode("a");
       g.setNode("b");
-      expect(g.nodes()).to.have.members(["a", "b"]);
+      expect(g.nodes).to.have.members(["a", "b"]);
     });
   });
 
@@ -77,7 +77,7 @@ describe("Graph", () => {
     it("returns nodes in the graph that have no in-edges", () => {
       g.setPath(["a", "b", "c"]);
       g.setNode("d");
-      expect(g.sources()).to.have.members(["a", "d"]);
+      expect(g.sources).to.have.members(["a", "d"]);
     });
   });
 
@@ -85,7 +85,7 @@ describe("Graph", () => {
     it("returns nodes in the graph that have no out-edges", () => {
       g.setPath(["a", "b", "c"]);
       g.setNode("d");
-      expect(g.sinks()).to.have.members(["c", "d"]);
+      expect(g.sinks).to.have.members(["c", "d"]);
     });
   });
 
@@ -96,56 +96,56 @@ describe("Graph", () => {
       g.setPath(["a", "b", "c"]);
       g.setEdge("a", "c", 456);
       const g2 = g.filterNodes(() => true);
-      expect(g2.nodes()).to.have.members(["a", "b", "c"]);
+      expect(g2.nodes).to.have.members(["a", "b", "c"]);
       expect(g2.successors("a")).to.have.members(["b", "c"]);
       expect(g2.successors("b")).eqls(["c"]);
       expect(g2.node("a")).eqls(123);
       expect(g2.edge("a", "c")).eqls(456);
-      expect(g2.graph()).eqls("graph label");
+      expect(g2.graph).eqls("graph label");
     });
 
     it("returns an empty graph when the filter selects nothing", () => {
       g.setPath(["a", "b", "c"]);
       const g2 = g.filterNodes(() => false);
-      expect(g2.nodes()).eqls([]);
-      expect(g2.edges()).eqls([]);
+      expect(g2.nodes).eqls([]);
+      expect(g2.edges).eqls([]);
     });
 
     it("only includes nodes for which the filter returns true", () => {
       g.setNodes(["a", "b"]);
       const g2 = g.filterNodes(v => v === "a");
-      expect(g2.nodes()).eqls(["a"]);
+      expect(g2.nodes).eqls(["a"]);
     });
 
     it("removes edges that are connected to removed nodes", () => {
       g.setEdge("a", "b");
       const g2 = g.filterNodes(v => v === "a");
-      expect(g2.nodes()).eqls(["a"]);
-      expect(g2.edges()).eqls([]);
+      expect(g2.nodes).eqls(["a"]);
+      expect(g2.edges).eqls([]);
     });
 
     it("preserves the directed option", () => {
       g = new Graph({ directed: true });
-      expect(g.filterNodes(() => true).isDirected()).to.be.true;
+      expect(g.filterNodes(() => true).isDirected).to.be.true;
 
       g = new Graph({ directed: false });
-      expect(g.filterNodes(() => true).isDirected()).to.be.false;
+      expect(g.filterNodes(() => true).isDirected).to.be.false;
     });
 
     it("preserves the multigraph option", () => {
       g = new Graph({ multigraph: true });
-      expect(g.filterNodes(() => true).isMultigraph()).to.be.true;
+      expect(g.filterNodes(() => true).isMultigraph).to.be.true;
 
       g = new Graph({ multigraph: false });
-      expect(g.filterNodes(() => true).isMultigraph()).to.be.false;
+      expect(g.filterNodes(() => true).isMultigraph).to.be.false;
     });
 
     it("preserves the compound option", () => {
       g = new Graph({ compound: true });
-      expect(g.filterNodes(() => true).isCompound()).to.be.true;
+      expect(g.filterNodes(() => true).isCompound).to.be.true;
 
       g = new Graph({ compound: false });
-      expect(g.filterNodes(() => true).isCompound()).to.be.false;
+      expect(g.filterNodes(() => true).isCompound).to.be.false;
     });
 
     it("includes subgraphs", () => {
@@ -220,7 +220,7 @@ describe("Graph", () => {
       g.setNode("a");
       expect(g.hasNode("a")).to.be.true;
       expect(g.node("a")).to.be.undefined;
-      expect(g.nodeCount()).to.equal(1);
+      expect(g.nodeCount).to.equal(1);
     });
 
     it("can set a value for the node", () => {
@@ -243,7 +243,7 @@ describe("Graph", () => {
       g.setNode("a", "foo");
       g.setNode("a", "foo");
       expect(g.node("a")).to.equal("foo");
-      expect(g.nodeCount()).to.equal(1);
+      expect(g.nodeCount).to.equal(1);
     });
 
     it("is chainable", () => {
@@ -300,17 +300,17 @@ describe("Graph", () => {
 
   describe("removeNode", () => {
     it("does nothing if the node is not in the graph", () => {
-      expect(g.nodeCount()).to.equal(0);
+      expect(g.nodeCount).to.equal(0);
       g.removeNode("a");
       expect(g.hasNode("a")).to.be.false;
-      expect(g.nodeCount()).to.equal(0);
+      expect(g.nodeCount).to.equal(0);
     });
 
     it("removes the node if it is in the graph", () => {
       g.setNode("a");
       g.removeNode("a");
       expect(g.hasNode("a")).to.be.false;
-      expect(g.nodeCount()).to.equal(0);
+      expect(g.nodeCount).to.equal(0);
     });
 
     it("is idempotent", () => {
@@ -318,14 +318,14 @@ describe("Graph", () => {
       g.removeNode("a");
       g.removeNode("a");
       expect(g.hasNode("a")).to.be.false;
-      expect(g.nodeCount()).to.equal(0);
+      expect(g.nodeCount).to.equal(0);
     });
 
     it("removes edges incident on the node", () => {
       g.setEdge("a", "b");
       g.setEdge("b", "c");
       g.removeNode("b");
-      expect(g.edgeCount()).to.equal(0);
+      expect(g.edgeCount).to.equal(0);
     });
 
     it("removes parent / child relationships for the node", () => {
@@ -570,13 +570,13 @@ describe("Graph", () => {
 
   describe("edges", () => {
     it("is empty if there are no edges in the graph", () => {
-      expect(g.edges()).to.eql([]);
+      expect(g.edges).to.eql([]);
     });
 
     it("returns the keys for edges in the graph", () => {
       g.setEdge("a", "b");
       g.setEdge("b", "c");
-      expect(g.edges()).to.have.deep.members([
+      expect(g.edges).to.have.deep.members([
         { v: "a", w: "b" },
         { v: "b", w: "c" },
       ]);
@@ -609,14 +609,14 @@ describe("Graph", () => {
       expect(g.edge("a", "b")).to.be.undefined;
       expect(g.hasEdge("a", "b")).to.be.true;
       expect(g.hasEdge({ v: "a", w: "b" })).to.be.true;
-      expect(g.edgeCount()).to.equal(1);
+      expect(g.edgeCount).to.equal(1);
     });
 
     it("creates the nodes for the edge if they are not part of the graph", () => {
       g.setEdge("a", "b");
       expect(g.hasNode("a")).to.be.true;
       expect(g.hasNode("b")).to.be.true;
-      expect(g.nodeCount()).to.equal(2);
+      expect(g.nodeCount).to.equal(2);
     });
 
     it("creates a multi-edge if if it isn't part of the graph", () => {
@@ -762,7 +762,7 @@ describe("Graph", () => {
     it("has no effect if the edge is not in the graph", () => {
       g.removeEdge("a", "b");
       expect(g.hasEdge("a", "b")).to.be.false;
-      expect(g.edgeCount()).to.equal(0);
+      expect(g.edgeCount).to.equal(0);
     });
 
     it("can remove an edge by edgeObj", () => {
@@ -770,7 +770,7 @@ describe("Graph", () => {
       g.setEdge({ v: "a", w: "b", name: "foo" });
       g.removeEdge({ v: "a", w: "b", name: "foo" });
       expect(g.hasEdge("a", "b", "foo")).to.be.false;
-      expect(g.edgeCount()).to.equal(0);
+      expect(g.edgeCount).to.equal(0);
     });
 
     it("can remove an edge by separate ids", () => {
@@ -778,7 +778,7 @@ describe("Graph", () => {
       g.setEdge({ v: "a", w: "b", name: "foo" });
       g.removeEdge("a", "b", "foo");
       expect(g.hasEdge("a", "b", "foo")).to.be.false;
-      expect(g.edgeCount()).to.equal(0);
+      expect(g.edgeCount).to.equal(0);
     });
 
     it("correctly removes neighbors", () => {

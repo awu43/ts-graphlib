@@ -10,8 +10,8 @@ describe("alg.prim", () => {
     const source = new Graph();
 
     const g = prim(source, edgeWeightFn(source));
-    expect(g.nodeCount()).to.equal(0);
-    expect(g.edgeCount()).to.equal(0);
+    expect(g.nodeCount).to.equal(0);
+    expect(g.edgeCount).to.equal(0);
   });
 
   it("returns a single node graph for a graph with a single node", () => {
@@ -19,8 +19,8 @@ describe("alg.prim", () => {
     source.setNode("a");
 
     const g = prim(source, edgeWeightFn(source));
-    expect(g.nodes()).to.eql(["a"]);
-    expect(g.edgeCount()).to.equal(0);
+    expect(g.nodes).to.eql(["a"]);
+    expect(g.edgeCount).to.equal(0);
   });
 
   it("returns a deterministic result given an optimal solution", () => {

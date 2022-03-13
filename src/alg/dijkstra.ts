@@ -35,7 +35,7 @@ function runDijkstra(
     }
   }
 
-  g.nodes().forEach(v_ => {
+  g.nodes.forEach(v_ => {
     const distance = v_ === source ? 0 : Number.POSITIVE_INFINITY;
     results[v_] = { distance };
     pq.add(v_, distance);

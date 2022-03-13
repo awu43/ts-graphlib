@@ -59,7 +59,7 @@ export function tarjan(g: Graph): NodeId[][] {
     }
   }
 
-  g.nodes().forEach(v => {
+  g.nodes.forEach(v => {
     if (!visited.has(v)) {
       dfs(v);
     }
