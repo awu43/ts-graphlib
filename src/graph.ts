@@ -565,12 +565,7 @@ export class Graph {
    * @returns whether the node is a leaf.
    */
   isLeaf(v: NodeId): boolean {
-    let neighbors;
-    if (this.isDirected) {
-      neighbors = this.successors(v);
-    } else {
-      neighbors = this.neighbors(v);
-    }
+    const neighbors = this.isDirected ? this.successors(v) : this.neighbors(v);
     return !!(neighbors && !neighbors.length);
   }
 
