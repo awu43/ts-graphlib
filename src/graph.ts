@@ -902,10 +902,7 @@ export class Graph {
     const inV = this._inEdges.get(v);
     if (inV) {
       const edges = [...inV.values()];
-      if (!u) {
-        return edges;
-      }
-      return edges.filter(edge => edge.v === u);
+      return u === undefined ? edges : edges.filter(edge => edge.v === u);
     }
   }
 
@@ -924,10 +921,7 @@ export class Graph {
     const outV = this._outEdges.get(v);
     if (outV) {
       const edges = [...outV.values()];
-      if (!w) {
-        return edges;
-      }
-      return edges.filter(edge => edge.w === w);
+      return w === undefined ? edges : edges.filter(edge => edge.w === w);
     }
   }
 
