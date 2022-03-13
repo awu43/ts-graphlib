@@ -113,9 +113,10 @@ export class Graph {
   private _defaultEdgeLabelFn: FactoryFunc<EdgeLabel>;
   private _nodes: Map<NodeId, NodeValue>;
 
-  // _parent, _children only valid if _isCompound
-  private _parent!: DefinedMap<NodeId, NodeId>;
-  private _children!: DefinedMap<NodeId, Set<NodeId>>;
+  // @ts-expect-error: Only for compound graphs
+  private _parent: DefinedMap<NodeId, NodeId>;
+  // @ts-expect-error: Only for compound graphs
+  private _children: DefinedMap<NodeId, Set<NodeId>>;
 
   /**
    * @argument {Object} opts - defaults:  `{ directed: true, multigraph: false, compound: false }`
