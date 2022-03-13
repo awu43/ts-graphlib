@@ -484,7 +484,7 @@ export class Graph {
    * @returns children nodes id list.
    */
   children(v_?: NodeId): NodeId[] | undefined {
-    const v = v_ === undefined ? GRAPH_NODE : v_;
+    const v = v_ ?? GRAPH_NODE;
 
     if (this._isCompound) {
       const children = this._children.get(v);
