@@ -143,8 +143,9 @@ export class Graph {
       this._parent = new DefinedMap<NodeId, NodeId>();
 
       // v -> children
-      this._children = new DefinedMap<NodeId, Set<NodeId>>();
-      this._children.set(GRAPH_NODE, new Set<NodeId>());
+      this._children = new DefinedMap<NodeId, Set<NodeId>>([
+        [GRAPH_NODE, new Set<NodeId>()],
+      ]);
     }
   }
 
