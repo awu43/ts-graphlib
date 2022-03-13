@@ -12,6 +12,7 @@ module.exports = {
   },
   plugins: ["prettier"],
   rules: {
+    "class-methods-use-this": 0,
     "consistent-return": 0,
     "func-names": 0,
     "lines-between-class-members": [
@@ -70,6 +71,7 @@ module.exports = {
           "always",
           { exceptAfterSingleLine: true },
         ],
+        "@typescript-eslint/no-inferrable-types": 0,
       },
     },
     {

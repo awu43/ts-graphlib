@@ -99,56 +99,19 @@ function edgeObjToId(isDirected: boolean, edgeObj: Edge): EdgeId {
 //    composed of enough information to uniquely identify an edge: {v, w, name}.
 
 interface GraphOptions {
-  directed?: boolean; // default: true.
-  multigraph?: boolean; // default: false.
-  compound?: boolean; // default: false.
+  directed?: boolean;
+  multigraph?: boolean;
+  compound?: boolean;
 }
 
 export class Graph {
-  private _isDirected: boolean;
-  private _isMultigraph: boolean;
-  private _isCompound: boolean;
+  private _isDirected: boolean = true;
+  private _isMultigraph: boolean = false;
+  private _isCompound: boolean = false;
   private _label: GraphLabel;
-  private _defaultNodeLabelFn: FactoryFunc<NodeLabel>;
-  private _defaultEdgeLabelFn: FactoryFunc<EdgeLabel>;
-  private _nodes: Map<NodeId, NodeValue>;
-
-  // @ts-expect-error: Only for compound graphs
-  private _parent: DefinedMap<NodeId, NodeId>;
-  // @ts-expect-error: Only for compound graphs
-  private _children: DefinedMap<NodeId, Set<NodeId>>;
-
-  /**
-   * @argument {Object} opts - defaults:  `{ directed: true, multigraph: false, compound: false }`
-   *
-   */
-  constructor(opts?: GraphOptions) {
-    this._isDirected = opts?.directed ?? true;
-    this._isMultigraph = opts?.multigraph ?? false;
-    this._isCompound = opts?.compound ?? false;
-
-    // Label for the graph itself
-    this._label = undefined;
-
-    // Defaults to be set when creating a new node
-    this._defaultNodeLabelFn = () => undefined;
-
-    // Defaults to be set when creating a new edge
-    this._defaultEdgeLabelFn = () => undefined;
-
-    // v -> label
-    this._nodes = new Map<NodeId, NodeValue>();
-
-    if (this._isCompound) {
-      // v -> parent
-      this._parent = new DefinedMap<NodeId, NodeId>();
-
-      // v -> children
-      this._children = new DefinedMap<NodeId, Set<NodeId>>([
-        [GRAPH_NODE, new Set<NodeId>()],
-      ]);
-    }
-  }
+  private _defaultNodeLabelFn: FactoryFunc<NodeLabel> = () => undefined;
+  private _defaultEdgeLabelFn: FactoryFunc<EdgeLabel> = () => undefined;
+  private _nodes = new Map<NodeId, NodeValue>();
 
   // v -> e -> edgeObj
   private _inEdges = new DefinedMap<NodeId, Map<EdgeId, Edge>>();
@@ -168,11 +131,33 @@ export class Graph {
   // e -> label
   private _edgeLabels = new DefinedMap<EdgeId, EdgeLabel>();
 
-  /* Number of nodes in the graph. Should only be changed by the implementation. */
   private _nodeCount = 0;
-
-  /* Number of edges in the graph. Should only be changed by the implementation. */
   private _edgeCount = 0;
+
+  // @ts-expect-error: Only for compound graphs
+  private _parent: DefinedMap<NodeId, NodeId>;
+  // @ts-expect-error: Only for compound graphs
+  private _children: DefinedMap<NodeId, Set<NodeId>>;
+
+  /**
+   * @argument {Object} opts - defaults:  `{ directed: true, multigraph: false, compound: false }`
+   *
+   */
+  constructor(opts?: GraphOptions) {
+    this._isDirected = opts?.directed ?? this._isDirected;
+    this._isMultigraph = opts?.multigraph ?? this._isMultigraph;
+    this._isCompound = opts?.compound ?? this._isCompound;
+
+    if (this._isCompound) {
+      // v -> parent
+      this._parent = new DefinedMap<NodeId, NodeId>();
+
+      // v -> children
+      this._children = new DefinedMap<NodeId, Set<NodeId>>([
+        [GRAPH_NODE, new Set<NodeId>()],
+      ]);
+    }
+  }
 
   /* === Graph functions ========= */
 
