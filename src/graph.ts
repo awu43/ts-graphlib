@@ -388,13 +388,13 @@ export class Graph {
         });
         this._children.delete(v);
       }
-      for (const key of this._inEdges.definedGet(v).keys()) {
-        this.removeEdge(this._edgeObjs.definedGet(key));
+      for (const edgeId of this._inEdges.definedGet(v).keys()) {
+        this.removeEdge(this._edgeObjs.definedGet(edgeId));
       }
       this._inEdges.delete(v);
       this._predecessors.delete(v);
-      for (const key of this._outEdges.definedGet(v).keys()) {
-        this.removeEdge(this._edgeObjs.definedGet(key));
+      for (const edgeId of this._outEdges.definedGet(v).keys()) {
+        this.removeEdge(this._edgeObjs.definedGet(edgeId));
       }
       this._outEdges.delete(v);
       this._successors.delete(v);
@@ -576,15 +576,15 @@ export class Graph {
 
     copy.setLabel(this.label);
 
-    for (const [v, value] of this._nodes.entries()) {
-      if (filter(v)) {
-        copy.setNode(v, value);
+    for (const [nodeId, value] of this._nodes.entries()) {
+      if (filter(nodeId)) {
+        copy.setNode(nodeId, value);
       }
     }
 
-    for (const e of this._edgeObjs.values()) {
-      if (copy.hasNode(e.v) && copy.hasNode(e.w)) {
-        copy.setEdge(e, this.edge(e));
+    for (const edge of this._edgeObjs.values()) {
+      if (copy.hasNode(edge.v) && copy.hasNode(edge.w)) {
+        copy.setEdge(edge, this.edge(edge));
       }
     }
 
@@ -715,10 +715,10 @@ export class Graph {
       }
     }
 
-    const e = edgeArgsToId(this._isDirected, v, w, name);
-    if (this._edgeLabels.has(e)) {
+    const edgeId = edgeArgsToId(this._isDirected, v, w, name);
+    if (this._edgeLabels.has(edgeId)) {
       if (valueSpecified) {
-        this._edgeLabels.set(e, value);
+        this._edgeLabels.set(edgeId, value);
       }
       return this;
     }
@@ -733,7 +733,7 @@ export class Graph {
     this.setNode(w);
 
     this._edgeLabels.set(
-      e,
+      edgeId,
       valueSpecified ? value : this._defaultEdgeLabelFn(v, w, name)
     );
 
@@ -742,11 +742,11 @@ export class Graph {
     ({ v, w } = edgeObj);
 
     Object.freeze(edgeObj);
-    this._edgeObjs.set(e, edgeObj);
+    this._edgeObjs.set(edgeId, edgeObj);
     incrementOrInitEntry(this._predecessors.definedGet(w), v);
     incrementOrInitEntry(this._successors.definedGet(v), w);
-    this._inEdges.definedGet(w).set(e, edgeObj);
-    this._outEdges.definedGet(v).set(e, edgeObj);
+    this._inEdges.definedGet(w).set(edgeId, edgeObj);
+    this._outEdges.definedGet(v).set(edgeId, edgeObj);
     this._edgeCount += 1;
     return this;
   }
@@ -796,10 +796,10 @@ export class Graph {
    */
   edge(v: NodeId, w: NodeId, name?: EdgeName): EdgeValue;
   edge(edgeOrV: Edge | NodeId, w?: NodeId, name?: EdgeName): EdgeValue {
-    const e = isEdge(edgeOrV)
+    const edgeId = isEdge(edgeOrV)
       ? edgeObjToId(this._isDirected, edgeOrV)
       : edgeArgsToId(this._isDirected, edgeOrV, w as NodeId, name);
-    return this._edgeLabels.get(e);
+    return this._edgeLabels.get(edgeId);
   }
 
   /**
@@ -825,10 +825,10 @@ export class Graph {
    */
   hasEdge(v: NodeId, w: NodeId, name?: EdgeName): boolean;
   hasEdge(edgeOrV: Edge | NodeId, w?: NodeId, name?: EdgeName): boolean {
-    const e = isEdge(edgeOrV)
+    const edgeId = isEdge(edgeOrV)
       ? edgeObjToId(this._isDirected, edgeOrV)
       : edgeArgsToId(this._isDirected, edgeOrV, w as NodeId, name);
-    return this._edgeLabels.has(e);
+    return this._edgeLabels.has(edgeId);
   }
 
   /**
@@ -852,18 +852,18 @@ export class Graph {
    */
   removeEdge(v: NodeId, w: NodeId, name?: EdgeName): Graph;
   removeEdge(edgeOrV: Edge | NodeId, w?: NodeId, name?: EdgeName): Graph {
-    const e = isEdge(edgeOrV)
+    const edgeId = isEdge(edgeOrV)
       ? edgeObjToId(this._isDirected, edgeOrV)
       : edgeArgsToId(this._isDirected, edgeOrV, w as NodeId, name);
-    const edge = this._edgeObjs.get(e);
+    const edge = this._edgeObjs.get(edgeId);
     if (edge) {
       const { v: v_, w: w_ } = edge;
-      this._edgeLabels.delete(e);
-      this._edgeObjs.delete(e);
+      this._edgeLabels.delete(edgeId);
+      this._edgeObjs.delete(edgeId);
       decrementOrRemoveEntry(this._predecessors.definedGet(w_), v_);
       decrementOrRemoveEntry(this._successors.definedGet(v_), w_);
-      this._inEdges.definedGet(w_).delete(e);
-      this._outEdges.definedGet(v_).delete(e);
+      this._inEdges.definedGet(w_).delete(edgeId);
+      this._outEdges.definedGet(v_).delete(edgeId);
       this._edgeCount -= 1;
     }
     return this;
