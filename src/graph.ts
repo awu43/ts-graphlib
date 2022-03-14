@@ -341,13 +341,11 @@ export class Graph {
    * @returns the graph, allowing this to be chained with other functions.
    */
   setNodes(vs: NodeId[], value?: NodeValue): Graph {
-    vs.forEach(v => {
-      if (arguments.length > 1) {
-        this.setNode(v, value);
-      } else {
-        this.setNode(v);
-      }
-    });
+    vs.forEach(
+      arguments.length > 1
+        ? (v: NodeId) => this.setNode(v, value)
+        : (v: NodeId) => this.setNode(v)
+    );
     return this;
   }
 
