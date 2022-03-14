@@ -273,9 +273,7 @@ export class Graph {
    * @returns the graph source nodes.
    */
   get sources(): NodeId[] {
-    return this.nodes.filter(v => {
-      return !this._inEdges.definedGet(v).size;
-    });
+    return this.nodes.filter(v => !this._inEdges.definedGet(v).size);
   }
 
   /**
@@ -285,9 +283,7 @@ export class Graph {
    * @returns the graph source nodes.
    */
   get sinks(): NodeId[] {
-    return this.nodes.filter(v => {
-      return !this._outEdges.definedGet(v).size;
-    });
+    return this.nodes.filter(v => !this._outEdges.definedGet(v).size);
   }
 
   /**
