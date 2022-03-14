@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-unused-expressions */
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-console */
 
@@ -7,7 +8,7 @@ const seedrandom = require("seedrandom");
 const { sprintf } = require("sprintf-js");
 
 const { Graph } = require("./dist");
-const { alg } = require("./dist/alg");
+const { components, dijkstraAll } = require("./dist/alg");
 
 const seed = process.env.SEED;
 seedrandom(seed, { global: true });
@@ -86,20 +87,20 @@ function buildGraph(numNodes, edgeDensity) {
 
 NODE_SIZES.forEach(function (size) {
   const g = buildGraph(size, EDGE_DENSITY);
-  const nodes = g.nodes();
-  const edges = g.edges();
+  const { nodes } = g;
+  const { edges } = g;
   const nameSuffix = `(${size},${EDGE_DENSITY})`;
 
   runBenchmark(`nodes${nameSuffix}`, function () {
-    g.nodes();
+    g.nodes;
   });
 
   runBenchmark(`sources${nameSuffix}`, function () {
-    g.sources();
+    g.sources;
   });
 
   runBenchmark(`sinks${nameSuffix}`, function () {
-    g.sinks();
+    g.sinks;
   });
 
   runBenchmark(`filterNodes all${nameSuffix}`, function () {
@@ -140,7 +141,7 @@ NODE_SIZES.forEach(function (size) {
   });
 
   runBenchmark(`edges${nameSuffix}`, function () {
-    g.edges();
+    g.edges;
   });
 
   runBenchmark(`setPath${nameSuffix}`, function () {
@@ -174,10 +175,10 @@ NODE_SIZES.forEach(function (size) {
   });
 
   runBenchmark(`components${nameSuffix}`, function () {
-    alg.components(g);
+    components(g);
   });
 
   runBenchmark(`dijkstraAll${nameSuffix}`, function () {
-    alg.dijkstraAll(g);
+    dijkstraAll(g);
   });
 });
