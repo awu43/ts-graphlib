@@ -7,7 +7,7 @@ describe("alg.postorder", () => {
   it("returns the root for a singleton graph", () => {
     const g = new Graph();
     g.setNode("a");
-    expect(postorder(g, "a")).to.eql(["a"]);
+    expect(postorder(g, ["a"])).to.eql(["a"]);
   });
 
   it("visits each node in the graph once", () => {
@@ -15,7 +15,7 @@ describe("alg.postorder", () => {
     g.setPath(["a", "b", "d", "e"]);
     g.setPath(["a", "c", "d", "e"]);
 
-    const nodes = postorder(g, "a");
+    const nodes = postorder(g, ["a"]);
     expect(nodes).to.have.members(["a", "b", "c", "d", "e"]);
   });
 
@@ -25,7 +25,7 @@ describe("alg.postorder", () => {
     g.setPath(["a", "c", "d"]);
     g.setEdge("c", "e");
 
-    const nodes = postorder(g, "a");
+    const nodes = postorder(g, ["a"]);
     expect(nodes).to.have.members(["a", "b", "c", "d", "e"]);
     expect(nodes.indexOf("b")).to.be.lt(nodes.indexOf("a"));
     expect(nodes.indexOf("c")).to.be.lt(nodes.indexOf("a"));
@@ -63,7 +63,7 @@ describe("alg.postorder", () => {
     const g = new Graph();
     g.setNode("a");
     expect(() => {
-      postorder(g, "b");
+      postorder(g, ["b"]);
     }).to.throw();
   });
 });

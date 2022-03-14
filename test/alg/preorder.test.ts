@@ -7,7 +7,7 @@ describe("alg.preorder", () => {
   it("returns the root for a singleton graph", () => {
     const g = new Graph();
     g.setNode("a");
-    expect(preorder(g, "a")).to.eql(["a"]);
+    expect(preorder(g, ["a"])).to.eql(["a"]);
   });
 
   it("visits each node in the graph once", () => {
@@ -15,7 +15,7 @@ describe("alg.preorder", () => {
     g.setPath(["a", "b", "d", "e"]);
     g.setPath(["a", "c", "d", "e"]);
 
-    const nodes = preorder(g, "a");
+    const nodes = preorder(g, ["a"]);
     expect(nodes).to.have.members(["a", "b", "c", "d", "e"]);
   });
 
@@ -25,7 +25,7 @@ describe("alg.preorder", () => {
     g.setPath(["a", "c", "d"]);
     g.setEdge("c", "e");
 
-    const nodes = preorder(g, "a");
+    const nodes = preorder(g, ["a"]);
     expect(nodes).to.have.members(["a", "b", "c", "d", "e"]);
     expect(nodes.indexOf("b")).to.be.gt(nodes.indexOf("a"));
     expect(nodes.indexOf("c")).to.be.gt(nodes.indexOf("a"));
@@ -50,7 +50,7 @@ describe("alg.preorder", () => {
     const g = new Graph();
     g.setNode("a");
     expect(() => {
-      preorder(g, "b");
+      preorder(g, ["b"]);
     }).to.throw();
   });
 });

@@ -33,13 +33,7 @@ function doDfs(
  *
  * Order must be one of "pre" or "post".
  */
-export function dfs(
-  g: Graph,
-  vs_: NodeId[] | NodeId,
-  order: "pre" | "post"
-): NodeId[] {
-  const vs = Array.isArray(vs_) ? vs_ : [vs_];
-
+export function dfs(g: Graph, vs: NodeId[], order: "pre" | "post"): NodeId[] {
   const navigation = (g.isDirected ? g.successors : g.neighbors).bind(g);
 
   const acc: NodeId[] = [];
