@@ -379,9 +379,6 @@ export class Graph {
    */
   removeNode(v: NodeId): Graph {
     if (this._nodes.has(v)) {
-      const removeEdge = (e: EdgeId) => {
-        this.removeEdge(this._edgeObjs.definedGet(e));
-      };
       this._nodes.delete(v);
       if (this._isCompound) {
         this._removeFromParentsChildList(v);
@@ -392,12 +389,12 @@ export class Graph {
         this._children.delete(v);
       }
       for (const key of this._inEdges.definedGet(v).keys()) {
-        removeEdge(key);
+        this.removeEdge(this._edgeObjs.definedGet(key));
       }
       this._inEdges.delete(v);
       this._predecessors.delete(v);
       for (const key of this._outEdges.definedGet(v).keys()) {
-        removeEdge(key);
+        this.removeEdge(this._edgeObjs.definedGet(key));
       }
       this._outEdges.delete(v);
       this._successors.delete(v);
