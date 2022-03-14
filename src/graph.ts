@@ -25,7 +25,7 @@ export class NodeIdError extends Error {}
 only be modified by those two methods, and the values should always be
 above zero. */
 
-function incrementOrInitEntry<K = unknown>(map: Map<K, number>, k: K): void {
+function incrementOrInitEntry(map: Map<NodeId, number>, k: NodeId): void {
   const entry = map.get(k);
   if (entry) {
     map.set(k, entry + 1);
@@ -34,7 +34,7 @@ function incrementOrInitEntry<K = unknown>(map: Map<K, number>, k: K): void {
   }
 }
 
-function decrementOrRemoveEntry<K = unknown>(map: Map<K, number>, k: K): void {
+function decrementOrRemoveEntry(map: Map<NodeId, number>, k: NodeId): void {
   const entry = map.get(k);
   if (entry) {
     if (entry - 1) {
