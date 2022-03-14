@@ -767,14 +767,14 @@ export class Graph {
    * @returns the graph, allowing this to be chained with other functions.
    */
   setPath(vs: NodeId[], value?: EdgeValue): Graph {
-    vs.reduce((v, w) => {
-      if (arguments.length > 1) {
-        this.setEdge(v, w, value);
+    const valueSpecified = arguments.length > 1;
+    for (let i = 1; i < vs.length; i++) {
+      if (valueSpecified) {
+        this.setEdge(vs[i - 1], vs[i], value);
       } else {
-        this.setEdge(v, w);
+        this.setEdge(vs[i - 1], vs[i]);
       }
-      return w;
-    });
+    }
     return this;
   }
 
