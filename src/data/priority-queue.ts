@@ -13,13 +13,8 @@ interface QueueKey<QK = unknown> {
  * have its priority decreased in O(log n) time.
  */
 export class PriorityQueue<K = unknown> {
-  private _queue: QueueKey<K>[];
-  private _keyIndices: DefinedMap<K, number>;
-
-  constructor() {
-    this._queue = [];
-    this._keyIndices = new DefinedMap<K, number>();
-  }
+  private _queue: QueueKey<K>[] = [];
+  private _keyIndices = new DefinedMap<K, number>();
 
   /**
    * Returns the number of elements in the queue. Takes `O(1)` time.

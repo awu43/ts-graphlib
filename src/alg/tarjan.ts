@@ -28,7 +28,7 @@ export function tarjan(g: Graph): NodeId[][] {
   const visited = new DefinedMap<NodeId, Node>();
   const results: NodeId[][] = [];
 
-  function dfs(v: NodeId) {
+  function dfs(v: NodeId): void {
     const entry = {
       onStack: true,
       lowlink: index,

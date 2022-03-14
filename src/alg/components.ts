@@ -17,7 +17,7 @@ export function components(g: Graph): NodeId[][] {
   g.nodes.forEach(v => {
     const cmpt: NodeId[] = [];
 
-    function dfs(v_: NodeId) {
+    function dfs(v_: NodeId): void {
       if (visited.has(v_)) {
         return;
       }

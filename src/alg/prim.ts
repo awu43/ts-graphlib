@@ -24,7 +24,7 @@ export function prim(g: Graph, weightFn: WeightFn): Graph {
   const pq = new PriorityQueue<NodeId>();
   let v: NodeId;
 
-  function updateNeighbors(edge: Edge) {
+  function updateNeighbors(edge: Edge): void {
     const w = edge.v === v ? edge.w : edge.v;
     const pri = pq.priority(w);
     if (pri !== undefined) {

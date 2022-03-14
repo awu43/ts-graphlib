@@ -7,7 +7,7 @@ function doDfs(
   visited: Set<NodeId>,
   navigation: (v_: NodeId) => NodeId[] | undefined,
   acc: NodeId[]
-) {
+): void {
   if (!visited.has(v)) {
     visited.add(v);
 

@@ -10,13 +10,13 @@ function runDijkstra(
   source: NodeId,
   weightFn: WeightFn,
   edgeFn: EdgeFn
-) {
-  const results: Record<NodeId, Path> = {};
+): PathMap {
+  const results: PathMap = {};
   const pq = new PriorityQueue<NodeId>();
   let v: NodeId;
   let vEntry: Path;
 
-  function updateNeighbors(edge: Edge) {
+  function updateNeighbors(edge: Edge): void {
     const w = edge.v !== v ? edge.v : edge.w;
     const wEntry = results[w];
     const weight = weightFn(edge);

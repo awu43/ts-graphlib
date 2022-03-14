@@ -18,7 +18,7 @@ export function topsort(g: Graph): NodeId[] {
   const stack = new Set<NodeId>();
   const results: NodeId[] = [];
 
-  function visit(node: NodeId) {
+  function visit(node: NodeId): void {
     if (stack.has(node)) {
       throw new CycleException();
     }
