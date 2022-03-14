@@ -21,6 +21,10 @@ type FactoryFunc<V> = (...args: unknown[]) => V;
 
 export class NodeIdError extends Error {}
 
+/* Maps used with incrementOrInitEntry() and decrementOrRemoveEntry() should
+only be modified by those two methods, and the values should always be
+above zero. */
+
 function incrementOrInitEntry<K = unknown>(map: Map<K, number>, k: K): void {
   const entry = map.get(k);
   if (entry) {
@@ -31,9 +35,13 @@ function incrementOrInitEntry<K = unknown>(map: Map<K, number>, k: K): void {
 }
 
 function decrementOrRemoveEntry<K = unknown>(map: Map<K, number>, k: K): void {
-  map.set(k, (map.get(k) as number) - 1);
-  if (!map.get(k)) {
-    map.delete(k);
+  const entry = map.get(k);
+  if (entry) {
+    if (entry - 1) {
+      map.set(k, entry - 1);
+    } else {
+      map.delete(k);
+    }
   }
 }
 
