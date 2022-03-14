@@ -121,29 +121,32 @@ export class Graph {
   private _defaultEdgeLabelFn: FactoryFunc<EdgeLabel> = () => undefined;
   private _nodes = new Map<NodeId, NodeValue>();
 
-  // v -> e -> edgeObj
+  /** Node ID => Edge ID => Edge object */
   private _inEdges = new DefinedMap<NodeId, Map<EdgeId, Edge>>();
 
-  // u -> v -> Number
+  /** Target node ID => Source node ID => Number of edges (for multigraphs) */
   private _predecessors = new DefinedMap<NodeId, Map<NodeId, number>>();
 
-  // v -> e -> edgeObj
+  /** Node ID => Edge ID => Edge object */
   private _outEdges = new DefinedMap<NodeId, Map<EdgeId, Edge>>();
 
-  // v -> w -> Number
+  /** Source node ID => Target node ID => Number of edges (for multigraphs) */
   private _successors = new DefinedMap<NodeId, Map<NodeId, number>>();
 
-  // e -> edgeObj
+  /** Edge ID => Edge object */
   private _edgeObjs = new DefinedMap<EdgeId, Edge>();
 
-  // e -> label
+  /** Edge ID => Edge label */
   private _edgeLabels = new DefinedMap<EdgeId, EdgeLabel>();
 
   private _nodeCount = 0;
   private _edgeCount = 0;
 
+  /** Node ID => Parent node ID */
   // @ts-expect-error: Only for compound graphs
   private _parent: DefinedMap<NodeId, NodeId>;
+
+  /** Node ID => Child node IDs */
   // @ts-expect-error: Only for compound graphs
   private _children: DefinedMap<NodeId, Set<NodeId>>;
 
