@@ -1,4 +1,6 @@
-A port of the now deprecated [dagrejs/graphlib](https://github.com/dagrejs/graphlib) library to modern TypeScript with JSDoc documentation from [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/graphlib/index.d.ts).
+# ⛔ ABANDONED ⛔
+
+A port of the then deprecated [dagrejs/graphlib](https://github.com/dagrejs/graphlib) library to modern TypeScript with JSDoc documentation from [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/graphlib/index.d.ts) (it has since been revived).
 
 Current TS target: ES2017.
 
